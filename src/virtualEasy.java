@@ -6,7 +6,7 @@ public class virtualEasy implements Strategy {
     public Board moveCard(Card newCard, Board currentBoard) {
 
         qesd; d
-
+ esf
 
     }
 
