@@ -5,7 +5,7 @@ public class virtualEasy implements Strategy {
     @objid ("f5a43890-66a8-4f78-99e7-437b32751291")
     public Board moveCard(Card newCard, Board currentBoard) {
 
-        qesd;
+        qesd; d
 
 
     }
