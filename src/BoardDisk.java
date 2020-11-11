@@ -4,5 +4,5 @@ import com.modeliosoft.modelio.javadesigner.annotations.objid;
 public class BoardDisk extends Board {
     @objid ("c532650d-af55-4785-a7ff-fbf12efd4247")
     private Card cardsOnBoard;
-
+f
 }
