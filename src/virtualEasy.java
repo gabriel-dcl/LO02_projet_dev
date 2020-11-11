@@ -4,6 +4,10 @@ import com.modeliosoft.modelio.javadesigner.annotations.objid;
 public class virtualEasy implements Strategy {
     @objid ("f5a43890-66a8-4f78-99e7-437b32751291")
     public Board moveCard(Card newCard, Board currentBoard) {
+
+        qesd;
+
+
     }
 
     @objid ("15e278d6-d387-47a8-a145-3dcace46a78e")
