@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
+import fr.ia.Player;
 
 @objid ("a2345e60-a587-46f9-812f-7656761a43f5")
 public class Card {

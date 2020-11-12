@@ -1,3 +1,5 @@
+package fr.ia;
+
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 
 @objid ("b785dee3-eb31-4c59-a65a-3ad2eb6b5795")

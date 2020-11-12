@@ -1,3 +1,5 @@
+package fr.ia;
+
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 
 @objid ("d520295f-ba54-4fc0-a340-bac5226dc941")
@@ -18,7 +20,7 @@ public class Player implements Strategy {
     private Strategy strategy;
 
     @objid ("e35e9e24-4360-4d26-9e13-cf8a99136728")
-    public GameManager ;
+    public GameManager;
 
     @objid ("84c0c507-1466-49e5-bdd8-31942de317ca")
     public Board moveCard(Card newCard, Board currentBoard) {
