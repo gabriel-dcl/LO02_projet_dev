@@ -1,5 +1,18 @@
-import com.modeliosoft.modelio.javadesigner.annotations.objid;
+public class GameManagerClassic  extends GameManager {
+    private int difficulty;
 
-@objid ("6986666f-00f1-4dfb-9017-5f4aaa30b69e")
-public @interface GameManagerClassic  extends GameManager {
+
+    public void preGame() {
+    }
+    public void game() {
+
+    public void gameOver() {
+    }
+    public void occure() {
+    }
+    public void getInstance() {
+    }
+    private void singleton() {
+    }
+
 }
