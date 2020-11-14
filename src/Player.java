@@ -1,27 +1,35 @@
 
 public class Player implements Strategy {
 
+
+    //Variables initialisation
+
     private boolean isReal;
-
-
     private Card VictoryCard;
-
-
     private int nbPoints;
-
-
     private Visitor visitor;
-
-
     private Strategy strategy;
-
-
     public GameManager manager;
+
+
+    public Player()
+    {
+            strategy = new realPlayer();
+    }
+
+    public Player(int difficulty)
+    {
+        if(difficulty == 0)
+            strategy = new virtualEasy();
+        else
+            strategy = new virtualHard();
+    }
 
     @Override
     public Board moveCard(Card newCard, Board currentBoard) {
         return null;
     }
+
 
     @Override
     public Board placeNewCard(Card newCard, Board currentBoard) {

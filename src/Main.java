@@ -10,7 +10,6 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         boolean isPlaying = true;
 
-
         System.out.println("=============================================================== ");
         System.out.println("======================= SHAPE UP ! ============================");
         System.out.println("=============================================================== ");
@@ -25,6 +24,8 @@ public class Main {
             choix = sc.nextInt();
         }
 
+        System.out.print("CHOIX");
+
         switch (choix)
         {
             case 1 : manager = new GameManagerClassic();
@@ -34,7 +35,12 @@ public class Main {
 
         }
 
+
         manager.preGame();
     }
+
+
+
+
 
 }
