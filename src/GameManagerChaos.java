@@ -1,2 +1,2 @@
-public class GameManagerChaos extends GameManager {
+public abstract class  GameManagerChaos extends GameManager {
 }
