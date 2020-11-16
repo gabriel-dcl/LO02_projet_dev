@@ -3,20 +3,11 @@ import java.util.List;
 
 public class Card {
 
-    private String forme;
-
-
-    private String couleur;
-
-
-    private String remplissage;
-
-
     private int x_pos;
-
-
     private int y_pos;
-
+    private enum state {FILL, EMPTY};
+    private enum color {BLUE, RED, GREEN};
+    private enum form {CIRCLE, SQUARE, TRIANGLE};
 
 
     public List<Player> player = new ArrayList<Player> ();

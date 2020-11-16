@@ -1,5 +1,6 @@
 public abstract class Board {
     public GameManager currentBoard;
+
     public void calculateNbCardsOnBoard() {
     }
 
