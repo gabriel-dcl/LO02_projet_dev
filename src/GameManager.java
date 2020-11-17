@@ -4,11 +4,13 @@ public abstract class GameManager {
     private int difficulty;
     private Player players[];
     private Scanner sc;
+    private Board currentBoard;
 
     public GameManager()
     {
         players = new Player[3];
         sc = new Scanner(System.in);
+        currentBoard = new BoardRectangular();
     }
 
     public void preGame() {
@@ -45,10 +47,16 @@ public abstract class GameManager {
             players[i] = new Player(0);
 
         }
+
+
+
     }
 
 
     public abstract void game();
+    {
+
+    }
 
     public void gameOver() {
     }

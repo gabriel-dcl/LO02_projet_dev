@@ -24,8 +24,6 @@ public class Main {
             choix = sc.nextInt();
         }
 
-        System.out.print("CHOIX");
-
         switch (choix)
         {
             case 1 : manager = new GameManagerClassic();
