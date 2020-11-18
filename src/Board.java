@@ -3,36 +3,59 @@ import enums.Form;
 import enums.State;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 import java.util.stream.IntStream;
 
 public abstract class Board {
     private GameManager currentGameManager;
-    private ArrayList<ArrayList<Card>> currentBoard;
+    private HashMap<Coordinate, Card> currentCardsOnBoard;
     private Stack<Card> remainingCards;
+    private Card[] allPossibleCard;
+
 
     public Board()
     {
         State test;
         remainingCards = new Stack<Card>();
         generateRandomStack();
+        currentCardsOnBoard = new HashMap<Coordinate, Card>();
+    }
+
+    public boolean addCardOnBoard(Card card, Coordinate coordinate)
+    {
+        for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet()) {
+            if (entry.getKey().equals(coordinate))
+                return false;
+        }
+        currentCardsOnBoard.put(coordinate, card);
+
+        return true;
+    }
+
+    public Card getNewRandomCard()
+    {
+        int random_index =  (int) (Math.random() * 17);
+        return allPossibleCard[random_index];
     }
 
     public void calculateNbCardsOnBoard()
     {
-
     }
 
-    public Card getNewCard() {
-        return null;
-    }
 
     public void accept(Visitor visitor) {
     }
 
+
+    /**
+     *
+     */
     private void generateRandomStack()
     {
-        Card[] allPossibleCard = new Card[18];
+        allPossibleCard = new Card[18];
+        int[] values_done = new int[20];
         int i = 0;
 
         for(State temp_state : State.values())
@@ -47,8 +70,6 @@ public abstract class Board {
             }
         }
 
-        int[] values_done = new int[20];
-
         for (int j = 0; j < 17; j++)
         {
             int current_index =  (int) (Math.random() * 17);
@@ -58,7 +79,6 @@ public abstract class Board {
 
             remainingCards.add(allPossibleCard[current_index]);
             values_done[i] = current_index;
-            System.out.println(allPossibleCard[current_index].toString());
         }
     }
 
@@ -76,7 +96,4 @@ public abstract class Board {
         }
         return false;
     }
-
-
-
 }

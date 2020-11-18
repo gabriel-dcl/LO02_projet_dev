@@ -11,11 +11,11 @@ public class Main {
         boolean isPlaying = true;
 
         System.out.println("=============================================================== ");
-        System.out.println("======================= SHAPE UP ! ============================");
+        System.out.println("======================= SHAPE UP ! ============================ ");
         System.out.println("=============================================================== ");
         System.out.println("\n \n \n Bonjour ! Quel mode de jeu voulez-vous jouer : ");
         System.out.println("1 - Classic");
-        System.out.print("Votre slection : \t");
+        System.out.print("Votre selection : \t");
         int choix = sc.nextInt();
 
         while (choix != 1 && choix != 2 && choix !=3)
@@ -31,13 +31,11 @@ public class Main {
             default : manager = new GameManagerClassic();
                 break;
 
-        }
 
+        }
 
         manager.preGame();
     }
-
-
 
 
 

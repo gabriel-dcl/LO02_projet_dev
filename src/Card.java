@@ -20,7 +20,6 @@ public class Card {
                 ", card_state=" + card_state +
                 ", card_color=" + card_color +
                 ", card_form=" + card_form +
-                ", player=" + player +
                 '}';
     }
 
