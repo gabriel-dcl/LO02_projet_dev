@@ -35,28 +35,14 @@ public abstract class GameManager {
         }
 
         for(int i = 0; i < compteur_joueur; i++)
-        {
-            System.out.println(i);
-            players[i] = new Player();
-        }
+            players[i] = new Player(currentBoard.getNewRandomCard());
 
-        System.out.println("NEXT");
-
-        for (int i = compteur_joueur; i < 3; i++) {
-            System.out.println(i);
-            players[i] = new Player(0);
-
-        }
-
-
-
+        for (int i = compteur_joueur; i < 3; i++)
+            players[i] = new Player(0, currentBoard.getNewRandomCard());
     }
 
 
     public abstract void game();
-    {
-
-    }
 
     public void gameOver() {
     }
