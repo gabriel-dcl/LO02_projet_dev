@@ -2,9 +2,9 @@ import java.util.Scanner;
 
 public abstract class GameManager {
     private int difficulty;
-    private Player players[];
-    private Scanner sc;
-    private Board currentBoard;
+    protected Player players[];
+    protected Scanner sc;
+    protected Board currentBoard;
 
     public GameManager()
     {

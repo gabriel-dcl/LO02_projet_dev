@@ -9,35 +9,31 @@ import java.util.Stack;
 import java.util.stream.IntStream;
 
 public abstract class Board {
-    private GameManager currentGameManager;
-    private HashMap<Coordinate, Card> currentCardsOnBoard;
-    private Stack<Card> remainingCards;
-    private Card[] allPossibleCard;
+    protected GameManager currentGameManager;
+    protected HashMap<Coordinate, Card> currentCardsOnBoard;
+    protected Stack<Card> remainingCards;
+    protected Card[] allPossibleCard;
 
 
     public Board()
     {
-        State test;
         remainingCards = new Stack<Card>();
         generateRandomStack();
         currentCardsOnBoard = new HashMap<Coordinate, Card>();
     }
 
-    public boolean addCardOnBoard(Card card, Coordinate coordinate)
-    {
-        for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet()) {
-            if (entry.getKey().equals(coordinate))
-                return false;
-        }
-        currentCardsOnBoard.put(coordinate, card);
+    public abstract boolean addCardOnBoard(Card card, Coordinate coordinate);
 
-        return true;
-    }
 
     public Card getNewRandomCard()
     {
         int random_index =  (int) (Math.random() * 17);
         return allPossibleCard[random_index];
+    }
+
+    public Card getCard()
+    {
+        return remainingCards.pop();
     }
 
     public void calculateNbCardsOnBoard()
@@ -48,9 +44,29 @@ public abstract class Board {
     public void accept(Visitor visitor) {
     }
 
+    public void showBoard()
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = 0; j < 12; j++)
+            {
+
+                for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet())
+                {
+                    if (entry.getKey().equals( new Coordinate(i, j)) )
+                        System.out.print("A");
+                    else
+                        System.out.print("*");
+
+                }
+
+            }
+            System.out.println();
+        }
+    }
 
     /**
-     *
+     *  Use tu generate a randomStack
      */
     private void generateRandomStack()
     {
