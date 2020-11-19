@@ -22,21 +22,24 @@ public abstract class Board {
         currentCardsOnBoard = new HashMap<Coordinate, Card>();
     }
 
-    public abstract boolean addCardOnBoard(Card card, Coordinate coordinate);
+    public abstract boolean addCardOnBoard(Card card, Coordinate coordinate, boolean firstCardPlaces);
 
 
-    public Card getNewRandomCard()
+    public Card getNewRandomCard()      //Usefull for VictoryCard Generation
     {
         int random_index =  (int) (Math.random() * 17);
         return allPossibleCard[random_index];
     }
-     public Card getCard()
+
+
+    public Card getCard()
     {
         return remainingCards.pop();
     }
 
     public void calculateNbCardsOnBoard()
     {
+
     }
 
 
@@ -49,20 +52,47 @@ public abstract class Board {
         {
             for (int j = 0; j < 12; j++)
             {
+                boolean hasFound = false;
 
+                for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet())
+                {
+                    if (entry.getKey().equals( new Coordinate(i, j)) )
+                    {
+                        System.out.print("A");
+                        hasFound = true;
+                    }
+                }
+                  if(!hasFound)
+                      System.out.print("*");
+
+            }
+            System.out.println();
+        }
+    }
+
+
+    public void findClosestCard(Coordinate wantedPosition)
+    {
+
+
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = 0; j < 12; j++)
+            {
                 for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet())
                 {
                     if (entry.getKey().equals( new Coordinate(i, j)) )
                         System.out.print("A");
                     else
                         System.out.print("*");
-
                 }
-
             }
             System.out.println();
         }
+
+
     }
+
 
     /**
      *  Use tu generate a randomStack
@@ -112,3 +142,4 @@ public abstract class Board {
         return false;
     }
 }
+
