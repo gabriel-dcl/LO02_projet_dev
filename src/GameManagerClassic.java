@@ -17,8 +17,10 @@ public class GameManagerClassic  extends GameManager {
             int x = sc.nextInt();
             System.out.print("Position Y: ");
             int y = sc.nextInt();
-
-            currentBoard.addCardOnBoard(cardOnPlay, new Coordinate(x, y));
+            if(i == 0)
+              currentBoard.addCardOnBoard(cardOnPlay, new Coordinate(x, y), true);
+            else
+                currentBoard.addCardOnBoard(cardOnPlay, new Coordinate(x, y), false);
 
             System.out.println("");
             System.out.print("\033[H\033[2J");
