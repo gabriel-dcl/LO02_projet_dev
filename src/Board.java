@@ -30,8 +30,7 @@ public abstract class Board {
         int random_index =  (int) (Math.random() * 17);
         return allPossibleCard[random_index];
     }
-
-    public Card getCard()
+     public Card getCard()
     {
         return remainingCards.pop();
     }
