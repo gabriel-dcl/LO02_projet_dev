@@ -33,6 +33,7 @@ public abstract class Board {
     }
 
 
+
     public Card getCard()
     {
         return remainingCards.pop();

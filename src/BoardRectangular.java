@@ -10,7 +10,6 @@ public class BoardRectangular extends Board {
 
     public boolean addCardOnBoard(Card card, Coordinate coordinate, boolean firstCardPlaces)
     {
-
         if(firstCardPlaces)
         {
             currentCardsOnBoard.put(coordinate, card);

@@ -9,15 +9,16 @@ public class Player{
     private int nbPoints;
     private Visitor visitor;
     private Strategy strategy;
-    public GameManager manager;
     protected Scanner sc;
 
 
     public Player(Card victoryCard)
     {
+            sc = new Scanner(System.in);
             strategy = new realPlayer();
             this.victoryCard = victoryCard;
     }
+
 
     public Player(int difficulty, Card victoryCard)
     {
@@ -39,9 +40,6 @@ public class Player{
 	public Card getVictoryCard() {
 		return victoryCard;
 	}
-
-
-
 
 
 

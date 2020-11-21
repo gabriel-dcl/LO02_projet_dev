@@ -1,8 +1,7 @@
 public class virtualHard implements Strategy {
-    
-    public Board placeNewCard(Card newCard, Board currentBoard) {
-   return null;
-    }
+
+
+	public void placeNewCard(Card newCard, Board currentBoard, boolean firsTime) {}
     
     
     public Board shuffle(Board currentBoard) {
@@ -14,9 +13,9 @@ public class virtualHard implements Strategy {
     public void changeVictoryCard(Card newCard) {
     }
 	@Override
-	public Board moveCard(Board currentBoard) {
+	public void moveCard(Board currentBoard) {
 		// TODO Auto-generated method stub
-		return null;
+		return;
 	}
 	@Override
 	public Board alternateCards(Board currentBoard) {
@@ -26,7 +25,5 @@ public class virtualHard implements Strategy {
 	@Override
 	public void showVictoryCard(Card victoryCard) {
 		// TODO Auto-generated method stub
-		
 	}
-
 }

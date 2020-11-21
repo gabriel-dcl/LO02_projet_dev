@@ -25,7 +25,7 @@ public abstract class GameManager {
             difficulty = sc.nextInt();
         }
 
-        System.out.println("Combien de joueurs Réels avez-vous ? (3 maximum)");
+        System.out.println("Combien de joueurs reels avez-vous ? (3 maximum)");
         compteur_joueur = sc.nextInt();
 
         while(compteur_joueur < 0 && compteur_joueur > 3)

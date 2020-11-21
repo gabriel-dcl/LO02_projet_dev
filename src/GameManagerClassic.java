@@ -3,21 +3,29 @@ public class GameManagerClassic  extends GameManager {
 
 
     public void game() {
-    	
-    	
-    	
-    	while (currentBoard.currentCardsOnBoard.size()<15) {
-    		for (int i = 0; i<=3; i++) {
-    			System.out.println("Joueur "+i );
+
+    	boolean firstTime = true;
+
+    	while (currentBoard.currentCardsOnBoard.size()<15)
+    	{
+    		for (int i = 0; i < 3; i++)
+    		{
+    			System.out.println("Joueur " +i );
         		Card cardOnPlay = this.currentBoard.getCard();
         		this.players[i].getStrategy().showVictoryCard(this.players[i].getVictoryCard());
-        		this.currentBoard = this.players[i].getStrategy().moveCard( this.currentBoard);
-        		this.currentBoard = this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
+        		this.players[i].getStrategy().moveCard( this.currentBoard);
+				if(firstTime)
+				{
+					this.players[i].getStrategy().placeNewCard(currentBoard.getCard(), currentBoard, true);
+					firstTime = false;
+				}else
+					this.players[i].getStrategy().placeNewCard(currentBoard.getCard(), currentBoard, false);
+
+
         	}
     	}
     	
 
-    	
 /*
         for (int i = 0; i < 12; i++) {
 
