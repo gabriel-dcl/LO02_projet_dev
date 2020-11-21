@@ -3,9 +3,22 @@ public class GameManagerClassic  extends GameManager {
 
 
     public void game() {
+    	
+    	
+    	
+    	while (currentBoard.currentCardsOnBoard.size()<15) {
+    		for (int i = 0; i<=3; i++) {
+    			System.out.println("Joueur "+i );
+        		Card cardOnPlay = this.currentBoard.getCard();
+        		this.players[i].getStrategy().showVictoryCard(this.players[i].getVictoryCard());
+        		this.currentBoard = this.players[i].getStrategy().moveCard( this.currentBoard);
+        		this.currentBoard = this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
+        	}
+    	}
+    	
 
-
-
+    	
+/*
         for (int i = 0; i < 12; i++) {
 
             Card cardOnPlay = currentBoard.getCard();
@@ -26,10 +39,10 @@ public class GameManagerClassic  extends GameManager {
             System.out.print("\033[H\033[2J");
             System.out.flush();
             currentBoard.showBoard();
-        }
+        }*/
     }
     public void getInstance() {
-    }
+    } 
     private void singleton() {
     }
 

@@ -1,19 +1,18 @@
 public class virtualEasy implements Strategy {
-    public Board moveCard(Card newCard, Board currentBoard) {
+ 
+    public int findBestPlacementNewCard(Board currentBoard, Card currentCard, Card victoryCard) {
 
-
-    return  null;
+    return 0;
     }
+    public int findNewPlacementCardOnBoard(Board currentBoard, Card currentCard, Card victoryCard) {
+   return 0;
+    }
+	
+
     public Board placeNewCard(Card newCard, Board currentBoard) {
     return  null;
     }
-    public Board alternateCards(Card card1, Card Card2) {
-
-    return null;
-    }
-
-    public void showVictoryCard() {
-    }
+    
 
     public Board shuffle(Board currentBoard) {
 
@@ -25,5 +24,20 @@ public class virtualEasy implements Strategy {
 
     public void changeVictoryCard(Card newCard) {
     }
+	@Override
+	public Board moveCard(Board currentBoard) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Board alternateCards(Board currentBoard) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void showVictoryCard(Card victoryCard) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

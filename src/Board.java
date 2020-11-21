@@ -20,6 +20,7 @@ public abstract class Board {
         remainingCards = new Stack<Card>();
         generateRandomStack();
         currentCardsOnBoard = new HashMap<Coordinate, Card>();
+        
     }
 
     public abstract boolean addCardOnBoard(Card card, Coordinate coordinate, boolean firstCardPlaces);
