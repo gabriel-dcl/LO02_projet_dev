@@ -7,11 +7,13 @@ public class GameManagerClassic  extends GameManager {
     	
     	
     	while (currentBoard.currentCardsOnBoard.size()<15) {
-    		for (int i = 0; i<=3; i++) {
-    			System.out.println("Joueur "+i );
+    		for (int i = 0; i<3; i++) {
+    			System.out.println("Joueur "+(i+1) );
         		Card cardOnPlay = this.currentBoard.getCard();
         		this.players[i].getStrategy().showVictoryCard(this.players[i].getVictoryCard());
-        		this.currentBoard = this.players[i].getStrategy().moveCard( this.currentBoard);
+        		if(i>0) {
+        			this.currentBoard = this.players[i].getStrategy().moveCard( this.currentBoard);
+        		}       			
         		this.currentBoard = this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
         	}
     	}

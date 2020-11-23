@@ -6,6 +6,6 @@ public interface Strategy {
     void showVictoryCard(Card victoryCard);
     Board shuffle(Board currentBoard);
     void accept(Visitor visitor);
-    void changeVictoryCard(Card newCard);
+    Card changeVictoryCard(Card ancientCard, Board currentBoard);
 
 }

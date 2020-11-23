@@ -39,6 +39,9 @@ public class Player{
 	public Card getVictoryCard() {
 		return victoryCard;
 	}
+	public void setVictoryCard(Card newCard) {
+		this.victoryCard = newCard;
+	}
 
 
 

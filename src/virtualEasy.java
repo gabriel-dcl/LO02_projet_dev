@@ -22,7 +22,8 @@ public class virtualEasy implements Strategy {
     public void accept(Visitor visitor) {
     }
 
-    public void changeVictoryCard(Card newCard) {
+    public Card changeVictoryCard(Card ancientCard, Board currentBoard) {
+    	return null;
     }
 	@Override
 	public Board moveCard(Board currentBoard) {
