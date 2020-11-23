@@ -12,9 +12,9 @@ public class GameManagerDuel extends GameManager {
         		Card cardOnPlay = this.currentBoard.getCard();
         		this.players[i].getStrategy().showVictoryCard(this.players[i].getVictoryCard());
         		if(i>0) {
-        			this.currentBoard = this.players[i].getStrategy().moveCard( this.currentBoard);
+        			this.players[i].getStrategy().moveCard( this.currentBoard);
         		}       			
-        		this.currentBoard = this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
+        		this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
         		
         		System.out.println("Voulez-vous utiliser un bonus ?");
         		int choix = sc.nextInt();

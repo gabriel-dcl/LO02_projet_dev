@@ -1,7 +1,7 @@
 public class virtualHard implements Strategy {
 
 
-	public void placeNewCard(Card newCard, Board currentBoard, boolean firsTime) {}
+	public void placeNewCard(Card newCard, Board currentBoard) {}
     
     
     public Board shuffle(Board currentBoard) {

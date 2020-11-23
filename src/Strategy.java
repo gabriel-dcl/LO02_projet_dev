@@ -1,7 +1,7 @@
 public interface Strategy {
 
     void moveCard( Board currentBoard);
-    void placeNewCard(Card newCard, Board currentBoard, boolean firstTime);
+    void placeNewCard(Card newCard, Board currentBoard);
     Board alternateCards(Board currentBoard);
     void showVictoryCard(Card victoryCard);
     Board shuffle(Board currentBoard);

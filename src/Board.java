@@ -2,6 +2,7 @@ import enums.Color;
 import enums.Form;
 import enums.State;
 
+import java.security.cert.CertificateParsingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +24,34 @@ public abstract class Board {
         
     }
 
-    public abstract boolean addCardOnBoard(Card card, Coordinate coordinate, boolean firstCardPlaces);
+    public boolean isCoordinateCloseEnough(Coordinate coordinate) {
+      return false;
+    }
+    public boolean isPlaceAvailable(Coordinate coordinate) {
+        for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet()) {
+            if (entry.getKey().equals(coordinate))
+                return false;
+        }
+        return true;
+    }
+
+    public Coordinate findEqualsCoordinate(Coordinate coordinate) {
+        for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet()) {
+            if (entry.getKey().equals(coordinate))
+                return entry.getKey();
+        }
+        return null;
+    }
+
+    public boolean isPlaceTaken(Coordinate coordinate) {
+        return !this.isPlaceAvailable(coordinate);
+    }
 
 
-    public Card getNewRandomCard()      //Usefull for VictoryCard Generation
+    public abstract boolean addCardOnBoard(Card card, Coordinate coordinate);
+
+
+    public Card getNewRandomCard()      //Usefull for VictoryCard Ge    neration
     {
         int random_index =  (int) (Math.random() * 17);
         return allPossibleCard[random_index];

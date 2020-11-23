@@ -2,129 +2,92 @@ import java.util.Collections;
 import java.util.Map.Entry;
 import java.util.Scanner;
 public class realPlayer implements Strategy {
-	
-	private boolean taken(Coordinate position, Board currentBoard) {
-		/*if(currentBoard.currentCardsOnBoard.containsKey(position)) {
-    		return true;
-    	}
-		else
-			return false;*/
-		for (Entry<Coordinate, Card> entry : currentBoard.currentCardsOnBoard.entrySet())
-        {
-            if (entry.getKey().equals(position))
-                return true;
-            	break;
-        }
-		return false;
-	}
-	
-    public Board moveCard(Board currentBoard) {
-    	Scanner sc = new Scanner(System.in);
+
+    public void moveCard(Board currentBoard)
+	{
+		Scanner sc = new Scanner(System.in);
+
     	//Demande de réaliser cette action
-    	System.out.println("Voulez vous bouger une carte ?");
+    	System.out.println("Voulez vous bouger une carte ? 1 | 0");
     	int choix = sc.nextInt();
     	
-    	if (choix==1) {
-    		//Affichage du board pour choisir la carte à bouger
-        	currentBoard.showBoard();
-        	
-        	//récupération des coordonnées de la carte à bouger 
-        	boolean exists = false;
-        	Card cardToMove;
-        	Coordinate position = new Coordinate(-1, -1);
-        	while(!exists) {
-        		System.out.println("Coordonnées de la carte à bouger ? \n X ?");
-        		position.setX (sc.nextInt());
-    	    	
-    	    	System.out.println("Y ?");
-    	    	position.setY(sc.nextInt());
-    	    	
-    	    	
-    	    	
-    	    	exists=this.taken(position, currentBoard);
-    	    	if(!exists)
-    	    		System.out.println("Il n'y a pas de carte ici, réessayez");
-        	}
-        	
+    	if (choix==1)
+    	{
+    		Card cardToMove;
+
+			Coordinate position = askPlayerCoordinates(currentBoard, false);
+
+			Coordinate currentCard =  currentBoard.findEqualsCoordinate(position);
+
         	//récupération de la carte à bouger
-        	cardToMove = currentBoard.currentCardsOnBoard.get(position);
-        	currentBoard.currentCardsOnBoard.remove(position);
-        	
-        	//Affichage du board pour choisir où bouger la carte
-        	currentBoard.showBoard();
-        	
-        	//Récupération des coordonnées auxquelles bouger la carte
-        	
-        	
-        	while(exists) {
-        		System.out.println("Coordonnées où bouger la carte ? \n X ?");
-        		position.setX (sc.nextInt());
-    	    	
-    	    	System.out.println("Y ?");
-    	    	position.setY(sc.nextInt());
-    	    	
-    	    	exists=this.taken(position, currentBoard);
-    	    	if (exists)
-    	    		System.out.println("Cette place est prise ! Réessayez");
-        	}
-        	
+        	cardToMove = currentBoard.currentCardsOnBoard.get(currentCard);
+
+        	currentBoard.currentCardsOnBoard.remove(currentCard);
+
+			currentBoard.showBoard();
+
+			 position = askPlayerCoordinates(currentBoard, true);
         	
         	//Placement de la carte
-        	currentBoard.currentCardsOnBoard.put(position, cardToMove);
-        	
-
-        	return currentBoard;
+			currentBoard.addCardOnBoard(cardToMove, position);
         }
     	
     	else System.out.println("Option refusée");
-    	
-    	return currentBoard;
-    			
-    	
-    	
+
     }
     	
-    public Board placeNewCard(Card newCard, Board currentBoard) {
-
+    public void placeNewCard(Card newCard, Board currentBoard)
+	{
     	Scanner sc = new Scanner(System.in);
     	//Affichage de la nouvelle carte
-    	System.out.println("Veuillez poser la carte : ");
-    	System.out.println(newCard.toString());
-    	
-    	
-    		//Affichage du board pour savoir où placer la carte
-        	currentBoard.showBoard();
-        	
-        	//récupération des coordonnées auxquels placer la carte 
-        	boolean exists = true;
-        	Coordinate position = new Coordinate(-1, -1);
-        	
-        	
-        	
-        	while(exists) {
-        		System.out.println("Coordonnées où placer la carte ? \n X ?");
-        		position.setX (sc.nextInt());
-    	    	
-    	    	System.out.println("Y ?");
-    	    	position.setY(sc.nextInt());
-    	    	
-    	    	exists=this.taken(position, currentBoard);
-    	    	if(exists)
-    	    		System.out.println("Cette place est prise ! Réessayez");
-        	}
-        	
-        	//Placement de la carte
-        	currentBoard.currentCardsOnBoard.put(position, newCard);
-        	
-        	//Affichage du board après placement
-        	currentBoard.showBoard();
+    	System.out.println("Voici la carte a poser : /n" + newCard.toString());
 
-        	return currentBoard;	
-    	
-    		
-    	
+		Coordinate position = askPlayerCoordinates(currentBoard, true);
+		currentBoard.addCardOnBoard(newCard, position);
     }
-    
+
+
+
+    public Coordinate askPlayerCoordinates(Board currentBoard, boolean searchForFreePlace)
+	{
+		Scanner sc = new Scanner(System.in);
+
+		boolean exists = true;
+		Coordinate position = new Coordinate(-1, -1);
+
+		while(exists) {
+			if(searchForFreePlace)
+				System.out.print("Coordonnees ou placer la carte ? \n X :");
+			else
+				System.out.print("Coordonnées de la carte a deplacer ? \n X :");
+
+			position.setX (sc.nextInt());
+
+			System.out.println("Y :");
+			position.setY(sc.nextInt());
+
+			if(searchForFreePlace)
+			{
+				if(!currentBoard.isPlaceAvailable(position))
+					System.out.println("Cette place est prise  ! Reessayez");
+				else if( !currentBoard.isCoordinateCloseEnough(position))
+					System.out.println("Cette place  trop loin ! Reessayez");
+				else
+					exists = false;
+			} else
+			{
+				if(currentBoard.isPlaceAvailable(position) )
+					System.out.println("Cette place n'est pas occupee ! Reessayez");
+				else
+					exists = false;
+			}
+
+		}
+
+		return position;
+
+	}
+
     public Board alternateCards(Board currentBoard) {
     	Scanner sc = new Scanner(System.in);
     	//Demande de réaliser cette action
@@ -141,6 +104,7 @@ public class realPlayer implements Strategy {
         	Card temp;
         	//Choix de la première carte
         	System.out.println("Choisissez la première carte à alterner");
+
         	while(!exists) {
         		System.out.println("Coordonnées de la carte ? \n X ?");
         		position1.setX (sc.nextInt());
@@ -148,7 +112,7 @@ public class realPlayer implements Strategy {
     	    	System.out.println("Y ?");
     	    	position1.setY(sc.nextInt());
     	    	
-    	    	exists=this.taken(position1, currentBoard);
+    	 //   	exists=this.taken(position1, currentBoard);
     	    	if(!exists)
     	    		System.out.println("Il n'y a pas de carte ici ! Réessayez");
         	}
@@ -162,7 +126,7 @@ public class realPlayer implements Strategy {
     	    	System.out.println("Y ?");
     	    	position1.setY(sc.nextInt());
     	    	
-    	    	exists=this.taken(position1, currentBoard);
+    	    	// exists=this.taken(position1, currentBoard);
     	    	if(!exists)
     	    		System.out.println("Il n'y a pas de carte ici ! Réessayez");
         	}
@@ -170,12 +134,6 @@ public class realPlayer implements Strategy {
         	temp = currentBoard.currentCardsOnBoard.get(position1);
         	currentBoard.currentCardsOnBoard.put(position1, currentBoard.currentCardsOnBoard.get(position2));
         	currentBoard.currentCardsOnBoard.put(position2, temp);
-        	
-        	
-    	
-    
-    	
-    
 
     return currentBoard;
     }
@@ -187,7 +145,7 @@ public class realPlayer implements Strategy {
     
     public Board shuffle(Board currentBoard) {
     	for (Coordinate currentCardsPosition : currentBoard.currentCardsOnBoard.keySet()) {
-    		while (taken(currentCardsPosition, currentBoard)) {
+    		while ( ! currentBoard.isPlaceAvailable(currentCardsPosition) ) {
     			currentCardsPosition.setX((int)(Math.random() * 12));
     			currentCardsPosition.setY((int)(Math.random() * 12));
     		}
