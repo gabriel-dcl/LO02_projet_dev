@@ -1,11 +1,11 @@
 public interface Strategy {
 
-    Board moveCard(Card newCard, Board currentBoard);
-    Board placeNewCard(Card newCard, Board currentBoard);
-    Board alternateCards(Card card1, Card Card2);
-    void showVictoryCard();
+    void moveCard( Board currentBoard);
+    void placeNewCard(Card newCard, Board currentBoard);
+    Board alternateCards(Board currentBoard);
+    void showVictoryCard(Card victoryCard);
     Board shuffle(Board currentBoard);
     void accept(Visitor visitor);
-    void changeVictoryCard(Card newCard);
+    Card changeVictoryCard(Card ancientCard, Board currentBoard);
 
 }

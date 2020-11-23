@@ -3,7 +3,7 @@ public class BoardDisk extends Board {
 
 
     @Override
-    public boolean addCardOnBoard(Card card, Coordinate coordinate, boolean firstCardPlaces) {
+    public boolean addCardOnBoard(Card card, Coordinate coordinate) {
         return false;
     }
 }

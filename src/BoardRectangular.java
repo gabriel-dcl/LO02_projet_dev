@@ -8,34 +8,27 @@ public class BoardRectangular extends Board {
         super();
     }
 
-    public boolean addCardOnBoard(Card card, Coordinate coordinate, boolean firstCardPlaces)
-    {
 
-        if(firstCardPlaces)
-        {
-            currentCardsOnBoard.put(coordinate, card);
-            return true;
-        }
-
+    public boolean isCoordinateCloseEnough(Coordinate coordinate) {
         int verticalBoardSize = 0;
         int horizontalBoardSize = 0;
         boolean adjencyCardExists = false;
 
+        if(currentCardsOnBoard.entrySet().isEmpty())
+            return true;
+
         for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet())
         {
-            if (entry.getKey().equals(coordinate))
-                return false;
-
-                if(!adjencyCardExists)
+            if(!adjencyCardExists)
+            {
+                if( ( entry.getKey().getX() == (coordinate.getX() -1) && entry.getKey().getY() == coordinate.getY() )
+                        || ( entry.getKey().getX() == (coordinate.getX() +1) && entry.getKey().getY() == coordinate.getY() )
+                        || ( entry.getKey().getX() == (coordinate.getX()) && entry.getKey().getY() == coordinate.getY() + 1 )
+                        || ( entry.getKey().getX() == (coordinate.getX()) && entry.getKey().getY() == coordinate.getY() - 1 )
+                )
                 {
-                    if( ( entry.getKey().getX() == (coordinate.getX() -1) && entry.getKey().getY() == coordinate.getY() )
-                            || ( entry.getKey().getX() == (coordinate.getX() +1) && entry.getKey().getY() == coordinate.getY() )
-                            || ( entry.getKey().getX() == (coordinate.getX()) && entry.getKey().getY() == coordinate.getY() + 1 )
-                            || ( entry.getKey().getX() == (coordinate.getX()) && entry.getKey().getY() == coordinate.getY() - 1 )
-                    )
-                    {
-                        adjencyCardExists = true;
-                    }
+                    adjencyCardExists = true;
+                }
             }
 
             if(entry.getKey().getX()  == coordinate.getX() )
@@ -47,11 +40,24 @@ public class BoardRectangular extends Board {
 
         if(adjencyCardExists && horizontalBoardSize < 5 && verticalBoardSize < 3)
         {
-            currentCardsOnBoard.put(coordinate, card);
             return true;
         }
-        return false;
 
+        return false;
+    }
+
+
+    public boolean addCardOnBoard(Card card, Coordinate coordinate)
+    {
+
+        if(!this.isPlaceAvailable(coordinate))
+                return false;
+
+        if(!this.isCoordinateCloseEnough(coordinate))
+                return false;
+
+        currentCardsOnBoard.put(coordinate, card);
+        return true;
     }
 
 }

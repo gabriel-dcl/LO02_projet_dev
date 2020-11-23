@@ -1,4 +1,4 @@
-
+import java.util.Scanner;
 public class Player{
 
 
@@ -9,13 +9,16 @@ public class Player{
     private int nbPoints;
     private Visitor visitor;
     private Strategy strategy;
-    public GameManager manager;
+    protected Scanner sc;
 
 
     public Player(Card victoryCard)
     {
+            sc = new Scanner(System.in);
             strategy = new realPlayer();
+            this.victoryCard = victoryCard;
     }
+
 
     public Player(int difficulty, Card victoryCard)
     {
@@ -26,12 +29,23 @@ public class Player{
 
         this.victoryCard = victoryCard;
     }
+    
+    
 
 
-    public void play()
-    {
+	public Strategy getStrategy() {
+		return strategy;
+	}
 
-    }
+	public Card getVictoryCard() {
+		return victoryCard;
+	}
+	public void setVictoryCard(Card newCard) {
+		this.victoryCard = newCard;
+	}
+
+
+
 
 /*    public Board moveCard(Card newCard, Board currentBoard) {
 

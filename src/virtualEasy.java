@@ -1,19 +1,31 @@
 public class virtualEasy implements Strategy {
-    public Board moveCard(Card newCard, Board currentBoard) {
+ 
+    public int findBestPlacementNewCard(Board currentBoard, Card currentCard, Card victoryCard) {
 
-
-    return  null;
+    return 0;
     }
-    public Board placeNewCard(Card newCard, Board currentBoard) {
-    return  null;
-    }
-    public Board alternateCards(Card card1, Card Card2) {
-
-    return null;
+    public int findNewPlacementCardOnBoard(Board currentBoard, Card currentCard, Card victoryCard) {
+   return 0;
     }
 
-    public void showVictoryCard() {
+
+    public void placeNewCard(Card newCard, Board currentBoard)
+    {
+
+        Coordinate currentCardsPosition = new Coordinate(-1, -1);
+
+        do
+            {
+                currentCardsPosition.setX((int)(Math.random() * 12));
+                currentCardsPosition.setY((int)(Math.random() * 12));
+            }while (!currentBoard.isPlaceAvailable(currentCardsPosition) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition) );
+
+            System.out.println(currentCardsPosition.getX());
+        System.out.println(currentCardsPosition.getY());
+
+            currentBoard.addCardOnBoard(newCard, currentCardsPosition);
     }
+    
 
     public Board shuffle(Board currentBoard) {
 
@@ -23,7 +35,64 @@ public class virtualEasy implements Strategy {
     public void accept(Visitor visitor) {
     }
 
-    public void changeVictoryCard(Card newCard) {
+    public Card changeVictoryCard(Card ancientCard, Board currentBoard) {
+    	return null;
     }
+	@Override
+	public void moveCard(Board currentBoard)
+    {
+
+        currentBoard.showBoard();
+
+        System.out.println("J'AI BOUGE UNE CARTE");
+
+        Card cardToMove;
+        Coordinate currentCardsPosition = new Coordinate(-1, -1);
+
+        do
+        {
+            currentCardsPosition.setX((int)(Math.random() * 12));
+            currentCardsPosition.setY((int)(Math.random() * 12));
+        }while (currentBoard.isPlaceAvailable(currentCardsPosition) );
+
+
+        Coordinate currentCard = currentBoard.findEqualsCoordinate(currentCardsPosition);
+
+        System.out.print("************" + currentCardsPosition.getX() + " " + currentCardsPosition.getY());
+
+        //récupération de la carte à bouger
+        cardToMove = currentBoard.currentCardsOnBoard.get(currentCard);
+        currentBoard.currentCardsOnBoard.remove(currentCard);
+
+        currentBoard.showBoard();
+
+
+        System.out.println("BITEEEEEE");
+
+        Coordinate currentCardsPosition2 = new Coordinate(-1, -1);
+
+        do
+        {
+            currentCardsPosition2.setX((int)((5)));
+            currentCardsPosition2.setY((int)(Math.random() * 12));
+        }while (!currentBoard.isPlaceAvailable(currentCardsPosition2) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition2) );
+
+
+        //Placement de la carte
+        currentBoard.addCardOnBoard(cardToMove, currentCardsPosition2);
+
+        currentBoard.showBoard();
+    }
+
+	@Override
+	public Board alternateCards(Board currentBoard) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void showVictoryCard(Card victoryCard) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

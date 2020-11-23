@@ -30,8 +30,6 @@ public class Main {
                 break;
             default : manager = new GameManagerClassic();
                 break;
-
-
         }
 
         manager.preGame();
