@@ -200,7 +200,8 @@ public class realPlayer implements Strategy {
     }
     
     public Card changeVictoryCard(Card ancientCard, Board currentBoard) {
-    	Scanner sc = new Scanner(System.in);
+
+    	
     	Card newCard;
     	
     	newCard = currentBoard.getCard();
