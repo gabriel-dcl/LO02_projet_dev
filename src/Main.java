@@ -30,8 +30,8 @@ public class Main {
                 break;
             case 2 : manager = new GameManagerDuel();
             	break;
-            case 3 : manager = new GameManagerChaos(); 
-				break;
+            //case 3 : manager = new GameManagerChaos(); 
+				//break;
             default : manager = new GameManagerClassic();
                 break;
         }

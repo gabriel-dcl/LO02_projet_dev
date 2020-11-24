@@ -6,9 +6,13 @@ public class BoardTriangular extends Board {
 
     
     public boolean isCoordinateCloseEnough(Coordinate coordinate) {
-        int verticalBoardSize = 0;
-        int horizontalBoardSize = 0;
+        int nbrCadrsOnThisColumn = 0;
+        int nbrCardsOnThisStage = 0;
         boolean adjencyCardExists = false;
+        int nbrCardsOnStageBellow = 0;
+        int nbrCardsOnStageAbove = 0;
+        int nbrCardsOnColumnAtLeft = 0;
+        int nbrCardsOnColumnAtRight = 0;
 
         if(currentCardsOnBoard.entrySet().isEmpty())
             return true;
@@ -28,13 +32,21 @@ public class BoardTriangular extends Board {
             }
 
             if(entry.getKey().getX()  == coordinate.getX() )
-                horizontalBoardSize++;
+            	nbrCardsOnThisStage++;
 
             if(entry.getKey().getY()  == coordinate.getY() )
-                verticalBoardSize++;
+            	nbrCadrsOnThisColumn++;
+            if(entry.getKey().getX()  == coordinate.getX()+1 )
+                nbrCardsOnColumnAtRight++;
+            if(entry.getKey().getX()  == coordinate.getX()-1 )
+                nbrCardsOnColumnAtLeft++;
+            if(entry.getKey().getY()  == coordinate.getY()+1 )
+                nbrCardsOnStageAbove++;
+            if(entry.getKey().getY()  == coordinate.getY()-1 )
+                nbrCardsOnStageBellow++;
         }
 
-        if(adjencyCardExists && horizontalBoardSize < 5 && verticalBoardSize < 5 && coordinate.getX()+coordinate.getY() <5)
+        if(adjencyCardExists && nbrCardsOnThisStage < 5 && nbrCadrsOnThisColumn < 5 &&  nbrCadrsOnThisColumn<nbrCardsOnColumnAtRight && nbrCadrsOnThisColumn>nbrCardsOnColumnAtLeft && nbrCardsOnThisStage<nbrCardsOnStageBellow && nbrCardsOnThisStage > nbrCardsOnStageAbove )
         {
             return true;
         }

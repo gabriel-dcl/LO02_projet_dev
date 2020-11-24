@@ -1,5 +1,5 @@
 public class GameManagerClassic  extends GameManager {
-    private int difficulty;
+   
 
 
     public void game() {
