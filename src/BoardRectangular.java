@@ -13,6 +13,10 @@ public class BoardRectangular extends Board {
         int verticalBoardSize = 0;
         int horizontalBoardSize = 0;
         boolean adjencyCardExists = false;
+        int floor= 20;
+        int ceiling= 0;
+        int leftWall= 50;
+        int rightWall = 0;
 
         if(currentCardsOnBoard.entrySet().isEmpty())
             return true;
@@ -31,16 +35,47 @@ public class BoardRectangular extends Board {
                 }
             }
 
-            if(entry.getKey().getX()  == coordinate.getX() )
-                horizontalBoardSize++;
+            if(entry.getKey().getX()  > rightWall )
+                rightWall = entry.getKey().getX();
+            if(entry.getKey().getX()  < leftWall )
+                leftWall = entry.getKey().getX();
 
-            if(entry.getKey().getY()  == coordinate.getY() )
-                verticalBoardSize++;
+            if(entry.getKey().getY()  > ceiling)
+                ceiling = entry.getKey().getY() ;
+            if(entry.getKey().getY()  < floor)
+                floor = entry.getKey().getY() ;
         }
+        
+        if(coordinate.getX()  > rightWall )
+            rightWall = coordinate.getX();
+        if(coordinate.getX()  < leftWall )
+            leftWall = coordinate.getX();
 
-        if(adjencyCardExists && horizontalBoardSize < 5 && verticalBoardSize < 3)
+        if(coordinate.getY()  > ceiling)
+            ceiling = coordinate.getY();
+        if(coordinate.getY()  < floor)
+            floor = coordinate.getY() ;
+        
+        
+        verticalBoardSize = Math.abs(ceiling - floor);
+        horizontalBoardSize = Math.abs(rightWall - leftWall);
+
+
+        if(adjencyCardExists)
         {
-            return true;
+            if(horizontalBoardSize < 5)
+            {
+                if(verticalBoardSize < 3)
+                    return true;
+            }
+
+            System.out.println("Next try");
+
+            if(verticalBoardSize < 5)
+            {
+                if(horizontalBoardSize < 3)
+                    return true;
+            }
         }
 
         return false;

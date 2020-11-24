@@ -11,6 +11,15 @@ import java.util.stream.IntStream;
 
 public abstract class Board {
     protected GameManager currentGameManager;
+
+    public HashMap<Coordinate, Card> getCurrentCardsOnBoard() {
+        return currentCardsOnBoard;
+    }
+
+    public void setCurrentCardsOnBoard(HashMap<Coordinate, Card> currentCardsOnBoard) {
+        this.currentCardsOnBoard = currentCardsOnBoard;
+    }
+
     protected HashMap<Coordinate, Card> currentCardsOnBoard;
     protected Stack<Card> remainingCards;
     protected Card[] allPossibleCard;
@@ -27,6 +36,7 @@ public abstract class Board {
     public boolean isCoordinateCloseEnough(Coordinate coordinate) {
       return false;
     }
+
     public boolean isPlaceAvailable(Coordinate coordinate) {
         for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet()) {
             if (entry.getKey().equals(coordinate))
@@ -71,6 +81,7 @@ public abstract class Board {
 
 
     public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 
     public void showBoard()

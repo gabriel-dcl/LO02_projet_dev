@@ -5,12 +5,14 @@ public abstract class GameManager {
     protected Player players[];
     protected Scanner sc;
     protected Board currentBoard;
+    protected Visitor visitor;
 
     public GameManager()
     {
         players = new Player[3];
         sc = new Scanner(System.in);
         currentBoard = new BoardRectangular();
+        visitor = new Visitor();
     }
 
     public void preGame() {
