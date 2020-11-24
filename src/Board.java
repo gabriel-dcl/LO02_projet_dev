@@ -27,6 +27,7 @@ public abstract class Board {
     public boolean isCoordinateCloseEnough(Coordinate coordinate) {
       return false;
     }
+
     public boolean isPlaceAvailable(Coordinate coordinate) {
         for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet()) {
             if (entry.getKey().equals(coordinate))
