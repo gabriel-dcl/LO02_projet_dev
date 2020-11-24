@@ -24,7 +24,7 @@ public class realPlayer implements Strategy {
 
         	currentBoard.currentCardsOnBoard.remove(currentCard);
 
-			currentBoard.showBoard();
+
 
 			 position = askPlayerCoordinates(currentBoard, true);
         	

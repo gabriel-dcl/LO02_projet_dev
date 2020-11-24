@@ -10,6 +10,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         boolean isPlaying = true;
 
+
         System.out.println("=============================================================== ");
         System.out.println("======================= SHAPE UP ! ============================ ");
         System.out.println("=============================================================== ");

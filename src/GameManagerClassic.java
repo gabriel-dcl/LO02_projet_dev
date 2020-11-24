@@ -13,13 +13,20 @@ public class GameManagerClassic  extends GameManager {
 				this.players[i].getStrategy().showVictoryCard(this.players[i].getVictoryCard());
 				if (!isFirstTime)
 				{
-					this.players[i].getStrategy().moveCard(this.currentBoard);
+				//	this.players[i].getStrategy().moveCard(this.currentBoard);
 				}
 				this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
+				currentBoard.showBoard();
 				isFirstTime = false;
+
+
 			}
 		}
-		currentBoard.showBoard();
+
+
+
+    	visitor.getTopLeftCorner(currentBoard);
+
     }
     public void getInstance() {
     } 

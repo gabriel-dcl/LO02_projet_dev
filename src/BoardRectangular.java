@@ -13,9 +13,9 @@ public class BoardRectangular extends Board {
         int verticalBoardSize = 0;
         int horizontalBoardSize = 0;
         boolean adjencyCardExists = false;
-        int floor= 0;
+        int floor= 20;
         int ceiling= 0;
-        int leftWall= 0;
+        int leftWall= 50;
         int rightWall = 0;
 
         if(currentCardsOnBoard.entrySet().isEmpty())
@@ -57,12 +57,25 @@ public class BoardRectangular extends Board {
             floor = coordinate.getY() ;
         
         
-        verticalBoardSize = ceiling-floor;
-        horizontalBoardSize = rightWall - leftWall;
+        verticalBoardSize = Math.abs(ceiling - floor);
+        horizontalBoardSize = Math.abs(rightWall - leftWall);
 
-        if(adjencyCardExists && horizontalBoardSize < 5 && verticalBoardSize < 3)
+
+        if(adjencyCardExists)
         {
-            return true;
+            if(horizontalBoardSize < 5)
+            {
+                if(verticalBoardSize < 3)
+                    return true;
+            }
+
+            System.out.println("Next try");
+
+            if(verticalBoardSize < 5)
+            {
+                if(horizontalBoardSize < 3)
+                    return true;
+            }
         }
 
         return false;
