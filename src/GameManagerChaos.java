@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public abstract class  GameManagerChaos extends GameManager {
-
+private int difficulty;
 	
 	
 	public void game() {
