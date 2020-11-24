@@ -18,15 +18,10 @@ public class GameManagerClassic  extends GameManager {
 				this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
 				currentBoard.showBoard();
 				isFirstTime = false;
-
-
 			}
 		}
 
-
-
-    	visitor.getTopLeftCorner(currentBoard);
-
+    	currentBoard.accept(visitor);
     }
     public void getInstance() {
     } 

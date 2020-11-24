@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 
 public abstract class Board {
     protected GameManager currentGameManager;
+    protected Visitor visitor;
 
     public HashMap<Coordinate, Card> getCurrentCardsOnBoard() {
         return currentCardsOnBoard;
@@ -27,6 +28,7 @@ public abstract class Board {
 
     public Board()
     {
+        visitor = new Visitor();
         remainingCards = new Stack<Card>();
         generateRandomStack();
         currentCardsOnBoard = new HashMap<Coordinate, Card>();
@@ -67,7 +69,10 @@ public abstract class Board {
         return allPossibleCard[random_index];
     }
 
-
+    public Card getCardByCoordinate(Coordinate coordinate)
+    {
+       return currentCardsOnBoard.get(this.findEqualsCoordinate(coordinate));
+    }
 
     public Card getCard()
     {
