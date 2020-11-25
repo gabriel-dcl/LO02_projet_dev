@@ -50,22 +50,42 @@ public class Visitor {
             boolean isLookingByLine = true;
             while(isLookingByLine)
             {
+                boolean first3Colors = true;
+                boolean first3State = true;
+
                 if(lastCard != null)
                 {
-                    if(lastCard.getCard_state() == currentBoard.getCardByCoordinate(currentCoordinate).getCard_state() )
+                    if(lastCard.getCard_form() == currentBoard.getCardByCoordinate(currentCoordinate).getCard_form() )
                     {
-                        PointsByState.put(lastCard.getCard_state(), PointsByState.get(lastCard.getCard_state()) +1);
+                        PointsByForm.put(lastCard.getCard_form(), PointsByForm.get(lastCard.getCard_form()) +1);
                     }
                     if(beforeLast != null)
                     {
-                        if(lastCard.getCard_color() == currentBoard.getCardByCoordinate(currentCoordinate).getCard_color() )
+                        if( beforeLast.getCard_color() == currentBoard.getCardByCoordinate(currentCoordinate).getCard_color() &&
+                                lastCard.getCard_color() == currentBoard.getCardByCoordinate(currentCoordinate).getCard_color() )
                         {
-                            PointsByColor.put(lastCard.getCard_color(), PointsByColor.get(lastCard.getCard_color()) +1);
+                            if(first3Colors)
+                            {
+                                PointsByColor.put(lastCard.getCard_color(), PointsByColor.get(lastCard.getCard_color()) +4);
+                                first3Colors = false;
+                            }else
+                            {
+
+                                PointsByColor.put(lastCard.getCard_color(), PointsByColor.get(lastCard.getCard_color()) +1);
+                            }
                         }
 
-                        if(lastCard.getCard_form() == currentBoard.getCardByCoordinate(currentCoordinate).getCard_form() )
+                        if(beforeLast.getCard_state() == currentBoard.getCardByCoordinate(currentCoordinate).getCard_state() &&
+                                lastCard.getCard_state() == currentBoard.getCardByCoordinate(currentCoordinate).getCard_state() )
                         {
-                            PointsByForm.put(lastCard.getCard_form(), PointsByForm.get(lastCard.getCard_form()) +1);
+                            if(first3State)
+                            {
+                                PointsByState.put(lastCard.getCard_state(), PointsByState.get(lastCard.getCard_state()) +3);
+                            } else
+                            {
+                                PointsByState.put(lastCard.getCard_state(), PointsByState.get(lastCard.getCard_state()) +1);
+                            }
+
                         }
                     }
                 }
@@ -77,6 +97,7 @@ public class Visitor {
                     beforeLast = lastCard;
                     lastCard = currentBoard.getCardByCoordinate(currentCoordinate);
                     currentCoordinate = potentielNewPoint;
+
                 } else
                 {
                     isLookingByLine = false;
@@ -114,7 +135,7 @@ public class Visitor {
         Coordinate topLeftCoordinate = new Coordinate(50, 50);
         for (Map.Entry<Coordinate, Card> entry : board.getCurrentCardsOnBoard().entrySet())
         {
-           if( entry.getKey().getY() < topLeftCoordinate.getY() && entry.getKey().getX() < topLeftCoordinate.getX() )
+           if( entry.getKey().getY() <= topLeftCoordinate.getY() && entry.getKey().getX() <= topLeftCoordinate.getX() )
             {
                 topLeftCoordinate = entry.getKey();
             }

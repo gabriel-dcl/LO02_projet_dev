@@ -16,11 +16,34 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
-                ", card_state=" + card_state +
-                ", card_color=" + card_color +
-                ", card_form=" + card_form +
-                '}';
+
+        char stateLetter = '.';
+        char colorLetter = '.';
+        char formLetter = '.';
+
+        switch(card_state)
+        {
+            case EMPTY: stateLetter = 'E'; break;
+            case FILL: stateLetter = 'F'; break;
+        }
+
+        switch(card_color)
+        {
+            case RED: colorLetter = 'R'; break;
+            case GREEN: colorLetter = 'G'; break;
+            case BLUE: colorLetter = 'B'; break;
+        }
+
+        switch(card_form)
+        {
+            case RECTANGULAR: formLetter = 'R'; break;
+            case TRIANGULAR: formLetter= 'T'; break;
+            case CIRCLE: formLetter = 'C'; break;
+        }
+
+
+        return " " + stateLetter + "" + colorLetter + "" + formLetter + " ";
+
     }
 
     public int getX_pos() {

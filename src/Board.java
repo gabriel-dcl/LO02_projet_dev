@@ -101,12 +101,13 @@ public abstract class Board {
                 {
                     if (entry.getKey().equals( new Coordinate(i, j)) )
                     {
-                        System.out.print("A");
+                        Card tempCard = this.getCardByCoordinate(entry.getKey());
+                        System.out.print(tempCard.toString());
                         hasFound = true;
                     }
                 }
                   if(!hasFound)
-                      System.out.print("*");
+                      System.out.print("  *  ");
 
             }
             System.out.println();
