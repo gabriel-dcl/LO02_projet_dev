@@ -95,6 +95,7 @@ public class Visitor {
                 }
 
                 Coordinate potentielNewPoint = new Coordinate( currentCoordinate.getX() + 1, currentCoordinate.getY());
+                Coordinate potentielNewPoint2 = new Coordinate( currentCoordinate.getX() + 2, currentCoordinate.getY());
 
                 if( ! currentBoard.isPlaceAvailable(potentielNewPoint ) )
                 {
@@ -102,24 +103,45 @@ public class Visitor {
                     lastCard = currentBoard.getCardByCoordinate(currentCoordinate);
                     currentCoordinate = potentielNewPoint;
 
-                } else
+                } else if( ! currentBoard.isPlaceAvailable(potentielNewPoint2 ) )
+                {
+                    beforeLast = null;
+                    lastCard = null;
+                    currentCoordinate = potentielNewPoint2;
+                }else
                 {
                     isLookingByLine = false;
                 }
             }
 
             Coordinate potentielNewPoint = new Coordinate( topLeftCorner.getX(), currentCoordinate.getY() + 1);
+            Coordinate potentielNewPoint2 = new Coordinate( topLeftCorner.getX(), currentCoordinate.getY() + 2);
             if( ! currentBoard.isPlaceAvailable(potentielNewPoint ) )
             {
                 lastCard = null;
                 beforeLast = null;
                 currentCoordinate = potentielNewPoint;
                 isLookingByLine = true;
-            } else
+            } else if( ! currentBoard.isPlaceAvailable(potentielNewPoint2 ) )
+            {
+                lastCard = null;
+                beforeLast = null;
+                currentCoordinate = potentielNewPoint2;
+                isLookingByLine = true;
+            }else
             {
                 isLookingByColumn = false;
             }
         }
+
+        System.out.println(PointsByForm.get(Form.TRIANGULAR));
+        System.out.println(PointsByForm.get(Form.RECTANGULAR));
+        System.out.println(PointsByForm.get(Form.CIRCLE));
+        System.out.println(PointsByColor.get(Color.BLUE));
+        System.out.println(PointsByColor.get(Color.GREEN));
+        System.out.println(PointsByColor.get(Color.RED));
+        System.out.println(PointsByState.get(State.EMPTY));
+        System.out.println(PointsByState.get(State.FILL));
 
         // LOOK BY LINE
 
@@ -179,30 +201,52 @@ public class Visitor {
                 }
 
                 Coordinate potentielNewPoint = new Coordinate( currentCoordinate.getX(), currentCoordinate.getY() + 1);
+                Coordinate potentielNewPoint2 = new Coordinate( currentCoordinate.getX(), currentCoordinate.getY() + 2);
 
                 if( ! currentBoard.isPlaceAvailable(potentielNewPoint ) )
                 {
                     beforeLast = lastCard;
                     lastCard = currentBoard.getCardByCoordinate(currentCoordinate);
                     currentCoordinate = potentielNewPoint;
-                } else
+                } else if(! currentBoard.isPlaceAvailable(potentielNewPoint2 ))
+                {
+                    beforeLast = null;
+                    lastCard = null;
+                    currentCoordinate = potentielNewPoint2;
+                }
                 {
                     isLookingByLine = false;
                 }
             }
 
             Coordinate potentielNewPoint = new Coordinate(currentCoordinate.getX() + 1,  topLeftCorner.getY() );
+            Coordinate potentielNewPoint2 = new Coordinate(currentCoordinate.getX() + 2,  topLeftCorner.getY() );
             if( ! currentBoard.isPlaceAvailable(potentielNewPoint ) )
             {
                 lastCard = null;
                 beforeLast = null;
                 currentCoordinate = potentielNewPoint;
                 isLookingByLine = true;
-            } else
+            } else if( ! currentBoard.isPlaceAvailable(potentielNewPoint2 ) )
+            {
+                lastCard = null;
+                beforeLast = null;
+                currentCoordinate = potentielNewPoint2;
+                isLookingByLine = true;
+            }else
             {
                 isLookingByColumn = false;
             }
         }
+
+        System.out.println(PointsByForm.get(Form.TRIANGULAR));
+        System.out.println(PointsByForm.get(Form.RECTANGULAR));
+        System.out.println(PointsByForm.get(Form.CIRCLE));
+        System.out.println(PointsByColor.get(Color.BLUE));
+        System.out.println(PointsByColor.get(Color.GREEN));
+        System.out.println(PointsByColor.get(Color.RED));
+        System.out.println(PointsByState.get(State.EMPTY));
+        System.out.println(PointsByState.get(State.FILL));
 
         return null;
     }

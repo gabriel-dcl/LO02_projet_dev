@@ -69,8 +69,6 @@ public class BoardRectangular extends Board {
                     return true;
             }
 
-            System.out.println("Next try");
-
             if(verticalBoardSize < 5)
             {
                 if(horizontalBoardSize < 3)

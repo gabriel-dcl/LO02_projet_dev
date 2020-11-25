@@ -20,7 +20,6 @@ public class virtualEasy implements Strategy {
                 currentCardsPosition.setY((int)(Math.random() * 12));
             }while (!currentBoard.isPlaceAvailable(currentCardsPosition) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition) );
 
-            System.out.println(" ----------------- ");
 
             currentBoard.addCardOnBoard(newCard, currentCardsPosition);
     }
@@ -40,9 +39,6 @@ public class virtualEasy implements Strategy {
 	@Override
 	public void moveCard(Board currentBoard)
     {
-        currentBoard.showBoard();
-
-        System.out.println("J'AI BOUGE UNE CARTE");
 
         Card cardToMove;
         Coordinate currentCardsPosition = new Coordinate(-1, -1);
@@ -55,17 +51,11 @@ public class virtualEasy implements Strategy {
 
 
         Coordinate currentCard = currentBoard.findEqualsCoordinate(currentCardsPosition);
-
-        System.out.print("************" + currentCardsPosition.getX() + " " + currentCardsPosition.getY());
-
-        //récupération de la carte à bouger
+     //récupération de la carte à bouger
         cardToMove = currentBoard.currentCardsOnBoard.get(currentCard);
         currentBoard.currentCardsOnBoard.remove(currentCard);
 
 
-        currentBoard.showBoard();
-
-        System.out.println("\n \n \n \n");
 
         Coordinate currentCardsPosition2 = new Coordinate(-1, -1);
 
@@ -77,14 +67,9 @@ public class virtualEasy implements Strategy {
         }while (!currentBoard.isPlaceAvailable(currentCardsPosition2) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition2) );
 
 
-        System.out.println("BITE");
-
-
         //Placement de la carte
         currentBoard.addCardOnBoard(cardToMove, currentCardsPosition2);
 
-        currentBoard.showBoard();
-        System.out.println("\n \n \n \n");
     }
 
 	@Override
