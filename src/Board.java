@@ -3,10 +3,7 @@ import enums.Form;
 import enums.State;
 
 import java.security.cert.CertificateParsingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public abstract class Board {
@@ -63,10 +60,12 @@ public abstract class Board {
     public abstract boolean addCardOnBoard(Card card, Coordinate coordinate);
 
 
-    public Card getNewRandomCard()      //Usefull for VictoryCard Ge    neration
+    public Card getNewRandomCard()      //Usefull for VictoryCard Generation
     {
-        int random_index =  (int) (Math.random() * 17);
-        return allPossibleCard[random_index];
+     //   int random_index =  (int) (Math.random() * 17);
+       // return allPossibleCard[random_index];
+
+    return remainingCards.pop();
     }
 
     public Card getCardByCoordinate(Coordinate coordinate)
@@ -143,7 +142,6 @@ public abstract class Board {
      */
     private void generateRandomStack()
     {
-        allPossibleCard = new Card[18];
         int[] values_done = new int[20];
         int i = 0;
 
@@ -153,22 +151,13 @@ public abstract class Board {
             {
                 for(Form form_temp : Form.values())
                 {
-                    allPossibleCard[i] = new Card(temp_state, color_temp, form_temp);
+                    remainingCards.add(new Card(temp_state, color_temp, form_temp));
                     i++;
                 }
             }
         }
 
-        for (int j = 0; j < 17; j++)
-        {
-            int current_index =  (int) (Math.random() * 17);
-
-            while( isPresentValueInArray(values_done, current_index) )
-                current_index =  (int) (Math.random() * 17);
-
-            remainingCards.add(allPossibleCard[current_index]);
-            values_done[i] = current_index;
-        }
+        Collections.shuffle(remainingCards);
     }
 
     /**
