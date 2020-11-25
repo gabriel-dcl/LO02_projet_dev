@@ -17,6 +17,11 @@ public class Visitor {
         PointsByForm = new HashMap<Form, Integer>();
         PointsByState = new HashMap<State, Integer>();
 
+        this.setValueTo0();
+    }
+
+    private void setValueTo0()
+    {
         for(State tempState : State.values())
         {
             PointsByState.put(tempState, 0);
@@ -29,12 +34,12 @@ public class Visitor {
         {
             PointsByForm.put(tempForm, 0);
         }
-
     }
 
-
-    public String visit(Board currentBoard)
+    public void visit(Board currentBoard)
     {
+        this.setValueTo0();
+
         // LOOK BY LINE
 
         Coordinate topLeftCorner = this.getTopLeftCorner(currentBoard);
@@ -134,14 +139,6 @@ public class Visitor {
             }
         }
 
-        System.out.println(PointsByForm.get(Form.TRIANGULAR));
-        System.out.println(PointsByForm.get(Form.RECTANGULAR));
-        System.out.println(PointsByForm.get(Form.CIRCLE));
-        System.out.println(PointsByColor.get(Color.BLUE));
-        System.out.println(PointsByColor.get(Color.GREEN));
-        System.out.println(PointsByColor.get(Color.RED));
-        System.out.println(PointsByState.get(State.EMPTY));
-        System.out.println(PointsByState.get(State.FILL));
 
         // LOOK BY LINE
 
@@ -239,16 +236,6 @@ public class Visitor {
             }
         }
 
-        System.out.println(PointsByForm.get(Form.TRIANGULAR));
-        System.out.println(PointsByForm.get(Form.RECTANGULAR));
-        System.out.println(PointsByForm.get(Form.CIRCLE));
-        System.out.println(PointsByColor.get(Color.BLUE));
-        System.out.println(PointsByColor.get(Color.GREEN));
-        System.out.println(PointsByColor.get(Color.RED));
-        System.out.println(PointsByState.get(State.EMPTY));
-        System.out.println(PointsByState.get(State.FILL));
-
-        return null;
     }
 
 
@@ -270,8 +257,41 @@ public class Visitor {
     public void exploreBoard(Board board) {
     }
 
-    public int getPointsTotal() {
-    return 2;
+    public void over()
+    {
+        System.out.println(PointsByForm.get(Form.TRIANGULAR));
+        System.out.println(PointsByForm.get(Form.RECTANGULAR));
+        System.out.println(PointsByForm.get(Form.CIRCLE));
+        System.out.println(PointsByColor.get(Color.BLUE));
+        System.out.println(PointsByColor.get(Color.GREEN));
+        System.out.println(PointsByColor.get(Color.RED));
+        System.out.println(PointsByState.get(State.EMPTY));
+        System.out.println(PointsByState.get(State.FILL));
+    }
+
+    public int getPointsTotalRegardingVictoryCard(Card card)
+    {
+        return PointsByState.get(card.getCard_state()) + PointsByColor.get(card.getCard_color()) + PointsByForm.get(card.getCard_form());
+    }
+
+    public int getPointsTotal()
+    {
+        int points_max = 0;
+
+        for(State tempState : State.values())
+        {
+           points_max =  PointsByState.get(tempState);
+        }
+        for(Color tempColor : Color.values())
+        {
+            points_max =  PointsByColor.get(tempColor);
+        }
+        for(Form tempForm : Form.values())
+        {
+            points_max =  PointsByForm.get(tempForm);
+        }
+
+        return points_max;
     }
 
     private void singleton() {

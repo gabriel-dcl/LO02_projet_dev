@@ -1,40 +1,59 @@
 public class virtualHard implements Strategy {
+	Visitor visitor;
+	Card victoryCard;
 
+	public virtualHard(Visitor visitor, Card victoryCard)
+	{
+		this.visitor = visitor;
+		this.victoryCard = victoryCard;
+	}
 
 	public void placeNewCard(Card newCard, Board currentBoard)
 	{
 		Coordinate bestPosition = new Coordinate(-1, 1);
 		int bestValue = 0;
-
-/*
 		Coordinate currentCardsPosition = new Coordinate(-1, -1);
 
-
-			do
-			{
-				currentCardsPosition.setX((int)(Math.random() * 12));
-				currentCardsPosition.setY((int)(Math.random() * 12));
-
-
-			}while (!currentBoard.isPlaceAvailable(currentCardsPosition) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition) );
-
-
-
-			System.out.println(currentCardsPosition.getX());
-			System.out.println(currentCardsPosition.getY());
+		if(currentBoard.getCurrentCardsOnBoard().isEmpty())
+		{
+			currentCardsPosition.setX((int)(Math.random() * 12));
+			currentCardsPosition.setY((int)(Math.random() * 12));
 
 			currentBoard.addCardOnBoard(newCard, currentCardsPosition);
-
-			Coordinate currentCard = currentBoard.findEqualsCoordinate(currentCardsPosition);
-
-			System.out.print("************" + currentCardsPosition.getX() + " " + currentCardsPosition.getY());
+			return;
+		}
 
 
-			//récupération de la carte à bouger
-		//	cardToMove = currentBoard.currentCardsOnBoard.get(currentCard);
-		//	currentBoard.currentCardsOnBoard.remove(currentCard);
-*/
 
+		for (int i = 0; i < 12; i++)
+		{
+			for (int j = 0; j < 12; j++)
+			{
+				currentCardsPosition.setX(i);
+				currentCardsPosition.setY(j);
+
+				if(currentBoard.isPlaceAvailable(currentCardsPosition) && currentBoard.isCoordinateCloseEnough(currentCardsPosition))
+				{
+					int potentialMaxPoints = 0;
+					currentBoard.addCardOnBoard(newCard, currentCardsPosition);
+					currentBoard.accept(visitor);
+					potentialMaxPoints = visitor.getPointsTotal();
+					currentBoard.currentCardsOnBoard.remove(currentCardsPosition);
+
+					if(potentialMaxPoints >= bestValue)
+					{
+						System.out.println("ON SORT");
+						bestPosition.setX(currentCardsPosition.getX());
+						bestPosition.setY(currentCardsPosition.getY());
+
+						bestValue = potentialMaxPoints;
+					}
+				}
+			}
+
+		}
+
+		currentBoard.addCardOnBoard(newCard, bestPosition);
 	}
     
     

@@ -40,7 +40,7 @@ public abstract class GameManager {
             players[i] = new Player(currentBoard.getNewRandomCard());
 
         for (int i = compteur_joueur; i < 3; i++)
-            players[i] = new Player(0, currentBoard.getNewRandomCard());
+            players[i] = new Player(difficulty, currentBoard.getNewRandomCard(), visitor);
     }
 
 

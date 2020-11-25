@@ -20,14 +20,15 @@ public class Player{
     }
 
 
-    public Player(int difficulty, Card victoryCard)
+    public Player(int difficulty, Card victoryCard, Visitor visitor)
     {
         if(difficulty == 0)
-            strategy = new virtualEasy();
+            strategy = new virtualEasy(visitor);
         else
-            strategy = new virtualHard();
+            strategy = new virtualHard(visitor, victoryCard);
 
         this.victoryCard = victoryCard;
+        this.visitor = visitor;
     }
     
     

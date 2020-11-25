@@ -25,6 +25,7 @@ public class GameManagerClassic  extends GameManager {
 		}
 
     	currentBoard.accept(visitor);
+    	visitor.over();
     }
     public void getInstance() {
     } 

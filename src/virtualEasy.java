@@ -1,5 +1,7 @@
 public class virtualEasy implements Strategy {
- 
+
+    Visitor visitor;
+
     public int findBestPlacementNewCard(Board currentBoard, Card currentCard, Card victoryCard) {
 
     return 0;
@@ -8,6 +10,10 @@ public class virtualEasy implements Strategy {
    return 0;
     }
 
+    public virtualEasy(Visitor visitor)
+    {
+        this.visitor = visitor;
+    }
 
     public void placeNewCard(Card newCard, Board currentBoard)
     {
@@ -21,7 +27,7 @@ public class virtualEasy implements Strategy {
             }while (!currentBoard.isPlaceAvailable(currentCardsPosition) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition) );
 
 
-            currentBoard.addCardOnBoard(newCard, currentCardsPosition);
+         currentBoard.addCardOnBoard(newCard, currentCardsPosition);
     }
     
 
