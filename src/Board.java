@@ -10,7 +10,7 @@ public abstract class Board {
     protected GameManager currentGameManager;
     protected Visitor visitor;
 
-    public HashMap<Coordinate, Card> getCurrentCardsOnBoard() {
+    public Map<Coordinate, Card> getCurrentCardsOnBoard() {
         return currentCardsOnBoard;
     }
 
@@ -83,6 +83,10 @@ public abstract class Board {
 
     }
 
+    public void forceAddCardOnBard(Card card, Coordinate coordinate)
+    {
+        currentCardsOnBoard.put(coordinate, card);
+    }
 
     public void accept(Visitor visitor) {
         visitor.visit(this);

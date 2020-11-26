@@ -1,7 +1,16 @@
-import java.util.Collections;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Scanner;
+
 public class realPlayer implements Strategy {
+
+	boolean hasShuffled;
+	boolean hasChangedVictoryCard;
+
+	public  realPlayer()
+	{
+		hasShuffled = false;
+		hasChangedVictoryCard = false;
+	}
 
     public void moveCard(Board currentBoard)
 	{
@@ -40,13 +49,11 @@ public class realPlayer implements Strategy {
 	{
     	Scanner sc = new Scanner(System.in);
     	//Affichage de la nouvelle carte
-    	System.out.println("Voici la carte a poser : /n" + newCard.toString());
+    	System.out.println("Voici la carte a poser : \n " + newCard.toString());
 
 		Coordinate position = askPlayerCoordinates(currentBoard, true);
 		currentBoard.addCardOnBoard(newCard, position);
     }
-
-
 
     public Coordinate askPlayerCoordinates(Board currentBoard, boolean searchForFreePlace)
 	{
@@ -88,16 +95,13 @@ public class realPlayer implements Strategy {
 
 	}
 
-    public Board alternateCards(Board currentBoard) {
+    public void alternateCards(Board currentBoard) {
     	Scanner sc = new Scanner(System.in);
     	//Demande de réaliser cette action
-    	
-    	
-    	
+
     		//Affichage du board pour savoir où placer la carte
         	currentBoard.showBoard();
-        	
-        	
+
         	boolean exists = true;
         	Coordinate position1 = new Coordinate(-1, -1);
         	Coordinate position2 = new Coordinate(-1, 1);
@@ -134,8 +138,6 @@ public class realPlayer implements Strategy {
         	temp = currentBoard.currentCardsOnBoard.get(position1);
         	currentBoard.currentCardsOnBoard.put(position1, currentBoard.currentCardsOnBoard.get(position2));
         	currentBoard.currentCardsOnBoard.put(position2, temp);
-
-    return currentBoard;
     }
     
     public void showVictoryCard(Card victoryCard) {
@@ -143,34 +145,72 @@ public class realPlayer implements Strategy {
     	System.out.println(victoryCard.toString());
     }
     
-    public Board shuffle(Board currentBoard) {
-    	for (Coordinate currentCardsPosition : currentBoard.currentCardsOnBoard.keySet()) {
-    		while ( ! currentBoard.isPlaceAvailable(currentCardsPosition) ) {
-    			currentCardsPosition.setX((int)(Math.random() * 12));
-    			currentCardsPosition.setY((int)(Math.random() * 12));
-    		}
-    	}
+    public void shuffle(Board currentBoard)
+	{
+		if(hasShuffled)
+			return;
 
-    return currentBoard;
-    }
+
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("!!! Voulez-vous shuffle ? : 1|0");
+		int choix = sc.nextInt();
+
+		if(choix == 1)
+		{
+			Stack<Card> cards = new Stack<Card>();
+
+
+			Iterator entries = currentBoard.currentCardsOnBoard.entrySet().iterator();
+			while (entries.hasNext())
+			{
+				Entry thisEntry = (Entry) entries.next();
+
+				Coordinate key = (Coordinate) thisEntry.getKey();
+				Object value = thisEntry.getValue();
+
+				cards.add(currentBoard.getCardByCoordinate(key));
+				entries.remove();
+			}
+
+
+			for (Card currentCard: cards )
+			{
+				Coordinate currentCardsPosition = new Coordinate(-1, -1);
+				do {
+					currentCardsPosition.setX((int)(Math.random() * 12));
+					currentCardsPosition.setY((int)(Math.random() * 12));
+				}while (!currentBoard.isPlaceAvailable(currentCardsPosition) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition) );
+
+				currentBoard.addCardOnBoard(currentCard, currentCardsPosition);
+			}
+
+			currentBoard.showBoard();
+		} else
+			return;
+
+	}
     
     public void accept(Visitor visitor) {
     }
     
-    public Card changeVictoryCard(Card ancientCard, Board currentBoard) {
+    public boolean changeVictoryCard(Board currentBoard) {
 
-    	
-    	Card newCard;
-    	
-    	newCard = currentBoard.getCard();
-    	currentBoard.remainingCards.add(ancientCard);
-    	
-    	
-    	
-    	return newCard;
-    
-    	
-    		
-    
+		if(hasChangedVictoryCard)
+			return true;
+
+	Scanner sc = new Scanner(System.in);
+
+	System.out.println("Voulez-vous Changer de Victory Card ? 1 | 0 ");
+	int choix = sc.nextInt();
+
+	if(choix == 1)
+	{
+		hasChangedVictoryCard = true;
+		return true;
+	}
+
+
+		return false;
     }
 }

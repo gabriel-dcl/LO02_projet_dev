@@ -1,13 +1,21 @@
 import java.awt.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Stack;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class virtualHard implements Strategy {
 	Visitor visitor;
 	Card victoryCard;
+	boolean hasShuffled;
+	boolean hasChangedVictoryCard;
 
 	public virtualHard(Visitor visitor, Card victoryCard)
 	{
 		this.visitor = visitor;
 		this.victoryCard = victoryCard;
+		hasShuffled = false;
+		hasChangedVictoryCard = false;
 	}
 
 	public void placeNewCard(Card newCard, Board currentBoard) {
@@ -36,7 +44,6 @@ public class virtualHard implements Strategy {
 						currentBoard.currentCardsOnBoard.remove(currentCardsPosition);
 
 						if (potentialMaxPoints >= bestValue) {
-							System.out.println("ON SORT");
 							bestPosition.setX(currentCardsPosition.getX());
 							bestPosition.setY(currentCardsPosition.getY());
 
@@ -50,16 +57,78 @@ public class virtualHard implements Strategy {
 			currentBoard.addCardOnBoard(newCard, bestPosition);
 
 	}
-    
-    public Board shuffle(Board currentBoard) {
 
-    return null;
-    }
+	public void shuffle(Board currentBoard) {
+		if(hasShuffled)
+			return;
+
+		if(currentBoard.currentCardsOnBoard.size() < 7)
+			return;
+
+		if(this.visitor.getPointsTotalRegardingVictoryCard(victoryCard) > 8)
+			return;
+
+		int randomNum = ThreadLocalRandom.current().nextInt(0, 100);
+		if(randomNum > 60)
+		{
+			Stack<Card> cards = new Stack<Card>();
+
+
+			Iterator entries = currentBoard.currentCardsOnBoard.entrySet().iterator();
+			while (entries.hasNext())
+			{
+				Map.Entry thisEntry = (Map.Entry) entries.next();
+
+				Coordinate key = (Coordinate) thisEntry.getKey();
+				Object value = thisEntry.getValue();
+
+				cards.add(currentBoard.getCardByCoordinate(key));
+				entries.remove();
+			}
+
+
+			for (Card currentCard: cards )
+			{
+				Coordinate currentCardsPosition = new Coordinate(-1, -1);
+				do {
+					currentCardsPosition.setX((int)(Math.random() * 12));
+					currentCardsPosition.setY((int)(Math.random() * 12));
+				}while (!currentBoard.isPlaceAvailable(currentCardsPosition) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition) );
+
+				currentBoard.addCardOnBoard(currentCard, currentCardsPosition);
+			}
+
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SHUFFLE");
+			hasShuffled = true;
+		}
+
+	}
+
+
     public void accept(Visitor visitor) {
     }
-    public Card changeVictoryCard(Card ancientCard, Board currentBoard) {
-    	return null;
-    }
+
+	public boolean changeVictoryCard(Board currentBoard)
+	{
+
+		if(currentBoard.currentCardsOnBoard.size() < 7)
+			return false;
+
+		if(hasChangedVictoryCard)
+			return false;
+
+
+		int currentMaxValue = this.visitor.getPointsTotalRegardingVictoryCard(victoryCard);
+		int potentialMaxValue = this.visitor.getPointsTotalRegardingVictoryCard(currentBoard.remainingCards.peek());
+
+		if(potentialMaxValue < currentMaxValue)
+		{
+			hasChangedVictoryCard = true;
+			return true;
+		}
+
+		return false;
+	}
 
 
 	@Override
@@ -128,31 +197,60 @@ public class virtualHard implements Strategy {
 		if(bestValue > currentMaxValue)
 		{
 
-			System.out.println("On change");
-
 			Coordinate toMove = currentBoard.findEqualsCoordinate(positionToMove);
-
-			System.out.println(positionToMove.getX() + " " + positionToMove.getY());
-			System.out.println("VERS : " + bestPosition.getX() + " " + bestPosition.getY());
-
-
 			Card cardToMove = currentBoard.getCardByCoordinate(toMove);
-
-			System.out.println(cardToMove.toString());
-
 			currentBoard.getCurrentCardsOnBoard().remove(toMove);
 			currentBoard.addCardOnBoard(cardToMove, bestPosition);
 		}
 	}
 
 
+
 	@Override
-	public Board alternateCards(Board currentBoard) {
-		// TODO Auto-generated method stub
-		return null;
+	public void alternateCards(Board currentBoard) {
+
+		Card cardToMove;
+		Coordinate currentCardsPosition = new Coordinate(-1, -1);
+
+		do
+		{
+			currentCardsPosition.setX((int)(Math.random() * 12));
+			currentCardsPosition.setY((int)(Math.random() * 12));
+		}while (currentBoard.isPlaceAvailable(currentCardsPosition));
+
+		Coordinate coordinateCardToMove1 = currentBoard.findEqualsCoordinate(currentCardsPosition);
+		cardToMove = currentBoard.getCardByCoordinate(coordinateCardToMove1);
+		currentBoard.currentCardsOnBoard.remove(coordinateCardToMove1);
+
+		Card cardToMove2;
+		Coordinate currentCardsPosition2 = new Coordinate(-1, -1);
+
+		do
+		{
+			currentCardsPosition2.setX((int)(Math.random() * 12));
+			currentCardsPosition2.setY((int)(Math.random() * 12));
+
+			while(currentCardsPosition2.getX() == currentCardsPosition.getX() && currentCardsPosition2.getY() == currentCardsPosition.getY())
+			{
+				currentCardsPosition2.setX((int)(Math.random() * 12));
+				currentCardsPosition2.setY((int)(Math.random() * 12));
+			}
+
+		}while (currentBoard.isPlaceAvailable(currentCardsPosition2) );
+
+		Coordinate coordinateCardToMove2 = currentBoard.findEqualsCoordinate(currentCardsPosition2);
+		cardToMove2 = currentBoard.getCardByCoordinate(coordinateCardToMove2);
+		currentBoard.currentCardsOnBoard.remove(coordinateCardToMove2);
+
+		currentBoard.forceAddCardOnBard(cardToMove, coordinateCardToMove2);
+		currentBoard.forceAddCardOnBard(cardToMove2, coordinateCardToMove1);
+
+		System.out.println("MOVING " + cardToMove.toString() + " WITH " + cardToMove2.toString());
+
 	}
+
 	@Override
 	public void showVictoryCard(Card victoryCard) {
-		// TODO Auto-generated method stub
+
 	}
 }

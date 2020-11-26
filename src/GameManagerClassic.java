@@ -6,8 +6,10 @@ public class GameManagerClassic  extends GameManager {
 
     	boolean isFirstTime = true;
 
-    	while (currentBoard.currentCardsOnBoard.size()<15) {
-			for (int i = 0; i < 3; i++) {
+
+    	while ( currentBoard.currentCardsOnBoard.size() < 15 )
+    	{
+			for (int i = 0; i < players.length; i++) {
 				System.out.println("Joueur " + (i + 1));
 
 				Card cardOnPlay = this.currentBoard.getCard();
@@ -21,12 +23,24 @@ public class GameManagerClassic  extends GameManager {
 
 				currentBoard.showBoard();
 				isFirstTime = false;
+
+				if(currentBoard.currentCardsOnBoard.size() ==  maxCards)
+				{
+					break;
+				}
+			}
+
+			if(currentBoard.currentCardsOnBoard.size() ==  maxCards)
+			{
+				break;
 			}
 		}
 
+
     	currentBoard.accept(visitor);
     	visitor.over();
-    	System.out.println("=============> " + visitor.getPointsTotal());
+
+
     }
     public void getInstance() {
     } 

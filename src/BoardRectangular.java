@@ -79,7 +79,6 @@ public class BoardRectangular extends Board {
         return false;
     }
 
-
     public boolean addCardOnBoard(Card card, Coordinate coordinate)
     {
 

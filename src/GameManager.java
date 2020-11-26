@@ -6,10 +6,11 @@ public abstract class GameManager {
     protected Scanner sc;
     protected Board currentBoard;
     protected Visitor visitor;
+    protected int maxCards;
 
     public GameManager()
     {
-        players = new Player[3];
+
         sc = new Scanner(System.in);
         currentBoard = new BoardRectangular();
         visitor = new Visitor();
@@ -17,6 +18,37 @@ public abstract class GameManager {
 
     public void preGame() {
         int compteur_joueur;
+        int compteurJoueurVirtuels = 0;
+        int nbJoueurs;
+
+        System.out.println("Combien de joueurs reels avez-vous ? (3 maximum)");
+        compteur_joueur = sc.nextInt();
+        while(compteur_joueur < 0 && compteur_joueur > 3)
+        {
+            System.out.println("Saisie invalide. Recommencez.");
+            compteur_joueur = sc.nextInt();
+        }
+
+        if(compteur_joueur != 3)
+        {
+            System.out.println("Combien de bots voulez-vous avec vous ?");
+
+            compteurJoueurVirtuels = sc.nextInt();
+
+            while( compteur_joueur + compteurJoueurVirtuels > 3 )
+            {
+                System.out.println("Le nombre de joueur maximum autorisé est de 3 ! Recommencez : \t");
+                compteurJoueurVirtuels = sc.nextInt();
+            }
+
+        }
+
+        players = new Player[compteur_joueur + compteurJoueurVirtuels];
+
+        if(compteur_joueur + compteurJoueurVirtuels == 3)
+            maxCards = 14;
+        else
+            maxCards = 15;
 
         System.out.print("Dans quelle difficulty voulez-vous jouer (0 ou 1): \t");
         difficulty = sc.nextInt();
@@ -27,20 +59,21 @@ public abstract class GameManager {
             difficulty = sc.nextInt();
         }
 
-        System.out.println("Combien de joueurs reels avez-vous ? (3 maximum)");
-        compteur_joueur = sc.nextInt();
+        int index = 0;
 
-        while(compteur_joueur < 0 && compteur_joueur > 3)
+        for(index = 0; index < compteur_joueur; index++)
         {
-            System.out.println("Saisie invalide. Recommencez.");
-            compteur_joueur = sc.nextInt();
+            players[index] = new Player(currentBoard.getNewRandomCard());
+
         }
 
-        for(int i = 0; i < compteur_joueur; i++)
-            players[i] = new Player(currentBoard.getNewRandomCard());
+        for (int i = 0; i < compteurJoueurVirtuels; i++)
+        {
 
-        for (int i = compteur_joueur; i < 3; i++)
-            players[i] = new Player(difficulty, currentBoard.getNewRandomCard(), visitor);
+            players[index + i] = new Player(difficulty, currentBoard.getNewRandomCard(), visitor);
+
+        }
+
     }
 
 

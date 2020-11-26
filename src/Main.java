@@ -15,7 +15,7 @@ public class Main {
         System.out.println("======================= SHAPE UP ! ============================ ");
         System.out.println("=============================================================== ");
         System.out.println("\n \n \n Bonjour ! Quel mode de jeu voulez-vous jouer : ");
-        System.out.println("1 - Classic \n2 - Duel \n3 - Chaos");
+        System.out.println("1 - Classic \n2 - Quick \n3 - Chaos");
         System.out.print("Votre selection : \t");
         int choix = sc.nextInt();
 
@@ -29,10 +29,10 @@ public class Main {
         {
             case 1 : manager = new GameManagerClassic();
                 break;
-            case 2 : manager = new GameManagerDuel();
+            case 2 : manager = new GameManagerQuick();
             	break;
-            //case 3 : manager = new GameManagerChaos(); 
-				//break;
+            	case 3 : manager = new GameManagerChaos();
+				break;
             default : manager = new GameManagerClassic();
                 break;
         }

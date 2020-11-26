@@ -1,3 +1,4 @@
+import java.util.IllegalFormatCodePointException;
 import java.util.Scanner;
 public class Player{
 
@@ -30,9 +31,6 @@ public class Player{
         this.victoryCard = victoryCard;
         this.visitor = visitor;
     }
-    
-    
-
 
 	public Strategy getStrategy() {
 		return strategy;
@@ -41,11 +39,23 @@ public class Player{
 	public Card getVictoryCard() {
 		return victoryCard;
 	}
-	public void setVictoryCard(Card newCard) {
-		this.victoryCard = newCard;
-	}
+
+    public boolean changeVictoryCard(Board currentBoard)
+    {
+        if(currentBoard.remainingCards.size() == 0)
+            return false;
 
 
+      boolean ask = this.strategy.changeVictoryCard(currentBoard);
+            if(ask)
+            {
+                Card tempCard = this.victoryCard;
+                this.victoryCard = currentBoard.getNewRandomCard();
+                currentBoard.remainingCards.add(tempCard);
+                return true;
+            }
+        return false;
+    }
 
 
 /*    public Board moveCard(Card newCard, Board currentBoard) {
@@ -62,8 +72,6 @@ public class Player{
     public void showVictoryCard() {
     }
 
-    public Board shuffle(Board currentBoard) {
-    }
 
     public void accept(Visitor visitor) {
     }
