@@ -53,7 +53,7 @@ public class virtualEasy implements Strategy {
         {
             currentCardsPosition.setX((int)(Math.random() * 12));
             currentCardsPosition.setY((int)(Math.random() * 12));
-        }while (currentBoard.isPlaceAvailable(currentCardsPosition) );
+        }while (currentBoard.isPlaceAvailable(currentCardsPosition));
 
 
         Coordinate currentCard = currentBoard.findEqualsCoordinate(currentCardsPosition);
@@ -61,17 +61,13 @@ public class virtualEasy implements Strategy {
         cardToMove = currentBoard.currentCardsOnBoard.get(currentCard);
         currentBoard.currentCardsOnBoard.remove(currentCard);
 
-
-
         Coordinate currentCardsPosition2 = new Coordinate(-1, -1);
-
 
         do
         {
             currentCardsPosition2.setX((int)(Math.random() * 12));
             currentCardsPosition2.setY((int)(Math.random() * 12));
         }while (!currentBoard.isPlaceAvailable(currentCardsPosition2) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition2) );
-
 
         //Placement de la carte
         currentBoard.addCardOnBoard(cardToMove, currentCardsPosition2);
