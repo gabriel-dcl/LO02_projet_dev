@@ -259,14 +259,15 @@ public class Visitor {
 
     public void over()
     {
-        System.out.println(PointsByForm.get(Form.TRIANGULAR));
-        System.out.println(PointsByForm.get(Form.RECTANGULAR));
-        System.out.println(PointsByForm.get(Form.CIRCLE));
-        System.out.println(PointsByColor.get(Color.BLUE));
-        System.out.println(PointsByColor.get(Color.GREEN));
-        System.out.println(PointsByColor.get(Color.RED));
-        System.out.println(PointsByState.get(State.EMPTY));
-        System.out.println(PointsByState.get(State.FILL));
+        System.out.println("============================ GAME OVER ========================");
+        System.out.println("Points Triangular " +  PointsByForm.get(Form.TRIANGULAR));
+        System.out.println("Points Rectangular " + PointsByForm.get(Form.RECTANGULAR));
+        System.out.println("Points Circle " +  PointsByForm.get(Form.CIRCLE));
+        System.out.println("Points Blue " + PointsByColor.get(Color.BLUE));
+        System.out.println("Points Green " + PointsByColor.get(Color.GREEN));
+        System.out.println("Points Red " + PointsByColor.get(Color.RED));
+        System.out.println("Points Empty " + PointsByState.get(State.EMPTY));
+        System.out.println("Points Fill " + PointsByState.get(State.FILL));
     }
 
     public int getPointsTotalRegardingVictoryCard(Card card)

@@ -7,6 +7,8 @@ public abstract class GameManager {
     protected Board currentBoard;
     protected Visitor visitor;
     protected int maxCards;
+    int compteur_joueur;
+    int compteurJoueurVirtuels = 0;
 
     public GameManager()
     {
@@ -17,8 +19,7 @@ public abstract class GameManager {
     }
 
     public void preGame() {
-        int compteur_joueur;
-        int compteurJoueurVirtuels = 0;
+
         int nbJoueurs;
 
         System.out.println("Combien de joueurs reels avez-vous ? (3 maximum)");
@@ -76,10 +77,46 @@ public abstract class GameManager {
 
     }
 
-
     public abstract void game();
 
-    public void gameOver() {
+    public void gameOver()
+    {
+        if(compteur_joueur + compteurJoueurVirtuels == 3)
+        {
+            int pointsPlayer1 =  this.visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
+            int pointsPlayer2 =  this.visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());
+            int pointsPlayer3 =  this.visitor.getPointsTotalRegardingVictoryCard(players[2].getVictoryCard());
+
+            System.out.println("CARTE J1: " + players[0].getVictoryCard());
+            System.out.println("CARTE J2: " + players[1].getVictoryCard());
+            System.out.println("CARTE J3: " + players[2].getVictoryCard());
+
+            if(pointsPlayer1 > pointsPlayer2 && pointsPlayer1 > pointsPlayer3)
+                System.out.println("Le joueur 1 gagne avec sa carte : " + players[0].getVictoryCard());
+            else if(pointsPlayer2 > pointsPlayer1 && pointsPlayer2 > pointsPlayer3)
+                System.out.println("Le joueur 2 gagne avec sa carte : " + players[1].getVictoryCard());
+            else if(pointsPlayer3 > pointsPlayer1 && pointsPlayer3 > pointsPlayer2)
+                System.out.println("Le joueur 3 gagne avec sa carte : " + players[2].getVictoryCard());
+            else
+                System.out.println("Match nul !");
+        }
+        else
+        {
+            System.out.println("CARTE J1: " + players[0].getVictoryCard());
+            System.out.println("CARTE J2: " + players[1].getVictoryCard());
+
+            int pointsPlayer1 =  this.visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
+            int pointsPlayer2 =  this.visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());
+
+            if(pointsPlayer1 > pointsPlayer2)
+                System.out.println("Le joueur 1 gagne avec sa carte : " + players[0].getVictoryCard());
+            else if((pointsPlayer2 > pointsPlayer1))
+                System.out.println("Le joueur 2 gagne avec sa carte : " + players[1].getVictoryCard());
+            else
+                System.out.println("Match nul !");
+        }
+
+
     }
     public void occure() {
     }

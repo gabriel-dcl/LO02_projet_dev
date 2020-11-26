@@ -39,6 +39,7 @@ public class Main {
 
         manager.preGame();
         manager.game();
+        manager.gameOver();
     }
 
 

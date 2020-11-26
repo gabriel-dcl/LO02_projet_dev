@@ -244,9 +244,6 @@ public class virtualHard implements Strategy {
 
 		currentBoard.forceAddCardOnBard(cardToMove, coordinateCardToMove2);
 		currentBoard.forceAddCardOnBard(cardToMove2, coordinateCardToMove1);
-
-		System.out.println("MOVING " + cardToMove.toString() + " WITH " + cardToMove2.toString());
-
 	}
 
 	@Override

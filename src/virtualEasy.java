@@ -172,7 +172,6 @@ public class virtualEasy implements Strategy {
         currentBoard.forceAddCardOnBard(cardToMove, coordinateCardToMove2);
         currentBoard.forceAddCardOnBard(cardToMove2, coordinateCardToMove1);
 
-        System.out.println("CARDS HAVE BEN ALTERNED : " + cardToMove + "    " + cardToMove2);
 
 	}
 
