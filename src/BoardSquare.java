@@ -1,31 +1,21 @@
 import java.util.Map;
 
-public class BoardTriangular extends Board {
-    private Card cardsOnBoard;
+public class BoardSquare extends Board {
 
+    public BoardSquare() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 
     public boolean isCoordinateCloseEnough(Coordinate coordinate) {
-        int nbrCadrsOnThisColumn = 1;
-        int nbrCardsOnThisStage = 1;
+        int verticalBoardSize = 0;
+        int horizontalBoardSize = 0;
         boolean adjencyCardExists = false;
-        int floor= 100;
+        int floor= 20;
         int ceiling= 0;
-        int leftWall= 100;
+        int leftWall= 50;
         int rightWall = 0;
-        int adaptativeCeiling[] = {0 , 0 , 0, 0, 0};
-
-        if(this.currentCardsOnBoard.size()==0)
-        {
-            if(coordinate.getX()>6 || coordinate.getY()>6)
-                return false;
-        }
-
-        if(!this.isPlaceAvailable(coordinate))
-            return false;
-
-
-
 
         if(currentCardsOnBoard.entrySet().isEmpty())
             return true;
@@ -53,52 +43,45 @@ public class BoardTriangular extends Board {
                 ceiling = entry.getKey().getY() ;
             if(entry.getKey().getY()  < floor)
                 floor = entry.getKey().getY() ;
-
         }
-        if(coordinate.getX()<leftWall || coordinate.getY()<floor)
-            return false;
-        else if(coordinate.getX()  > rightWall )
+
+        if(coordinate.getX()  > rightWall )
             rightWall = coordinate.getX();
-        else if(coordinate.getY()  > ceiling)
+        if(coordinate.getX()  < leftWall )
+            leftWall = coordinate.getX();
+
+        if(coordinate.getY()  > ceiling)
             ceiling = coordinate.getY();
+        if(coordinate.getY()  < floor)
+            floor = coordinate.getY() ;
 
 
-        int verticalBoardSize = Math.abs(ceiling - floor);
-        int horizontalBoardSize = Math.abs(rightWall - leftWall);
-        for(int i=0; i<5;i++) {
-            adaptativeCeiling[i]=ceiling-i;
-        }
+        verticalBoardSize = Math.abs(ceiling - floor);
+        horizontalBoardSize = Math.abs(rightWall - leftWall);
+
 
         if(adjencyCardExists)
         {
-            if(horizontalBoardSize < 5)
+            if(horizontalBoardSize < 4)
             {
-                if(verticalBoardSize < 5)
-                    if (coordinate.getY()<=adaptativeCeiling[coordinate.getX()-leftWall]) {
-                        return true;
-                    }
-
+                if(verticalBoardSize < 4)
+                    return true;
             }
 
-            if(verticalBoardSize < 5)
+            if(verticalBoardSize < 4)
             {
-                if(horizontalBoardSize < 5)
-                    if (coordinate.getY()<=adaptativeCeiling[coordinate.getX()-leftWall]) {
-                        return true;
-                    }
-
+                if(horizontalBoardSize < 4)
+                    return true;
             }
         }
+
         return false;
     }
+
 
     public boolean addCardOnBoard(Card card, Coordinate coordinate)
     {
 
-        if(this.currentCardsOnBoard.size()==0) {
-            if(coordinate.getX()>6 || coordinate.getY()>6)
-                return false;
-        }
         if(!this.isPlaceAvailable(coordinate))
             return false;
 
@@ -108,5 +91,6 @@ public class BoardTriangular extends Board {
         currentCardsOnBoard.put(coordinate, card);
         return true;
     }
+
 
 }

@@ -161,10 +161,6 @@ public class virtualEasy implements Strategy {
             currentCardsPosition2.setY((int)(Math.random() * 12));
         }while (currentBoard.isPlaceAvailable(currentCardsPosition2));
 
-
-        System.out.println(currentCardsPosition2.getX() + " " + currentCardsPosition2.getY());
-
-
         Coordinate coordinateCardToMove2 = currentBoard.findEqualsCoordinate(currentCardsPosition2);
         cardToMove2 = currentBoard.getCardByCoordinate(coordinateCardToMove2);
         currentBoard.currentCardsOnBoard.remove(coordinateCardToMove2);

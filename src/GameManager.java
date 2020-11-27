@@ -14,11 +14,30 @@ public abstract class GameManager {
     {
 
         sc = new Scanner(System.in);
-        currentBoard = new BoardRectangular();
         visitor = new Visitor();
     }
 
     public void preGame() {
+
+        int choix = 0;
+        while (choix != 1 && choix !=2 && choix !=3 ) {
+            System.out.println("Quelle forme de plateau désirez-vous ? 1 - Rectangulaire | 2 - Triangulaire | 3 - Square");
+            choix = sc.nextInt();
+
+            switch (choix) {
+                case 1:
+                    currentBoard = new BoardRectangular();
+                    break;
+                case 2:
+                    currentBoard = new BoardTriangular();
+                    break;
+                case 3:
+                    currentBoard = new BoardSquare();
+                    break;
+                default:
+                    currentBoard = new BoardRectangular();
+            }
+        }
 
         int nbJoueurs;
 

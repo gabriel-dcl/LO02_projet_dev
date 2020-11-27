@@ -23,11 +23,15 @@ public class virtualHard implements Strategy {
 		int bestValue = 0;
 		Coordinate currentCardsPosition = new Coordinate(-1, -1);
 
-		if (currentBoard.getCurrentCardsOnBoard().isEmpty()) {
-			currentCardsPosition.setX((int) (Math.random() * 12));
-			currentCardsPosition.setY((int) (Math.random() * 12));
+		if (currentBoard.getCurrentCardsOnBoard().isEmpty())
+		{
+			do{
+				currentCardsPosition.setX((int) (Math.random() * 12));
+				currentCardsPosition.setY((int) (Math.random() * 12));
+			} while(  currentCardsPosition.getX() > 6 || currentCardsPosition.getY() > 6  );
 
-			currentBoard.addCardOnBoard(newCard, currentCardsPosition);
+			currentBoard.forceAddCardOnBard(newCard, currentCardsPosition);
+
 			return;
 		}
 
@@ -36,7 +40,8 @@ public class virtualHard implements Strategy {
 					currentCardsPosition.setX(i);
 					currentCardsPosition.setY(j);
 
-					if (currentBoard.isPlaceAvailable(currentCardsPosition) && currentBoard.isCoordinateCloseEnough(currentCardsPosition)) {
+					if (currentBoard.isPlaceAvailable(currentCardsPosition) && currentBoard.isCoordinateCloseEnough(currentCardsPosition))
+					{
 						int potentialMaxPoints = 0;
 						currentBoard.addCardOnBoard(newCard, currentCardsPosition);
 						currentBoard.accept(visitor);
@@ -188,7 +193,7 @@ public class virtualHard implements Strategy {
 						}
 					}
 
-					currentBoard.addCardOnBoard(currentCard, potentialPoints);
+					currentBoard.forceAddCardOnBard(currentCard, potentialPoints);
 
 				}
 			}

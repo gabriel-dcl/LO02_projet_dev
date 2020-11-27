@@ -6,9 +6,6 @@ public class  GameManagerChaos extends GameManager {
 		boolean isFirstTime = true;
 		boolean isSecondTime = true;
 
-
-		System.out.println( "SIZE" + currentBoard.remainingCards.size());
-
 		while (currentBoard.currentCardsOnBoard.size() < maxCards )
 		{
 			for (int i = 0; i < players.length; i++) {

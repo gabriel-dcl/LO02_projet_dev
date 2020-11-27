@@ -129,6 +129,7 @@ public class Visitor {
                 isLookingByLine = true;
             } else if( ! currentBoard.isPlaceAvailable(potentielNewPoint2 ) )
             {
+
                 lastCard = null;
                 beforeLast = null;
                 currentCoordinate = potentielNewPoint2;
