@@ -47,8 +47,12 @@ public class realPlayer implements Strategy {
     	
     public void placeNewCard(Card newCard, Board currentBoard)
 	{
+		System.out.println();
+		currentBoard.showBoard();
+
     	Scanner sc = new Scanner(System.in);
     	//Affichage de la nouvelle carte
+		System.out.println("_____");
     	System.out.println("Voici la carte a poser : \n " + newCard.toString());
 
 		Coordinate position = askPlayerCoordinates(currentBoard, true);
@@ -68,6 +72,7 @@ public class realPlayer implements Strategy {
 			else
 				System.out.print("Coordonnées de la carte a deplacer ? \n X :");
 
+
 			position.setX (sc.nextInt());
 
 			System.out.println("Y :");
@@ -76,9 +81,9 @@ public class realPlayer implements Strategy {
 			if(searchForFreePlace)
 			{
 				if(!currentBoard.isPlaceAvailable(position))
-					System.out.println("Cette place est prise  ! Reessayez");
+					System.out.print("Cette place est prise  ! Reessayez");
 				else if( !currentBoard.isCoordinateCloseEnough(position))
-					System.out.println("Cette place  trop loin ! Reessayez");
+					System.out.print("Cette place  trop loin ! Reessayez");
 				else
 					exists = false;
 			} else
@@ -105,39 +110,31 @@ public class realPlayer implements Strategy {
         	boolean exists = true;
         	Coordinate position1 = new Coordinate(-1, -1);
         	Coordinate position2 = new Coordinate(-1, 1);
-        	Card temp;
-        	//Choix de la première carte
-        	System.out.println("Choisissez la première carte à alterner");
 
-        	while(!exists) {
-        		System.out.println("Coordonnées de la carte ? \n X ?");
-        		position1.setX (sc.nextInt());
-    	    	
-    	    	System.out.println("Y ?");
-    	    	position1.setY(sc.nextInt());
-    	    	
-    	 //   	exists=this.taken(position1, currentBoard);
-    	    	if(!exists)
-    	    		System.out.println("Il n'y a pas de carte ici ! Réessayez");
-        	}
-        	
-        	//Choix de la 2e carte
-        	System.out.println("Choisissez la seconde carte à alterner");
-        	while(!exists) {
-        		System.out.println("Coordonnées de la carte ? \n X ?");
-        		position1.setX (sc.nextInt());
-    	    	
-    	    	System.out.println("Y ?");
-    	    	position1.setY(sc.nextInt());
-    	    	
-    	    	// exists=this.taken(position1, currentBoard);
-    	    	if(!exists)
-    	    		System.out.println("Il n'y a pas de carte ici ! Réessayez");
-        	}
-           	//Alternance des cartes
-        	temp = currentBoard.currentCardsOnBoard.get(position1);
-        	currentBoard.currentCardsOnBoard.put(position1, currentBoard.currentCardsOnBoard.get(position2));
-        	currentBoard.currentCardsOnBoard.put(position2, temp);
+
+		System.out.println("Choisissez la première carte à alterner");
+        	position1 = askPlayerCoordinates(currentBoard, false);
+
+		System.out.println("Choisissez la seconde carte à alterner");
+			position2 = askPlayerCoordinates(currentBoard, false);
+
+
+		Card temp;
+        	//Choix de la première carte
+
+           	//Alternance des carte
+		//
+			Coordinate coordinateCardToMove1 = currentBoard.findEqualsCoordinate(position1);
+			Card	cardToMove = currentBoard.getCardByCoordinate(coordinateCardToMove1);
+				currentBoard.currentCardsOnBoard.remove(coordinateCardToMove1);
+
+		Coordinate coordinateCardToMove2 = currentBoard.findEqualsCoordinate(position2);
+	Card	cardToMove2 = currentBoard.getCardByCoordinate(coordinateCardToMove2);
+		currentBoard.currentCardsOnBoard.remove(coordinateCardToMove2);
+
+		currentBoard.forceAddCardOnBard(cardToMove, coordinateCardToMove2);
+		currentBoard.forceAddCardOnBard(cardToMove2, coordinateCardToMove1);
+
     }
     
     public void showVictoryCard(Card victoryCard) {
@@ -154,7 +151,28 @@ public class realPlayer implements Strategy {
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println("!!! Voulez-vous shuffle ? : 1|0");
-		int choix = sc.nextInt();
+		int choix;
+		try {
+			choix  = sc.nextInt();
+		}
+		catch(Exception e) {
+			sc.next();
+			choix  = 12;
+		}
+
+
+		while(choix != 1 && choix != 0)
+		{
+			System.out.println("Saisie incorrecte. Recommencez : \t");
+
+			try {
+				choix  = sc.nextInt();
+			}
+			catch(Exception e) {
+				sc.next();
+				choix  = 12;
+			}
+		}
 
 		if(choix == 1)
 		{
@@ -202,7 +220,29 @@ public class realPlayer implements Strategy {
 	Scanner sc = new Scanner(System.in);
 
 	System.out.println("Voulez-vous Changer de Victory Card ? 1 | 0 ");
-	int choix = sc.nextInt();
+		int choix;
+
+		try {
+			choix  = sc.nextInt();
+		}
+		catch(Exception e) {
+			sc.next();
+			choix  = 12;
+		}
+
+		while(choix != 1 && choix != 0)
+		{
+			System.out.println("Saisie incorrecte. Recommencez : \t");
+
+			try {
+				choix  = sc.nextInt();
+			}
+			catch(Exception e) {
+				sc.next();
+				choix  = 12;
+			}
+		}
+
 
 	if(choix == 1)
 	{

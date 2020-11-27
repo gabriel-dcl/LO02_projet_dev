@@ -17,12 +17,27 @@ public class Main {
         System.out.println("\n \n \n Bonjour ! Quel mode de jeu voulez-vous jouer : ");
         System.out.println("1 - Classic \n2 - Quick \n3 - Chaos");
         System.out.print("Votre selection : \t");
-        int choix = sc.nextInt();
+        int choix = 12;
+
+        try {
+            choix = sc.nextInt();
+        }
+        catch(Exception e) {
+            System.out.println("Saisie invalide. Recommencez.");
+        }
 
         while (choix != 1 && choix != 2 && choix !=3)
         {
             System.out.print("Saisie invalide, merci de recommencez : ");
-            choix = sc.nextInt();
+
+            try {
+                choix = sc.nextInt();
+            }
+            catch(Exception e) {
+                sc.next();
+            }
+
+
         }
 
         switch (choix)

@@ -20,9 +20,17 @@ public abstract class GameManager {
     public void preGame() {
 
         int choix = 0;
-        while (choix != 1 && choix !=2 && choix !=3 ) {
+        while (choix != 1 && choix !=2 && choix !=3 )
+        {
             System.out.println("Quelle forme de plateau désirez-vous ? 1 - Rectangulaire | 2 - Triangulaire | 3 - Square");
-            choix = sc.nextInt();
+            try {
+                choix = sc.nextInt();
+            }
+            catch(Exception e) {
+                sc.next();
+                compteur_joueur = 12;
+            }
+
 
             switch (choix) {
                 case 1:
@@ -35,30 +43,58 @@ public abstract class GameManager {
                     currentBoard = new BoardSquare();
                     break;
                 default:
-                    currentBoard = new BoardRectangular();
+
             }
         }
 
         int nbJoueurs;
 
         System.out.println("Combien de joueurs reels avez-vous ? (3 maximum)");
-        compteur_joueur = sc.nextInt();
-        while(compteur_joueur < 0 && compteur_joueur > 3)
+
+        try {
+            compteur_joueur = sc.nextInt();
+        }
+        catch(Exception e) {
+            sc.next();
+            compteur_joueur = 12;
+        }
+
+
+        while(compteur_joueur < 0 || compteur_joueur > 3)
         {
             System.out.println("Saisie invalide. Recommencez.");
-            compteur_joueur = sc.nextInt();
+
+            try {
+                compteur_joueur = sc.nextInt();
+            }
+            catch(Exception e) {
+                sc.next();
+                compteur_joueur = 12;
+            }
         }
 
         if(compteur_joueur != 3)
         {
             System.out.println("Combien de bots voulez-vous avec vous ?");
 
-            compteurJoueurVirtuels = sc.nextInt();
-
-            while( compteur_joueur + compteurJoueurVirtuels > 3 )
-            {
-                System.out.println("Le nombre de joueur maximum autorisé est de 3 ! Recommencez : \t");
+            try {
                 compteurJoueurVirtuels = sc.nextInt();
+            }
+            catch(Exception e) {
+                sc.next();
+                compteurJoueurVirtuels = 12;
+            }
+
+            while( compteur_joueur + compteurJoueurVirtuels > 3  || compteur_joueur + compteurJoueurVirtuels < 2)
+            {
+                System.out.println("Saisie invalide ! (Attention, le nombre maximal de joueurs est de 3 et le nombre minimal est de 2) Recommencez : \t");
+                try {
+                    compteurJoueurVirtuels = sc.nextInt();
+                }
+                catch(Exception e) {
+                    sc.next();
+                    compteurJoueurVirtuels = 12;
+                }
             }
 
         }
@@ -71,12 +107,25 @@ public abstract class GameManager {
             maxCards = 15;
 
         System.out.print("Dans quelle difficulty voulez-vous jouer (0 ou 1): \t");
-        difficulty = sc.nextInt();
+
+        try {
+            difficulty  = sc.nextInt();
+        }
+        catch(Exception e) {
+            sc.next();
+            difficulty  = 12;
+        }
 
         while(difficulty != 0 && difficulty != 1)
         {
             System.out.println("Saisie invalide. Recommencez.");
-            difficulty = sc.nextInt();
+            try {
+                difficulty  = sc.nextInt();
+            }
+            catch(Exception e) {
+                sc.next();
+                difficulty  = 12;
+            }
         }
 
         int index = 0;
