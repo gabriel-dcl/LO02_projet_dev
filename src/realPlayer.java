@@ -243,13 +243,11 @@ public class realPlayer implements Strategy {
 			}
 		}
 
-
 	if(choix == 1)
 	{
 		hasChangedVictoryCard = true;
 		return true;
 	}
-
 
 		return false;
     }

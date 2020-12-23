@@ -20,7 +20,6 @@ public class Player{
             this.victoryCard = victoryCard;
     }
 
-
     public Player(int difficulty, Card victoryCard, Visitor visitor)
     {
         if(difficulty == 0)
