@@ -1,22 +1,33 @@
+package Models;
+
 import java.util.Map;
 
-public class BoardRectangular extends Board {
+public class BoardTriangular extends Board {
+    private Card cardsOnBoard;
 
-
-    public BoardRectangular()
-    {
-        super();
-    }
 
 
     public boolean isCoordinateCloseEnough(Coordinate coordinate) {
-        int verticalBoardSize = 0;
-        int horizontalBoardSize = 0;
+        int nbrCadrsOnThisColumn = 1;
+        int nbrCardsOnThisStage = 1;
         boolean adjencyCardExists = false;
-        int floor= 20;
+        int floor= 100;
         int ceiling= 0;
-        int leftWall= 50;
+        int leftWall= 100;
         int rightWall = 0;
+        int adaptativeCeiling[] = {0 , 0 , 0, 0, 0};
+
+        if(this.currentCardsOnBoard.size()==0)
+        {
+            if(coordinate.getX()>6 || coordinate.getY()>6)
+                return false;
+        }
+
+        if(!this.isPlaceAvailable(coordinate))
+            return false;
+
+
+
 
         if(currentCardsOnBoard.entrySet().isEmpty())
             return true;
@@ -44,55 +55,60 @@ public class BoardRectangular extends Board {
                 ceiling = entry.getKey().getY() ;
             if(entry.getKey().getY()  < floor)
                 floor = entry.getKey().getY() ;
+
         }
-        
-        if(coordinate.getX()  > rightWall )
+        if(coordinate.getX()<leftWall || coordinate.getY()<floor)
+            return false;
+        else if(coordinate.getX()  > rightWall )
             rightWall = coordinate.getX();
-        if(coordinate.getX()  < leftWall )
-            leftWall = coordinate.getX();
-
-        if(coordinate.getY()  > ceiling)
+        else if(coordinate.getY()  > ceiling)
             ceiling = coordinate.getY();
-        if(coordinate.getY()  < floor)
-            floor = coordinate.getY() ;
-        
-        
-        verticalBoardSize = Math.abs(ceiling - floor);
-        horizontalBoardSize = Math.abs(rightWall - leftWall);
 
+
+        int verticalBoardSize = Math.abs(ceiling - floor);
+        int horizontalBoardSize = Math.abs(rightWall - leftWall);
+        for(int i=0; i<5;i++) {
+            adaptativeCeiling[i]=ceiling-i;
+        }
 
         if(adjencyCardExists)
         {
             if(horizontalBoardSize < 5)
             {
-                if(verticalBoardSize < 3)
-                    return true;
+                if(verticalBoardSize < 5)
+                    if (coordinate.getY()<=adaptativeCeiling[coordinate.getX()-leftWall]) {
+                        return true;
+                    }
+
             }
 
             if(verticalBoardSize < 5)
             {
-                if(horizontalBoardSize < 3)
-                    return true;
+                if(horizontalBoardSize < 5)
+                    if (coordinate.getY()<=adaptativeCeiling[coordinate.getX()-leftWall]) {
+                        return true;
+                    }
+
             }
         }
-
         return false;
     }
 
     public boolean addCardOnBoard(Card card, Coordinate coordinate)
     {
 
-        if(!this.isPlaceAvailable(coordinate))
+        if(this.currentCardsOnBoard.size()==0) {
+            if(coordinate.getX()>6 || coordinate.getY()>6)
                 return false;
+        }
+        if(!this.isPlaceAvailable(coordinate))
+            return false;
 
         if(!this.isCoordinateCloseEnough(coordinate))
-                return false;
+            return false;
 
         currentCardsOnBoard.put(coordinate, card);
         return true;
     }
 
 }
-
-
-

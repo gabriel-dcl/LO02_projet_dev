@@ -1,10 +1,10 @@
+package Models;
+
 import enums.Color;
 import enums.Form;
 import enums.State;
 
-import java.security.cert.CertificateParsingException;
 import java.util.*;
-import java.util.stream.IntStream;
 
 public abstract class Board {
     protected GameManager currentGameManager;

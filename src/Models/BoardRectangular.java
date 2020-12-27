@@ -1,10 +1,13 @@
+package Models;
+
 import java.util.Map;
 
-public class BoardSquare extends Board {
+public class BoardRectangular extends Board {
 
-    public BoardSquare() {
+
+    public BoardRectangular()
+    {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 
@@ -44,7 +47,7 @@ public class BoardSquare extends Board {
             if(entry.getKey().getY()  < floor)
                 floor = entry.getKey().getY() ;
         }
-
+        
         if(coordinate.getX()  > rightWall )
             rightWall = coordinate.getX();
         if(coordinate.getX()  < leftWall )
@@ -54,23 +57,23 @@ public class BoardSquare extends Board {
             ceiling = coordinate.getY();
         if(coordinate.getY()  < floor)
             floor = coordinate.getY() ;
-
-
+        
+        
         verticalBoardSize = Math.abs(ceiling - floor);
         horizontalBoardSize = Math.abs(rightWall - leftWall);
 
 
         if(adjencyCardExists)
         {
-            if(horizontalBoardSize < 4)
+            if(horizontalBoardSize < 5)
             {
-                if(verticalBoardSize < 4)
+                if(verticalBoardSize < 3)
                     return true;
             }
 
-            if(verticalBoardSize < 4)
+            if(verticalBoardSize < 5)
             {
-                if(horizontalBoardSize < 4)
+                if(horizontalBoardSize < 3)
                     return true;
             }
         }
@@ -78,19 +81,20 @@ public class BoardSquare extends Board {
         return false;
     }
 
-
     public boolean addCardOnBoard(Card card, Coordinate coordinate)
     {
 
         if(!this.isPlaceAvailable(coordinate))
-            return false;
+                return false;
 
         if(!this.isCoordinateCloseEnough(coordinate))
-            return false;
+                return false;
 
         currentCardsOnBoard.put(coordinate, card);
         return true;
     }
 
-
 }
+
+
+

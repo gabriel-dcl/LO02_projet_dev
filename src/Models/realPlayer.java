@@ -1,3 +1,5 @@
+package Models;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -219,7 +221,7 @@ public class realPlayer implements Strategy {
 
 	Scanner sc = new Scanner(System.in);
 
-	System.out.println("Voulez-vous Changer de Victory Card ? 1 | 0 ");
+	System.out.println("Voulez-vous Changer de Victory Models.Card ? 1 | 0 ");
 		int choix;
 
 		try {

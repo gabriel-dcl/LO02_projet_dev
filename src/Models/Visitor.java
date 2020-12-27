@@ -1,3 +1,5 @@
+package Models;
+
 import enums.Color;
 import enums.Form;
 import enums.State;

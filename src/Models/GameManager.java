@@ -1,14 +1,31 @@
+package Models;
+
+import java.util.Observable;
 import java.util.Scanner;
 
-public abstract class GameManager {
+public abstract class GameManager extends Observable {
     private int difficulty;
     protected Player players[];
     protected Scanner sc;
     protected Board currentBoard;
     protected Visitor visitor;
     protected int maxCards;
+    protected  int buffer;
+
+
+    public int getBuffer() {
+        return buffer;
+    }
+
+
+    public void setBuffer(int buffer) {
+        this.buffer = buffer;
+    }
+
+
     int compteur_joueur;
     int compteurJoueurVirtuels = 0;
+    boolean test;
 
     public GameManager()
     {
@@ -19,33 +36,25 @@ public abstract class GameManager {
 
     public void preGame() {
 
-        int choix = 0;
-        while (choix != 1 && choix !=2 && choix !=3 )
-        {
-            System.out.println("Quelle forme de plateau désirez-vous ? 1 - Rectangulaire | 2 - Triangulaire | 3 - Square");
-            try {
-                choix = sc.nextInt();
-            }
-            catch(Exception e) {
-                sc.next();
-                compteur_joueur = 12;
-            }
+        this.setChanged();
 
+        this.notifyObservers("BOARDCHOICE");
 
-            switch (choix) {
-                case 1:
-                    currentBoard = new BoardRectangular();
-                    break;
-                case 2:
-                    currentBoard = new BoardTriangular();
-                    break;
-                case 3:
-                    currentBoard = new BoardSquare();
-                    break;
-                default:
-
-            }
+        switch (this.buffer) {
+            case 1:
+                currentBoard = new BoardRectangular();
+                break;
+            case 2:
+                currentBoard = new BoardTriangular();
+                break;
+            case 3:
+                currentBoard = new BoardSquare();
+                break;
+            default:
         }
+
+
+   /*     int choix = 0;
 
         int nbJoueurs;
 
@@ -58,7 +67,6 @@ public abstract class GameManager {
             sc.next();
             compteur_joueur = 12;
         }
-
 
         while(compteur_joueur < 0 || compteur_joueur > 3)
         {
@@ -141,7 +149,7 @@ public abstract class GameManager {
 
             players[index + i] = new Player(difficulty, currentBoard.getNewRandomCard(), visitor);
 
-        }
+        }*/
 
     }
 

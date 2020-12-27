@@ -1,4 +1,5 @@
-import java.util.IllegalFormatCodePointException;
+package Models;
+
 import java.util.Scanner;
 public class Player{
 
@@ -57,25 +58,25 @@ public class Player{
     }
 
 
-/*    public Board moveCard(Card newCard, Board currentBoard) {
+/*    public Models.Board moveCard(Models.Card newCard, Models.Board currentBoard) {
 
         return;
     }
 
-    public Board placeNewCard(Card newCard, Board currentBoard) {
+    public Models.Board placeNewCard(Models.Card newCard, Models.Board currentBoard) {
     }
 
-    public Board alternateCards(Card card1, Card Card2) {
+    public Models.Board alternateCards(Models.Card card1, Models.Card Card2) {
     }
 
     public void showVictoryCard() {
     }
 
 
-    public void accept(Visitor visitor) {
+    public void accept(Models.Visitor visitor) {
     }
 
-    public void changeVictoryCard(Card newCard) {
+    public void changeVictoryCard(Models.Card newCard) {
     }
 */
 }

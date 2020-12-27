@@ -1,3 +1,5 @@
+package Models;
+
 public interface Strategy {
 
     void moveCard( Board currentBoard);
