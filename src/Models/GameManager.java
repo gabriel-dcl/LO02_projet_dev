@@ -10,21 +10,9 @@ public abstract class GameManager extends Observable {
     protected Board currentBoard;
     protected Visitor visitor;
     protected int maxCards;
-    protected  int buffer;
 
-
-    public int getBuffer() {
-        return buffer;
-    }
-
-
-    public void setBuffer(int buffer) {
-        this.buffer = buffer;
-    }
-
-
-    int compteur_joueur;
-    int compteurJoueurVirtuels = 0;
+    int realPlayersAmount;
+    int virtualPlayersAmount = 0;
     boolean test;
 
     public GameManager()
@@ -34,13 +22,22 @@ public abstract class GameManager extends Observable {
         visitor = new Visitor();
     }
 
-    public void preGame() {
+   public void playersSetUp(int realPlayersAmount, int virtualPlayersAmount)
+   {
+       this.realPlayersAmount = realPlayersAmount;
+       this.virtualPlayersAmount = virtualPlayersAmount;
 
-        this.setChanged();
+       players = new Player[this.realPlayersAmount + this.virtualPlayersAmount];
 
-        this.notifyObservers("BOARDCHOICE");
+       if(this.realPlayersAmount + this.virtualPlayersAmount == 3)
+           this.maxCards = 14;
+       else
+           this.maxCards = 15;
+   }
 
-        switch (this.buffer) {
+    public void setBoard(int choix) {
+
+        switch (choix) {
             case 1:
                 currentBoard = new BoardRectangular();
                 break;
@@ -51,69 +48,11 @@ public abstract class GameManager extends Observable {
                 currentBoard = new BoardSquare();
                 break;
             default:
-        }
 
+        }
+    }
 
    /*     int choix = 0;
-
-        int nbJoueurs;
-
-        System.out.println("Combien de joueurs reels avez-vous ? (3 maximum)");
-
-        try {
-            compteur_joueur = sc.nextInt();
-        }
-        catch(Exception e) {
-            sc.next();
-            compteur_joueur = 12;
-        }
-
-        while(compteur_joueur < 0 || compteur_joueur > 3)
-        {
-            System.out.println("Saisie invalide. Recommencez.");
-
-            try {
-                compteur_joueur = sc.nextInt();
-            }
-            catch(Exception e) {
-                sc.next();
-                compteur_joueur = 12;
-            }
-        }
-
-        if(compteur_joueur != 3)
-        {
-            System.out.println("Combien de bots voulez-vous avec vous ?");
-
-            try {
-                compteurJoueurVirtuels = sc.nextInt();
-            }
-            catch(Exception e) {
-                sc.next();
-                compteurJoueurVirtuels = 12;
-            }
-
-            while( compteur_joueur + compteurJoueurVirtuels > 3  || compteur_joueur + compteurJoueurVirtuels < 2)
-            {
-                System.out.println("Saisie invalide ! (Attention, le nombre maximal de joueurs est de 3 et le nombre minimal est de 2) Recommencez : \t");
-                try {
-                    compteurJoueurVirtuels = sc.nextInt();
-                }
-                catch(Exception e) {
-                    sc.next();
-                    compteurJoueurVirtuels = 12;
-                }
-            }
-
-        }
-
-        players = new Player[compteur_joueur + compteurJoueurVirtuels];
-
-        if(compteur_joueur + compteurJoueurVirtuels == 3)
-            maxCards = 14;
-        else
-            maxCards = 15;
-
         System.out.print("Dans quelle difficulty voulez-vous jouer (0 ou 1): \t");
 
         try {
@@ -151,13 +90,13 @@ public abstract class GameManager extends Observable {
 
         }*/
 
-    }
+
 
     public abstract void game();
 
     public void gameOver()
     {
-        if(compteur_joueur + compteurJoueurVirtuels == 3)
+        if(realPlayersAmount + virtualPlayersAmount == 3)
         {
             int pointsPlayer1 =  this.visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
             int pointsPlayer2 =  this.visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());

@@ -11,6 +11,67 @@ public class GameManagerVue implements Observer {
     Scanner sc;
     private GameManagerController gmc;
 
+    public int virtualPlayersAmountChoice() {
+        int virtualPlayersAmount;
+
+        System.out.println("Combien de bots voulez-vous avec vous ?");
+
+        try {
+            virtualPlayersAmount = sc.nextInt();
+        }
+        catch(Exception e) {
+            sc.next();
+            virtualPlayersAmount = 12;
+        }
+
+        return virtualPlayersAmount;
+    }
+
+    public int badInputVirtualPlayersAmount()
+    {
+        int virtualPlayersAmount;
+        System.out.println("Saisie invalide ! (Attention, le nombre maximal de joueurs est de 3 et le nombre minimal est de 2) Recommencez : \t");
+        try {
+            virtualPlayersAmount = sc.nextInt();
+        }
+        catch(Exception e) {
+            sc.next();
+            virtualPlayersAmount = 12;
+        }
+
+        return virtualPlayersAmount;
+    }
+
+    public int realPlayersAmountChoice()
+    {
+        int realPlayersAmount;
+
+        System.out.println("Combien de joueurs reels avez-vous ? (3 maximum)");
+
+        try {
+            realPlayersAmount = sc.nextInt();
+        }
+        catch(Exception e) {
+            sc.next();
+            realPlayersAmount = 12;
+        }
+
+        while(realPlayersAmount < 0 || realPlayersAmount > 3)
+        {
+            System.out.println("Saisie invalide. Recommencez.");
+
+            try {
+                realPlayersAmount = sc.nextInt();
+            }
+            catch(Exception e) {
+                sc.next();
+                realPlayersAmount = 12;
+            }
+        }
+
+        return realPlayersAmount;
+    }
+
     public void setGmc(GameManagerController gmc) {
         this.gmc = gmc;
     }
@@ -52,11 +113,6 @@ public class GameManagerVue implements Observer {
         return choix;
     }
 
-    public int realPlayersAmount()
-    {
-        return 0;
-    }
-
    public int gameBoardChoice()
    {
        int choix = 0;
@@ -76,10 +132,7 @@ public class GameManagerVue implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
-        if((String) arg == "BOARDCHOICE")
-        {
-            gmc.addBuffer(this.gameBoardChoice());
-        }
+
 
     }
 }

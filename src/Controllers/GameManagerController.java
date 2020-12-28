@@ -11,14 +11,6 @@ public class GameManagerController {
     private GameManager gameManager;
     private GameManagerVue gameManagerVue;
 
-    public void addBuffer(int i )
-    {
-        if(i == -1)
-            System.out.println("ERROR");
-
-        gameManager.setBuffer(i);
-    }
-
     public GameManagerController(GameManagerVue gmv)
     {
         this.gameManagerVue = gmv;
@@ -28,7 +20,26 @@ public class GameManagerController {
         return gameManager;
     }
 
-    public void GameBoardChoice()
+
+    public void playersSetup()
+    {
+        int realPlayersAmount = gameManagerVue.realPlayersAmountChoice();
+        int virtualPlayersAmount = 0;
+
+        if(realPlayersAmount != 3)
+        {
+            virtualPlayersAmount = gameManagerVue.virtualPlayersAmountChoice();
+
+            while( realPlayersAmount + virtualPlayersAmount > 3  || realPlayersAmount + virtualPlayersAmount < 2)
+            {
+                virtualPlayersAmount = gameManagerVue.badInputVirtualPlayersAmount();
+            }
+        }
+        gameManager.playersSetUp(realPlayersAmount, virtualPlayersAmount);
+    }
+
+
+    public void gameBoardChoice()
     {
         boolean valueOkay = false;
         int choix = -1;
@@ -40,6 +51,7 @@ public class GameManagerController {
 
         gameManager.setBoard(choix);
     }
+
 
     public void setGameManager()
     {
