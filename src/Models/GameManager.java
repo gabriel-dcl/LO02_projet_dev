@@ -10,14 +10,38 @@ public abstract class GameManager extends Observable {
     protected Board currentBoard;
     protected Visitor visitor;
     protected int maxCards;
+    protected Card cardOnPlay;
+    protected int index;
+
+    public Card getCardOnPlay() {
+        return cardOnPlay;
+    }
 
     int realPlayersAmount;
     int virtualPlayersAmount = 0;
-    boolean test;
+
+    public Board getCurrentBoard() {
+        return currentBoard;
+    }
+
+    public Player[] getPlayers() {
+
+        return players;
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        this.setChanged();
+        super.notifyObservers(arg);
+    }
+
+    public int getIndex() {
+        return index;
+    }
 
     public GameManager()
     {
-
+        index = 0;
         sc = new Scanner(System.in);
         visitor = new Visitor();
     }
@@ -33,7 +57,7 @@ public abstract class GameManager extends Observable {
 
        for(index = 0; index < realPlayersAmount; index++)
        {
-           players[index] = new Player(currentBoard.getNewRandomCard());
+           players[index] = new Player(currentBoard.getNewRandomCard(), this);
 
        }
 

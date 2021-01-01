@@ -6,9 +6,12 @@ import enums.State;
 
 import java.util.*;
 
-public abstract class Board {
+public abstract class Board extends Observable {
     protected GameManager currentGameManager;
     protected Visitor visitor;
+    protected HashMap<Coordinate, Card> currentCardsOnBoard;
+    protected Stack<Card> remainingCards;
+    protected Card[] allPossibleCard;
 
     public Map<Coordinate, Card> getCurrentCardsOnBoard() {
         return currentCardsOnBoard;
@@ -18,9 +21,34 @@ public abstract class Board {
         this.currentCardsOnBoard = currentCardsOnBoard;
     }
 
-    protected HashMap<Coordinate, Card> currentCardsOnBoard;
-    protected Stack<Card> remainingCards;
-    protected Card[] allPossibleCard;
+    public void shuffle()
+    {
+        Stack<Card> cards = new Stack<Card>();
+
+
+        Iterator entries = this.currentCardsOnBoard.entrySet().iterator();
+        while (entries.hasNext())
+        {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+
+            Coordinate key = (Coordinate) thisEntry.getKey();
+            Object value = thisEntry.getValue();
+
+            cards.add(this.getCardByCoordinate(key));
+            entries.remove();
+        }
+
+        for (Card currentCard: cards )
+        {
+            Coordinate currentCardsPosition = new Coordinate(-1, -1);
+            do {
+                currentCardsPosition.setX((int)(Math.random() * 12));
+                currentCardsPosition.setY((int)(Math.random() * 12));
+            }while (!this.isPlaceAvailable(currentCardsPosition) || !this.isCoordinateCloseEnough(currentCardsPosition) );
+
+            this.addCardOnBoard(currentCard, currentCardsPosition);
+        }
+    }
 
 
     public Board()

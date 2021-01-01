@@ -1,32 +1,39 @@
 package Models;
 
+import enums.Events;
+
+import javax.swing.tree.ExpandVetoException;
+import java.util.Observable;
 import java.util.Scanner;
-public class Player{
+
+
+public class Player extends Observable {
 
 
     //Variables initialisation
-
     private boolean isReal;
     private Card victoryCard;
     private int nbPoints;
     private Visitor visitor;
     private Strategy strategy;
     protected Scanner sc;
+    private GameManager gameManager;
+    boolean hasShuffled;
 
-
-    public Player(Card victoryCard)
+    public Player(Card victoryCard, GameManager gameManager)
     {
+        hasShuffled = false;
             sc = new Scanner(System.in);
-            strategy = new realPlayer();
             this.victoryCard = victoryCard;
+            this.gameManager = gameManager;
     }
 
     public Player(int difficulty, Card victoryCard, Visitor visitor)
     {
         if(difficulty == 0)
-            strategy = new virtualEasy(visitor);
+            this.strategy = new VirtualEasy(visitor);
         else
-            strategy = new virtualHard(visitor, victoryCard);
+            this.strategy = new VirtualHard(visitor, victoryCard);
 
         this.victoryCard = victoryCard;
         this.visitor = visitor;
@@ -57,26 +64,56 @@ public class Player{
         return false;
     }
 
+    public void moveCard(Board currentBoard)
+    {
 
-/*    public Models.Board moveCard(Models.Card newCard, Models.Board currentBoard) {
-
-        return;
+        if(this.strategy != null)
+            strategy.moveCard(currentBoard);
+        else
+        {gameManager.notifyObservers( Events.AskForCardToMove );
+        }
     }
 
-    public Models.Board placeNewCard(Models.Card newCard, Models.Board currentBoard) {
+    public void placeNewCard(Card newCard, Board currentBoard)
+    {
+        if(this.strategy != null)
+            strategy.placeNewCard(newCard, currentBoard);
+        else {
+            gameManager.notifyObservers( Events.AskForPositionNewCard );
+        }
     }
 
-    public Models.Board alternateCards(Models.Card card1, Models.Card Card2) {
+    public void setHasShuffled(boolean hasShuffled) {
+        this.hasShuffled = hasShuffled;
     }
 
-    public void showVictoryCard() {
-    }
+    public void shuffle(Board currentBoard)
+    {
+        if(this.hasShuffled)
+            return;
+
+        if(this.strategy != null)
+            this.hasShuffled = strategy.shuffle(currentBoard);
+        else
+            gameManager.notifyObservers(Events.AskForShuffle);
 
 
-    public void accept(Models.Visitor visitor) {
     }
 
-    public void changeVictoryCard(Models.Card newCard) {
+    public void alternateCards(Board currentBoard)
+    {
+        if(this.strategy != null)
+            strategy.alternateCards(currentBoard);
+        else {
+            gameManager.notifyObservers(Events.AskForCardsToAlternate);
+        }
     }
-*/
+
+    public void showVictoryCard()
+    {
+        if(this.strategy != null)
+            return;
+
+        gameManager.notifyObservers(Events.AskToShowVictoryCard);
+    }
 }

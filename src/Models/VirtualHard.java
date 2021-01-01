@@ -5,17 +5,15 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class virtualHard implements Strategy {
+public class VirtualHard implements Strategy {
 	Visitor visitor;
 	Card victoryCard;
-	boolean hasShuffled;
 	boolean hasChangedVictoryCard;
 
-	public virtualHard(Visitor visitor, Card victoryCard)
+	public VirtualHard(Visitor visitor, Card victoryCard)
 	{
 		this.visitor = visitor;
 		this.victoryCard = victoryCard;
-		hasShuffled = false;
 		hasChangedVictoryCard = false;
 	}
 
@@ -64,50 +62,23 @@ public class virtualHard implements Strategy {
 
 	}
 
-	public void shuffle(Board currentBoard) {
-		if(hasShuffled)
-			return;
+	public boolean shuffle(Board currentBoard) {
 
 		if(currentBoard.currentCardsOnBoard.size() < 7)
-			return;
+			return false;
 
 		if(this.visitor.getPointsTotalRegardingVictoryCard(victoryCard) > 8)
-			return;
+			return false;
 
 		int randomNum = ThreadLocalRandom.current().nextInt(0, 100);
 		if(randomNum > 60)
 		{
-			Stack<Card> cards = new Stack<Card>();
+			currentBoard.shuffle();
 
 
-			Iterator entries = currentBoard.currentCardsOnBoard.entrySet().iterator();
-			while (entries.hasNext())
-			{
-				Map.Entry thisEntry = (Map.Entry) entries.next();
-
-				Coordinate key = (Coordinate) thisEntry.getKey();
-				Object value = thisEntry.getValue();
-
-				cards.add(currentBoard.getCardByCoordinate(key));
-				entries.remove();
-			}
-
-
-			for (Card currentCard: cards )
-			{
-				Coordinate currentCardsPosition = new Coordinate(-1, -1);
-				do {
-					currentCardsPosition.setX((int)(Math.random() * 12));
-					currentCardsPosition.setY((int)(Math.random() * 12));
-				}while (!currentBoard.isPlaceAvailable(currentCardsPosition) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition) );
-
-				currentBoard.addCardOnBoard(currentCard, currentCardsPosition);
-			}
-
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SHUFFLE");
-			hasShuffled = true;
+		return true;
 		}
-
+		return false;
 	}
 
 

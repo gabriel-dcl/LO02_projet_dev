@@ -8,29 +8,32 @@ public class  GameManagerChaos extends GameManager {
 
 		while (currentBoard.currentCardsOnBoard.size() < maxCards )
 		{
-			for (int i = 0; i < players.length; i++) {
+			for (index = 0; index < players.length; index++) {
 
-				System.out.println("Joueur " + (i + 1));
-				Card cardOnPlay = this.currentBoard.getCard();
+				System.out.println("Joueur " + (index + 1));
+				cardOnPlay = this.currentBoard.getCard();
 
-				if (this.players[i].changeVictoryCard(currentBoard))
-					System.out.println("Joueur " + (i + 1) + "A change de Victory Models.Card ! ");
+				if (this.players[index].changeVictoryCard(currentBoard))
+					System.out.println("Joueur " + (index + 1) + "A change de Victory Models.Card ! ");
+
 
 				if(!isSecondTime)
 				{
-					this.players[i].getStrategy().alternateCards(currentBoard);
+					this.players[index].alternateCards(currentBoard);
 				}
+
 
 				if (!isFirstTime)
 				{
-					this.players[i].getStrategy().moveCard(this.currentBoard);
+					this.players[index].moveCard(this.currentBoard);
 					isSecondTime = false;
 				}
 
-				this.players[i].getStrategy().showVictoryCard(this.players[i].getVictoryCard());
-				this.players[i].getStrategy().shuffle(currentBoard);
+				this.players[index].showVictoryCard();
 
-				this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
+				this.players[index].shuffle(currentBoard);
+
+				this.players[index].placeNewCard(cardOnPlay, this.currentBoard);
 
 				currentBoard.showBoard();
 

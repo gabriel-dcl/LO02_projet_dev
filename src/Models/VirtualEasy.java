@@ -5,15 +5,13 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class virtualEasy implements Strategy {
+public class VirtualEasy implements Strategy {
 
     Visitor visitor;
-    boolean hasShuffled;
     boolean hasChangedVictoryCard;
 
-    public virtualEasy()
+    public VirtualEasy()
     {
-        hasShuffled = false;
         hasChangedVictoryCard = false;
     }
 
@@ -25,14 +23,13 @@ public class virtualEasy implements Strategy {
    return 0;
     }
 
-    public virtualEasy(Visitor visitor)
+    public VirtualEasy(Visitor visitor)
     {
         this.visitor = visitor;
     }
 
     public void placeNewCard(Card newCard, Board currentBoard)
     {
-
         Coordinate currentCardsPosition = new Coordinate(-1, -1);
 
         do
@@ -46,44 +43,18 @@ public class virtualEasy implements Strategy {
     }
     
 
-    public void shuffle(Board currentBoard) {
-        if(hasShuffled)
-            return;
+    public boolean shuffle(Board currentBoard) {
+
 
         int randomNum = ThreadLocalRandom.current().nextInt(0, 100);
+
         if(randomNum > 80)
         {
-            Stack<Card> cards = new Stack<Card>();
+            currentBoard.shuffle();
 
-
-            Iterator entries = currentBoard.currentCardsOnBoard.entrySet().iterator();
-            while (entries.hasNext())
-            {
-                Map.Entry thisEntry = (Map.Entry) entries.next();
-
-                Coordinate key = (Coordinate) thisEntry.getKey();
-                Object value = thisEntry.getValue();
-
-                cards.add(currentBoard.getCardByCoordinate(key));
-                entries.remove();
-            }
-
-
-            for (Card currentCard: cards )
-            {
-                Coordinate currentCardsPosition = new Coordinate(-1, -1);
-                do {
-                    currentCardsPosition.setX((int)(Math.random() * 12));
-                    currentCardsPosition.setY((int)(Math.random() * 12));
-                }while (!currentBoard.isPlaceAvailable(currentCardsPosition) || !currentBoard.isCoordinateCloseEnough(currentCardsPosition) );
-
-                currentBoard.addCardOnBoard(currentCard, currentCardsPosition);
-            }
-
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SHUFFLE");
-            hasShuffled = true;
+            return true;
         }
-
+        return false;
     }
 
     public void accept(Visitor visitor) {

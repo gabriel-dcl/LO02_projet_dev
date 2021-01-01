@@ -4,20 +4,25 @@ import Models.GameManager;
 import Models.GameManagerChaos;
 import Models.GameManagerClassic;
 import Models.GameManagerQuick;
-import Vues.console.GameManagerVue;
+import Vues.console.ConsoleVue;
 
-public class GameManagerController {
+public class GameController {
 
     private GameManager gameManager;
-    private GameManagerVue gameManagerVue;
+    private ConsoleVue gameManagerVue;
 
-    public GameManagerController(GameManagerVue gmv)
+    public GameController(ConsoleVue gmv)
     {
         this.gameManagerVue = gmv;
     }
 
     public GameManager getGameManager() {
         return gameManager;
+    }
+
+    public void game()
+    {
+
     }
 
     public void occure()
@@ -29,6 +34,7 @@ public class GameManagerController {
 
         gameManagerVue.setGmc(this);
         gameManager.addObserver(gameManagerVue);
+        gameManager.getCurrentBoard().addObserver(gameManagerVue);
 
         gameManager.game();
     }

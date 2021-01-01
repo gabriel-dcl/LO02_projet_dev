@@ -1,8 +1,6 @@
 package Models;
 
 public class GameManagerClassic  extends GameManager {
-   
-
 
     public void game() {
 
@@ -11,17 +9,17 @@ public class GameManagerClassic  extends GameManager {
 
     	while ( currentBoard.currentCardsOnBoard.size() < 15 )
     	{
-			for (int i = 0; i < players.length; i++) {
-				System.out.println("Joueur " + (i + 1));
+			for (index = 0; index < players.length; index++) {
+				System.out.println("Joueur " + (index + 1));
 
-				Card cardOnPlay = this.currentBoard.getCard();
+				cardOnPlay = this.currentBoard.getCard();
 
-				this.players[i].getStrategy().showVictoryCard(this.players[i].getVictoryCard());
+				this.players[index].showVictoryCard();
 				if (!isFirstTime)
 				{
-					 this.players[i].getStrategy().moveCard(this.currentBoard);
+					 this.players[index].moveCard(this.currentBoard);
 				}
-					this.players[i].getStrategy().placeNewCard(cardOnPlay, this.currentBoard);
+					this.players[index].placeNewCard(cardOnPlay, this.currentBoard);
 
 				currentBoard.showBoard();
 				isFirstTime = false;
