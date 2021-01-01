@@ -18,20 +18,12 @@ public class Main {
         GameManagerVue gmv = new GameManagerVue();
         GameManagerController gmc = new GameManagerController(gmv);
 
-        gmc.setGameManager();
+      //  GameManager manager = gmc.getGameManager();
 
-        GameManagerClassic manager = (GameManagerClassic)gmc.getGameManager();
-
-        gmv.setGmc(gmc);
-
-        manager.addObserver(gmv);
-
-        gmc.gameBoardChoice();
-        gmc.playersSetup();
+        gmc.occure();
 
 
       //  manager.preGame();
-
        // manager.game();
         // manager.gameOver();
     }

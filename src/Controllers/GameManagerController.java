@@ -20,6 +20,31 @@ public class GameManagerController {
         return gameManager;
     }
 
+    public void occure()
+    {
+        this.setGameManager();
+        this.gameBoardChoice();
+        this.difficultyChoice();
+        this.playersSetup();
+
+        gameManagerVue.setGmc(this);
+        gameManager.addObserver(gameManagerVue);
+
+        gameManager.game();
+    }
+
+    public void difficultyChoice()
+    {
+        int difficultyChoice = -1;
+
+        difficultyChoice = gameManagerVue.difficultyChoice();
+
+        while(difficultyChoice != 1 && difficultyChoice !=0)
+        {
+            difficultyChoice = gameManagerVue.badInputDifficulty();
+        }
+    }
+
 
     public void playersSetup()
     {
@@ -35,6 +60,7 @@ public class GameManagerController {
                 virtualPlayersAmount = gameManagerVue.badInputVirtualPlayersAmount();
             }
         }
+
         gameManager.playersSetUp(realPlayersAmount, virtualPlayersAmount);
     }
 
@@ -70,10 +96,4 @@ public class GameManagerController {
         }
 
     }
-
-
-
-
-
-
 }

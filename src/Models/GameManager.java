@@ -29,6 +29,21 @@ public abstract class GameManager extends Observable {
 
        players = new Player[this.realPlayersAmount + this.virtualPlayersAmount];
 
+       int index = 0;
+
+       for(index = 0; index < realPlayersAmount; index++)
+       {
+           players[index] = new Player(currentBoard.getNewRandomCard());
+
+       }
+
+       for (int i = 0; i < this.virtualPlayersAmount; i++)
+       {
+
+           players[index + i] = new Player(difficulty, currentBoard.getNewRandomCard(), visitor);
+
+       }
+
        if(this.realPlayersAmount + this.virtualPlayersAmount == 3)
            this.maxCards = 14;
        else
@@ -51,46 +66,6 @@ public abstract class GameManager extends Observable {
 
         }
     }
-
-   /*     int choix = 0;
-        System.out.print("Dans quelle difficulty voulez-vous jouer (0 ou 1): \t");
-
-        try {
-            difficulty  = sc.nextInt();
-        }
-        catch(Exception e) {
-            sc.next();
-            difficulty  = 12;
-        }
-
-        while(difficulty != 0 && difficulty != 1)
-        {
-            System.out.println("Saisie invalide. Recommencez.");
-            try {
-                difficulty  = sc.nextInt();
-            }
-            catch(Exception e) {
-                sc.next();
-                difficulty  = 12;
-            }
-        }
-
-        int index = 0;
-
-        for(index = 0; index < compteur_joueur; index++)
-        {
-            players[index] = new Player(currentBoard.getNewRandomCard());
-
-        }
-
-        for (int i = 0; i < compteurJoueurVirtuels; i++)
-        {
-
-            players[index + i] = new Player(difficulty, currentBoard.getNewRandomCard(), visitor);
-
-        }*/
-
-
 
     public abstract void game();
 

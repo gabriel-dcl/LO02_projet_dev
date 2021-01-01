@@ -11,6 +11,24 @@ public class GameManagerVue implements Observer {
     Scanner sc;
     private GameManagerController gmc;
 
+    public int difficultyChoice()
+    {
+
+        int difficulty = 0;
+        System.out.print("Dans quelle difficulty voulez-vous jouer (0 ou 1): \t");
+
+        try {
+            difficulty  = sc.nextInt();
+        }
+        catch(Exception e) {
+            sc.next();
+            difficulty  = 12;
+        }
+
+        return difficulty;
+    }
+
+
     public int virtualPlayersAmountChoice() {
         int virtualPlayersAmount;
 
@@ -25,6 +43,22 @@ public class GameManagerVue implements Observer {
         }
 
         return virtualPlayersAmount;
+    }
+
+    public int badInputDifficulty()
+    {
+        int difficulty = 0;
+        System.out.print("Saisie incorrecte, recommencez. 1 | 0 \t");
+
+        try {
+            difficulty  = sc.nextInt();
+        }
+        catch(Exception e) {
+            sc.next();
+            difficulty  = 12;
+        }
+
+        return difficulty;
     }
 
     public int badInputVirtualPlayersAmount()
