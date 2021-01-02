@@ -120,30 +120,7 @@ public abstract class Board extends Observable {
         visitor.visit(this);
     }
 
-    public void showBoard()
-    {
-        for (int i = 0; i < 12; i++)
-        {
-            for (int j = 0; j < 12; j++)
-            {
-                boolean hasFound = false;
 
-                for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet())
-                {
-                    if (entry.getKey().equals( new Coordinate(i, j)) )
-                    {
-                        Card tempCard = this.getCardByCoordinate(entry.getKey());
-                        System.out.print(tempCard.toString());
-                        hasFound = true;
-                    }
-                }
-                  if(!hasFound)
-                      System.out.print("  *  ");
-
-            }
-            System.out.println();
-        }
-    }
 
 
     public void findClosestCard(Coordinate wantedPosition)

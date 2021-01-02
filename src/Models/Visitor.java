@@ -13,6 +13,30 @@ public class Visitor {
     private HashMap<State, Integer> PointsByState;
 
 
+    public HashMap<Color, Integer> getPointsByColor() {
+        return PointsByColor;
+    }
+
+    public void setPointsByColor(HashMap<Color, Integer> pointsByColor) {
+        PointsByColor = pointsByColor;
+    }
+
+    public HashMap<Form, Integer> getPointsByForm() {
+        return PointsByForm;
+    }
+
+    public void setPointsByForm(HashMap<Form, Integer> pointsByForm) {
+        PointsByForm = pointsByForm;
+    }
+
+    public HashMap<State, Integer> getPointsByState() {
+        return PointsByState;
+    }
+
+    public void setPointsByState(HashMap<State, Integer> pointsByState) {
+        PointsByState = pointsByState;
+    }
+
     public Visitor()
     {
         PointsByColor = new HashMap<Color, Integer>();
@@ -260,18 +284,7 @@ public class Visitor {
     public void exploreBoard(Board board) {
     }
 
-    public void over()
-    {
-        System.out.println("============================ GAME OVER ========================");
-        System.out.println("Points Triangular " +  PointsByForm.get(Form.TRIANGULAR));
-        System.out.println("Points Rectangular " + PointsByForm.get(Form.RECTANGULAR));
-        System.out.println("Points Circle " +  PointsByForm.get(Form.CIRCLE));
-        System.out.println("Points Blue " + PointsByColor.get(Color.BLUE));
-        System.out.println("Points Green " + PointsByColor.get(Color.GREEN));
-        System.out.println("Points Red " + PointsByColor.get(Color.RED));
-        System.out.println("Points Empty " + PointsByState.get(State.EMPTY));
-        System.out.println("Points Fill " + PointsByState.get(State.FILL));
-    }
+
 
     public int getPointsTotalRegardingVictoryCard(Card card)
     {

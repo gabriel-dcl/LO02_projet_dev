@@ -1,6 +1,10 @@
 package Models;
 
+import enums.Events;
+
 public class  GameManagerChaos extends GameManager {
+
+
 	public void game() {
 
 		boolean isFirstTime = true;
@@ -10,33 +14,31 @@ public class  GameManagerChaos extends GameManager {
 		{
 			for (index = 0; index < players.length; index++) {
 
-				System.out.println("Joueur " + (index + 1));
+				this.notifyObservers(Events.ShowCurrentPlayer);
 				cardOnPlay = this.currentBoard.getCard();
 
-				if (this.players[index].changeVictoryCard(currentBoard))
-					System.out.println("Joueur " + (index + 1) + "A change de Victory Models.Card ! ");
 
+				this.players[index].showVictoryCard(this);
+				this.players[index].askToChangeVictoryCard(currentBoard, this);
 
 				if(!isSecondTime)
 				{
-					this.players[index].alternateCards(currentBoard);
+					this.players[index].alternateCards(currentBoard, this);
 				}
 
 
 				if (!isFirstTime)
 				{
-					this.players[index].moveCard(this.currentBoard);
+					this.players[index].moveCard(this.currentBoard, this);
 					isSecondTime = false;
 				}
 
-				this.players[index].showVictoryCard();
 
-				this.players[index].shuffle(currentBoard);
+				this.players[index].shuffle(currentBoard, this);
 
-				this.players[index].placeNewCard(cardOnPlay, this.currentBoard);
+				this.players[index].placeNewCard(cardOnPlay, this.currentBoard, this);
 
-				currentBoard.showBoard();
-
+				this.notifyObservers(Events.ShowBoard);
 				isFirstTime = false;
 
 				if(currentBoard.currentCardsOnBoard.size() ==  maxCards)
@@ -52,7 +54,7 @@ public class  GameManagerChaos extends GameManager {
 		}
 
 		currentBoard.accept(visitor);
-		visitor.over();
+		this.notifyObservers(Events.GameOver);
 	}
 	
 }

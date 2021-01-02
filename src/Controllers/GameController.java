@@ -70,7 +70,6 @@ public class GameController {
         gameManager.playersSetUp(realPlayersAmount, virtualPlayersAmount);
     }
 
-
     public void gameBoardChoice()
     {
         boolean valueOkay = false;
@@ -83,7 +82,6 @@ public class GameController {
 
         gameManager.setBoard(choix);
     }
-
 
     public void setGameManager()
     {
@@ -100,6 +98,5 @@ public class GameController {
             default : this.gameManager = new GameManagerClassic();
                 break;
         }
-
     }
 }

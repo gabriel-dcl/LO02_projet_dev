@@ -2,8 +2,12 @@ package Vues.console;
 
 import Controllers.GameController;
 import Models.*;
+import enums.Color;
 import enums.Events;
+import enums.Form;
+import enums.State;
 
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -13,6 +17,63 @@ public class ConsoleVue implements Observer {
     Scanner sc;
     private GameController gmc;
 
+    public void showCurrentPlayer()
+    {
+        System.out.println("=====> Joueur " + ( this.gmc.getGameManager().getIndex() + 1));
+    }
+
+    public void changeVictoryCard()
+    {
+        int choix = -1;
+        System.out.println("Voulez vous changer de Victory Card ? 1 | 0");
+        try{
+            choix = sc.nextInt();
+        } catch(Exception e)
+        {
+            choix = -1;
+        }
+
+        while(choix != 1 && choix != 0)
+        {
+            System.out.println("Saisie incorrecte, recommencez : ");
+            try{
+                choix = sc.nextInt();
+            } catch(Exception e)
+            {
+                choix = -1;
+            }
+        }
+
+        if(choix == 1)
+        {
+            gmc.getGameManager().getPlayers()[gmc.getGameManager().getIndex()].changeVictoryCard(gmc.getGameManager().getCurrentBoard());
+            this.annoncePlayerChangeVictoryCard();
+        }
+    }
+
+    public void showBoard()
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            for (int j = 0; j < 12; j++)
+            {
+                boolean hasFound = false;
+
+                for (Map.Entry<Coordinate, Card> entry : gmc.getGameManager().getCurrentBoard().getCurrentCardsOnBoard().entrySet())
+                {
+                    if (entry.getKey().equals( new Coordinate(i, j)) )
+                    {
+                        Card tempCard = gmc.getGameManager().getCurrentBoard().getCardByCoordinate(entry.getKey());
+                        System.out.print(tempCard.toString());
+                        hasFound = true;
+                    }
+                }
+                if(!hasFound)
+                    System.out.print("   *   ");
+            }
+            System.out.println();
+        }
+    }
 
     public void placeNewCard(Card newCard, Board currentBoard)
     {
@@ -39,13 +100,11 @@ public class ConsoleVue implements Observer {
             Coordinate position = askPlayerCoordinates(currentBoard, false);
 
             Coordinate currentCard =  currentBoard.findEqualsCoordinate(position);
-
             //récupération de la carte à bouger
+
             cardToMove = currentBoard.getCurrentCardsOnBoard().get(currentCard);
 
             currentBoard.getCurrentCardsOnBoard().remove(currentCard);
-
-
 
             position = askPlayerCoordinates(currentBoard, true);
 
@@ -90,16 +149,13 @@ public class ConsoleVue implements Observer {
                 else
                     exists = false;
             }
-
         }
-
         return position;
     }
 
 
     public int difficultyChoice()
     {
-
         int difficulty = 0;
         System.out.print("Dans quelle difficulty voulez-vous jouer (0 ou 1): \t");
 
@@ -208,6 +264,7 @@ public class ConsoleVue implements Observer {
         System.out.println("=============================================================== ");
         System.out.println("======================= SHAPE UP ! ============================ ");
         System.out.println("=============================================================== ");
+
         System.out.println("\n \n \n Bonjour ! Quel mode de jeu voulez-vous jouer : ");
         System.out.println("1 - Classic \n2 - Quick \n3 - Chaos");
         System.out.print("Votre selection : \t");
@@ -296,14 +353,10 @@ public class ConsoleVue implements Observer {
         }
     }
 
-
     public void alternateCards(Board currentBoard)
     {
-
-
         //Affichage du board pour savoir où placer la carte
-        currentBoard.showBoard();
-
+        this.showBoard();
 
         boolean exists = true;
         Coordinate position1 = new Coordinate(-1, -1);
@@ -333,7 +386,6 @@ public class ConsoleVue implements Observer {
             System.out.println("Y ?");
             position1.setY(sc.nextInt());
 
-            // exists=this.taken(position1, currentBoard);
             if(!exists)
                 System.out.println("Il n'y a pas de carte ici ! Réessayez");
         }
@@ -341,12 +393,33 @@ public class ConsoleVue implements Observer {
         temp = currentBoard.getCurrentCardsOnBoard().get(position1);
         currentBoard.getCurrentCardsOnBoard().put(position1, currentBoard.getCurrentCardsOnBoard().get(position2));
         currentBoard.getCurrentCardsOnBoard().put(position2, temp);
-
     }
+
+    public void annoncePlayerChangeVictoryCard()
+    {
+        System.out.println("!!! Le joueur " + (gmc.getGameManager().getIndex()  + 1)  + " a change de Victory Card" );
+    }
+
+
+
+    public void over()
+    {
+        System.out.println("============================ GAME OVER ========================");
+        System.out.println("Points Triangular " +  gmc.getGameManager().getVisitor().getPointsByForm().get(Form.TRIANGULAR));
+        System.out.println("Points Rectangular " + gmc.getGameManager().getVisitor().getPointsByForm().get(Form.RECTANGULAR));
+        System.out.println("Points Circle " +  gmc.getGameManager().getVisitor().getPointsByForm().get(Form.CIRCLE));
+        System.out.println("Points Blue " + gmc.getGameManager().getVisitor().getPointsByColor().get(Color.BLUE));
+        System.out.println("Points Green " + gmc.getGameManager().getVisitor().getPointsByColor().get(Color.GREEN));
+        System.out.println("Points Red " + gmc.getGameManager().getVisitor().getPointsByColor().get(Color.RED));
+        System.out.println("Points Empty " + gmc.getGameManager().getVisitor().getPointsByState().get(State.EMPTY));
+        System.out.println("Points Fill " + gmc.getGameManager().getVisitor().getPointsByState().get(State.FILL));
+    }
+
 
 
     @Override
     public void update(Observable o, Object arg) {
+
         if(arg instanceof Events && o instanceof GameManager)
         {
             switch ((Events) arg)
@@ -356,9 +429,12 @@ public class ConsoleVue implements Observer {
                 case AskToShowVictoryCard: this.showVictoryCard( ((GameManager) o).getPlayers()[((GameManager) o).getIndex()].getVictoryCard() );
                 case AskForShuffle: this.shuffle(((GameManager) o).getCurrentBoard(), ((GameManager) o).getPlayers()[((GameManager) o).getIndex()] );
                 case AskForCardsToAlternate: this.alternateCards(((GameManager) o).getCurrentBoard()); break;
+                case ShowBoard: this.showBoard(); break;
+                case ShowCurrentPlayer: this.showCurrentPlayer(); break;
+                case AskToChangeVictoryCard: this.changeVictoryCard(); break;
+                case AnnoncePlayerChangeVictoryCard: this.annoncePlayerChangeVictoryCard(); break;
+                case GameOver: this.over(); break;
             }
         }
-
-
     }
 }

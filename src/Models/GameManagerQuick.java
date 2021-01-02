@@ -1,5 +1,7 @@
 package Models;
 
+import enums.Events;
+
 public class GameManagerQuick extends GameManager {
     @Override
     public void game() {
@@ -8,23 +10,22 @@ public class GameManagerQuick extends GameManager {
 
 		while (currentBoard.currentCardsOnBoard.size() < maxCards )
 		{
-			for (index = 0; index < players.length; index++) {
-				System.out.println("Joueur " + (index + 1));
+			for (index = 0; index < players.length; index++)
+			{
+				this.notifyObservers(Events.ShowCurrentPlayer);
 				cardOnPlay = this.currentBoard.getCard();
 
-				this.players[index].showVictoryCard();
+				this.players[index].showVictoryCard(this);
 
-				this.players[index].shuffle(currentBoard);
+				this.players[index].shuffle(currentBoard, this);
 
-
-				this.players[index].placeNewCard(cardOnPlay, this.currentBoard);
+				this.players[index].placeNewCard(cardOnPlay, this.currentBoard, this);
 
 				cardOnPlay = this.currentBoard.getCard();
-				this.players[index].placeNewCard(cardOnPlay, this.currentBoard);
+				this.players[index].placeNewCard(cardOnPlay, this.currentBoard, this);
 
+				this.notifyObservers(Events.ShowBoard);
 
-				currentBoard.showBoard();
-				isFirstTime = false;
 
 				if(currentBoard.currentCardsOnBoard.size() ==  maxCards)
 				{
@@ -39,7 +40,7 @@ public class GameManagerQuick extends GameManager {
 		}
 
 		currentBoard.accept(visitor);
-		visitor.over();
+		this.notifyObservers(Events.GameOver);
 	}
 }
 

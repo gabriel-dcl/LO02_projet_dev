@@ -17,7 +17,6 @@ public class Player extends Observable {
     private Visitor visitor;
     private Strategy strategy;
     protected Scanner sc;
-    private GameManager gameManager;
     boolean hasShuffled;
 
     public Player(Card victoryCard, GameManager gameManager)
@@ -25,7 +24,6 @@ public class Player extends Observable {
         hasShuffled = false;
             sc = new Scanner(System.in);
             this.victoryCard = victoryCard;
-            this.gameManager = gameManager;
     }
 
     public Player(int difficulty, Card victoryCard, Visitor visitor)
@@ -47,34 +45,45 @@ public class Player extends Observable {
 		return victoryCard;
 	}
 
-    public boolean changeVictoryCard(Board currentBoard)
+	public void changeVictoryCard(Board currentBoard)
     {
-        if(currentBoard.remainingCards.size() == 0)
-            return false;
-
-
-      boolean ask = this.strategy.changeVictoryCard(currentBoard);
-            if(ask)
-            {
-                Card tempCard = this.victoryCard;
-                this.victoryCard = currentBoard.getNewRandomCard();
-                currentBoard.remainingCards.add(tempCard);
-                return true;
-            }
-        return false;
+        Card tempCard = this.victoryCard;
+        this.victoryCard = currentBoard.getNewRandomCard();
+        currentBoard.remainingCards.add(tempCard);
     }
 
-    public void moveCard(Board currentBoard)
+    public void askToChangeVictoryCard(Board currentBoard, GameManager gameManager)
     {
+        if(currentBoard.remainingCards.size() == 0)
+            return ;
 
+        if(this.strategy != null)
+        {
+            boolean ask = this.strategy.changeVictoryCard(currentBoard);
+            if(ask)
+            {
+                this.changeVictoryCard(currentBoard);
+                gameManager.notifyObservers(Events.AnnoncePlayerChangeVictoryCard);
+                return ;
+            }
+        } else
+        {
+            gameManager.notifyObservers(Events.AskToChangeVictoryCard);
+        }
+        return ;
+    }
+
+    public void moveCard(Board currentBoard, GameManager gameManager)
+    {
         if(this.strategy != null)
             strategy.moveCard(currentBoard);
         else
-        {gameManager.notifyObservers( Events.AskForCardToMove );
+        {
+            gameManager.notifyObservers( Events.AskForCardToMove );
         }
     }
 
-    public void placeNewCard(Card newCard, Board currentBoard)
+    public void placeNewCard(Card newCard, Board currentBoard, GameManager gameManager)
     {
         if(this.strategy != null)
             strategy.placeNewCard(newCard, currentBoard);
@@ -87,7 +96,7 @@ public class Player extends Observable {
         this.hasShuffled = hasShuffled;
     }
 
-    public void shuffle(Board currentBoard)
+    public void shuffle(Board currentBoard, GameManager gameManager)
     {
         if(this.hasShuffled)
             return;
@@ -100,7 +109,7 @@ public class Player extends Observable {
 
     }
 
-    public void alternateCards(Board currentBoard)
+    public void alternateCards(Board currentBoard, GameManager gameManager)
     {
         if(this.strategy != null)
             strategy.alternateCards(currentBoard);
@@ -109,7 +118,7 @@ public class Player extends Observable {
         }
     }
 
-    public void showVictoryCard()
+    public void showVictoryCard(GameManager gameManager)
     {
         if(this.strategy != null)
             return;

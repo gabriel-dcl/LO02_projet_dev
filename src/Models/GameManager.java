@@ -24,6 +24,10 @@ public abstract class GameManager extends Observable {
         return currentBoard;
     }
 
+    public Visitor getVisitor() {
+        return visitor;
+    }
+
     public Player[] getPlayers() {
 
         return players;

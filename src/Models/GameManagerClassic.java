@@ -1,5 +1,7 @@
 package Models;
 
+import enums.Events;
+
 public class GameManagerClassic  extends GameManager {
 
     public void game() {
@@ -10,18 +12,18 @@ public class GameManagerClassic  extends GameManager {
     	while ( currentBoard.currentCardsOnBoard.size() < 15 )
     	{
 			for (index = 0; index < players.length; index++) {
-				System.out.println("Joueur " + (index + 1));
 
+				this.notifyObservers(Events.ShowCurrentPlayer);
 				cardOnPlay = this.currentBoard.getCard();
 
-				this.players[index].showVictoryCard();
+				this.players[index].showVictoryCard(this);
 				if (!isFirstTime)
 				{
-					 this.players[index].moveCard(this.currentBoard);
+					 this.players[index].moveCard(this.currentBoard, this);
 				}
-					this.players[index].placeNewCard(cardOnPlay, this.currentBoard);
+					this.players[index].placeNewCard(cardOnPlay, this.currentBoard, this);
 
-				currentBoard.showBoard();
+				this.notifyObservers(Events.ShowBoard);
 				isFirstTime = false;
 
 				if(currentBoard.currentCardsOnBoard.size() ==  maxCards)
@@ -36,9 +38,8 @@ public class GameManagerClassic  extends GameManager {
 			}
 		}
 
-
     	currentBoard.accept(visitor);
-    	visitor.over();
+    	this.notifyObservers(Events.GameOver);
 
 
     }
