@@ -75,6 +75,7 @@ public class ConsoleVue implements Observer {
         }
     }
 
+
     public void placeNewCard(Card newCard, Board currentBoard)
     {
         Scanner sc = new Scanner(System.in);
@@ -82,7 +83,7 @@ public class ConsoleVue implements Observer {
         System.out.println("Voici la carte a poser : /n" + newCard.toString());
 
         Coordinate position = askPlayerCoordinates(currentBoard, true);
-        currentBoard.addCardOnBoard(newCard, position);
+        gmc.addCardOnBoard(newCard, position);
     }
 
     public void moveCard(Board currentBoard)
@@ -99,17 +100,17 @@ public class ConsoleVue implements Observer {
 
             Coordinate position = askPlayerCoordinates(currentBoard, false);
 
-            Coordinate currentCard =  currentBoard.findEqualsCoordinate(position);
+            Coordinate currentCard =  gmc.findEqualsCoordinate(position);
             //récupération de la carte à bouger
 
-            cardToMove = currentBoard.getCurrentCardsOnBoard().get(currentCard);
+            cardToMove = gmc.getCardFromCoordinate(currentCard);
 
-            currentBoard.getCurrentCardsOnBoard().remove(currentCard);
+            gmc.removeFromCoordinate(currentCard);
 
             position = askPlayerCoordinates(currentBoard, true);
 
             //Placement de la carte
-            currentBoard.addCardOnBoard(cardToMove, position);
+            gmc.addCardOnBoard(cardToMove, position);
         }
 
         else System.out.println("Option refusée");
@@ -400,8 +401,6 @@ public class ConsoleVue implements Observer {
         System.out.println("!!! Le joueur " + (gmc.getGameManager().getIndex()  + 1)  + " a change de Victory Card" );
     }
 
-
-
     public void over()
     {
         System.out.println("============================ GAME OVER ========================");
@@ -414,8 +413,6 @@ public class ConsoleVue implements Observer {
         System.out.println("Points Empty " + gmc.getGameManager().getVisitor().getPointsByState().get(State.EMPTY));
         System.out.println("Points Fill " + gmc.getGameManager().getVisitor().getPointsByState().get(State.FILL));
     }
-
-
 
     @Override
     public void update(Observable o, Object arg) {

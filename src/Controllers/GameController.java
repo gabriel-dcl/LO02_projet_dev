@@ -1,10 +1,9 @@
 package Controllers;
 
-import Models.GameManager;
-import Models.GameManagerChaos;
-import Models.GameManagerClassic;
-import Models.GameManagerQuick;
+import Models.*;
 import Vues.console.ConsoleVue;
+
+import java.util.Scanner;
 
 public class GameController {
 
@@ -20,9 +19,24 @@ public class GameController {
         return gameManager;
     }
 
-    public void game()
+    public Card getCardFromCoordinate(Coordinate currentPoint)
     {
+        return gameManager.getCurrentBoard().getCurrentCardsOnBoard().get(currentPoint);
+    }
 
+    public void removeFromCoordinate(Coordinate point)
+    {
+        gameManager.getCurrentBoard().getCurrentCardsOnBoard().remove(point);
+    }
+
+    public void addCardOnBoard(Card newCard, Coordinate position)
+    {
+        gameManager.getCurrentBoard().addCardOnBoard(newCard, position);
+    }
+
+    public Coordinate findEqualsCoordinate(Coordinate point)
+    {
+        return gameManager.getCurrentBoard().findEqualsCoordinate(point);
     }
 
     public void occure()
