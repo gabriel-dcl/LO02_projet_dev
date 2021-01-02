@@ -97,6 +97,23 @@ public class GameController {
         gameManager.setBoard(choix);
     }
 
+    public boolean isPlaceAvailable(Coordinate point)
+    {
+        return this.gameManager.getCurrentBoard().isPlaceAvailable(point);
+    }
+
+    public void alternateCards(Coordinate position1, Coordinate position2)
+    {
+      Card temp = this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().get(position1);
+        this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().put(position1, this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().get(position2));
+        this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().put(position2, temp);
+    }
+
+    public boolean isCoordinateCloseEnough(Coordinate point)
+    {
+        return this.gameManager.getCurrentBoard().isCoordinateCloseEnough(point);
+    }
+
     public void setGameManager()
     {
         int choix = gameManagerVue.gameManagerChoice();

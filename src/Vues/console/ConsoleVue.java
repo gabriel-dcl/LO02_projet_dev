@@ -35,13 +35,7 @@ public class ConsoleVue implements Observer {
 
         while(choix != 1 && choix != 0)
         {
-            System.out.println("Saisie incorrecte, recommencez : ");
-            try{
-                choix = sc.nextInt();
-            } catch(Exception e)
-            {
-                choix = -1;
-            }
+            choix = this.badInputOneOrTwoChoice();
         }
 
         if(choix == 1)
@@ -137,15 +131,15 @@ public class ConsoleVue implements Observer {
 
             if(searchForFreePlace)
             {
-                if(!currentBoard.isPlaceAvailable(position))
+                if(!gmc.isPlaceAvailable(position))
                     System.out.println("Cette place est prise  ! Reessayez");
-                else if( !currentBoard.isCoordinateCloseEnough(position))
+                else if( !gmc.isCoordinateCloseEnough(position))
                     System.out.println("Cette place  trop loin ! Reessayez");
                 else
                     exists = false;
             } else
             {
-                if(currentBoard.isPlaceAvailable(position) )
+                if(gmc.isPlaceAvailable(position) )
                     System.out.println("Cette place n'est pas occupee ! Reessayez");
                 else
                     exists = false;
@@ -153,7 +147,6 @@ public class ConsoleVue implements Observer {
         }
         return position;
     }
-
 
     public int difficultyChoice()
     {
@@ -168,11 +161,13 @@ public class ConsoleVue implements Observer {
             difficulty  = 12;
         }
 
+        while(difficulty != 1 && difficulty != 2)
+        {
+            difficulty = badInputOneOrTwoChoice();
+        }
+
         return difficulty;
     }
-
-
-
 
     public int virtualPlayersAmountChoice() {
         int virtualPlayersAmount;
@@ -190,21 +185,6 @@ public class ConsoleVue implements Observer {
         return virtualPlayersAmount;
     }
 
-    public int badInputDifficulty()
-    {
-        int difficulty = 0;
-        System.out.print("Saisie incorrecte, recommencez. 1 | 0 \t");
-
-        try {
-            difficulty  = sc.nextInt();
-        }
-        catch(Exception e) {
-            sc.next();
-            difficulty  = 12;
-        }
-
-        return difficulty;
-    }
 
     public int badInputVirtualPlayersAmount()
     {
@@ -320,7 +300,8 @@ public class ConsoleVue implements Observer {
            choix = -1;
        }
 
-       currentBoard.shuffle();
+       this.gmc.getGameManager().getCurrentBoard().shuffle();
+
        currentPlayer.setHasShuffled(true);
    }
 
@@ -337,13 +318,7 @@ public class ConsoleVue implements Observer {
 
         while(choix != 1 && choix != 0)
         {
-            System.out.println("Saisie incorrecte, recommencez : ");
-            try {
-                choix = sc.nextInt();
-            }
-            catch(Exception e) {
-                choix = -1;
-            }
+            choix = this.badInputOneOrTwoChoice();
         }
 
         if(choix == 1)
@@ -352,6 +327,20 @@ public class ConsoleVue implements Observer {
             System.out.println("Voici votre carte victoire :");
             System.out.println(victoryCard.toString());
         }
+    }
+
+    private int badInputOneOrTwoChoice()
+    {
+        int choix = -1;
+        System.out.println("Saisie incorrecte, recommencez : ");
+        try {
+            choix = sc.nextInt();
+        }
+        catch(Exception e) {
+            choix = -1;
+        }
+
+        return choix;
     }
 
     public void alternateCards(Board currentBoard)
@@ -391,9 +380,7 @@ public class ConsoleVue implements Observer {
                 System.out.println("Il n'y a pas de carte ici ! Réessayez");
         }
         //Alternance des cartes
-        temp = currentBoard.getCurrentCardsOnBoard().get(position1);
-        currentBoard.getCurrentCardsOnBoard().put(position1, currentBoard.getCurrentCardsOnBoard().get(position2));
-        currentBoard.getCurrentCardsOnBoard().put(position2, temp);
+        gmc.alternateCards(position1, position2);
     }
 
     public void annoncePlayerChangeVictoryCard()
