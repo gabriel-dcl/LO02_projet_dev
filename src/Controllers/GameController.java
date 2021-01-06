@@ -111,7 +111,7 @@ public class GameController {
 		return this.gameManager.getCurrentBoard().isCoordinateCloseEnough(point);
 	}
 
-	public void setGameManager(GameMode gamemode, Difficulty difficulty, BoardType board) {
+	public void setGameManager(GameMode gamemode, Difficulty difficulty, BoardType board, int nbBots, int nbPlayers) {
 
 		switch (gamemode) {
 		case CLASSIC:
@@ -136,7 +136,7 @@ public class GameController {
 			break;
 		}
 		gameManager.setBoard(board);
-		
+		gameManager.playersSetUp(nbPlayers, nbBots);
 
 	}
 }

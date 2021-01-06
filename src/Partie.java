@@ -1,5 +1,6 @@
 import Controllers.SetUpController;
 import Models.GameManager;
+import Vues.graphiques.Bienvenue;
 
 public class Partie {
 	
@@ -7,7 +8,8 @@ public class Partie {
 	
 	
 	public static void main(String[] args) {
-		new SetUpController(null);
+		
+		
 		
 	}
 	

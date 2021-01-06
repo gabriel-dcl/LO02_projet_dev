@@ -4,6 +4,7 @@ import Models.GameManager;
 import Models.GameManagerChaos;
 import Models.GameManagerClassic;
 import Models.GameManagerQuick;
+import Vues.console.ConsoleVue;
 import Vues.graphiques.Bienvenue;
 import enums.BoardType;
 import enums.Difficulty;
@@ -17,13 +18,14 @@ import javax.swing.JButton;
 public class SetUpController {
 	
 	private GameManager gm;
-	private Bienvenue vue;
+	
 	
 	private GameMode choixGC;
 	private Difficulty choixDif;
 	private BoardType choixBoard;
 	private int nbPlayer;
 	private int nbBots ;
+	private GameController gController;
 
 	public void setChoixGC(GameMode choixGC) {
 		this.choixGC = choixGC;
@@ -45,12 +47,12 @@ public class SetUpController {
 		this.nbBots = nbBots;
 	}
 
-	public SetUpController(Bienvenue vue) {
+	public SetUpController() {
 		super();
-		
-		this.vue = vue;
 	}
 	public void createGame() {
+		//gController = new GameController();
+		gController.setGameManager(choixGC, choixDif, choixBoard,nbBots, nbPlayer );
 		
 		
 	}

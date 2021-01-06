@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 public class Jeu {
 
 	private JFrame frame;
-	private JTextField textField;
+	private JTextField textFieldCoordinates;
 
 	/**
 	 * Launch the application.
@@ -45,7 +45,7 @@ public class Jeu {
 		frame.setBounds(100, 100, 840, 811);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 321, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -93,13 +93,13 @@ public class Jeu {
 		gbc_btnNewButton_5.gridy = 12;
 		frame.getContentPane().add(btnNewButton_5, gbc_btnNewButton_5);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 15;
-		frame.getContentPane().add(textField, gbc_textField);
-		textField.setColumns(10);
+		textFieldCoordinates = new JTextField();
+		GridBagConstraints gbc_textFieldCoordinates = new GridBagConstraints();
+		gbc_textFieldCoordinates.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldCoordinates.gridx = 1;
+		gbc_textFieldCoordinates.gridy = 15;
+		frame.getContentPane().add(textFieldCoordinates, gbc_textFieldCoordinates);
+		textFieldCoordinates.setColumns(10);
 	}
 
 }

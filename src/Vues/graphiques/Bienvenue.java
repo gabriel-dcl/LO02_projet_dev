@@ -10,6 +10,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JMenuBar;
 import javax.swing.ButtonGroup;
@@ -27,11 +28,13 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class Bienvenue implements Observer {
 
 	private JFrame frame;
-	private SetUpController ctrl;
+	private SetUpController ctrl = new SetUpController();
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -55,6 +58,8 @@ public class Bienvenue implements Observer {
 	public Bienvenue() {
 		initialize();
 	}
+
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -151,6 +156,7 @@ public class Bienvenue implements Observer {
 		mnNbRealPlayers.add(rdbtnmnitm3players_1);
 			/**/
 		JButton btnPlay = new JButton("Lancer la partie");
+		
 
 		btnPlay.setBounds(25, 133, 146, 21);
 		frame.getContentPane().add(btnPlay);
@@ -160,6 +166,8 @@ public class Bienvenue implements Observer {
 		txtrBienvenueDansShape.setText("Bienvenue dans Shape Up ! Veuillez param\u00E9trer votre partie et la lancer");
 		txtrBienvenueDansShape.setBounds(25, 10, 572, 22);
 		frame.getContentPane().add(txtrBienvenueDansShape);
+		
+		
 
 		rdbtnmnitmRectangular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -219,6 +227,7 @@ public class Bienvenue implements Observer {
 		rdbtnmnitm3bots.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ctrl.setNbBots(3);
+				JOptionPane.showMessageDialog(null, "This is the simple message dialog box.", "Roseindia.net", 1);
 				rdbtnmnitm3players_1.setEnabled(false);
 				rdbtnmnitm2players_1.setEnabled(false);
 				rdbtnmnitm1players_1.setEnabled(false);
@@ -239,6 +248,11 @@ public class Bienvenue implements Observer {
 		rdbtnmnitm3players_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ctrl.setNbPlayer(3);
+			}
+		});
+		btnPlay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ctrl.createGame();
 			}
 		});
 
