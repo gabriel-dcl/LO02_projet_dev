@@ -17,6 +17,11 @@ public class GameController {
 		this.gameManagerVue = gmv;
 
 	}
+	
+	public GameController() {
+		this.gameManagerVue = new ConsoleVue();
+
+	}
 
 	public GameManager getGameManager() {
 		return gameManager;

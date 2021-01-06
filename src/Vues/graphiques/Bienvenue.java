@@ -252,7 +252,9 @@ public class Bienvenue implements Observer {
 		});
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Lancement de la partie");
 				ctrl.createGame();
+				
 			}
 		});
 

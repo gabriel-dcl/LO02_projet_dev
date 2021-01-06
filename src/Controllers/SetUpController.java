@@ -6,6 +6,7 @@ import Models.GameManagerClassic;
 import Models.GameManagerQuick;
 import Vues.console.ConsoleVue;
 import Vues.graphiques.Bienvenue;
+import Vues.graphiques.Jeu;
 import enums.BoardType;
 import enums.Difficulty;
 import enums.GameMode;
@@ -26,6 +27,7 @@ public class SetUpController {
 	private int nbPlayer;
 	private int nbBots ;
 	private GameController gController;
+	private Jeu gameWindow;
 
 	public void setChoixGC(GameMode choixGC) {
 		this.choixGC = choixGC;
@@ -51,8 +53,10 @@ public class SetUpController {
 		super();
 	}
 	public void createGame() {
-		//gController = new GameController();
+		gController = new GameController();
 		gController.setGameManager(choixGC, choixDif, choixBoard,nbBots, nbPlayer );
+		gameWindow = new Jeu();
+		System.out.println("Jeu lancé");
 		
 		
 	}

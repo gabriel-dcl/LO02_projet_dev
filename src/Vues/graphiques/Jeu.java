@@ -35,6 +35,7 @@ public class Jeu {
 	 */
 	public Jeu() {
 		initialize();
+		this.frame.setVisible(true);
 	}
 
 	/**
