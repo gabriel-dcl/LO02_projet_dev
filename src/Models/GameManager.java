@@ -3,6 +3,8 @@ package Models;
 import java.util.Observable;
 import java.util.Scanner;
 
+import enums.BoardType;
+
 public abstract class GameManager extends Observable {
     private int difficulty;
     protected Player players[];
@@ -78,19 +80,24 @@ public abstract class GameManager extends Observable {
            this.maxCards = 15;
    }
 
-    public void setBoard(int choix) {
+    public void setDifficulty(int difficulty) {
+	this.difficulty = difficulty;
+}
+
+	public void setBoard(BoardType choix) {
 
         switch (choix) {
-            case 1:
+            case RECTANGULAR:
                 currentBoard = new BoardRectangular();
                 break;
-            case 2:
+            case TRIANGULAR:
                 currentBoard = new BoardTriangular();
                 break;
-            case 3:
+/*            case 3:
                 currentBoard = new BoardSquare();
-                break;
-            default:
+                break;*/
+            default: currentBoard = new BoardRectangular();
+            	break;
 
         }
     }
