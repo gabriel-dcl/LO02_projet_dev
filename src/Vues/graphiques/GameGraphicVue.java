@@ -17,7 +17,9 @@ import java.awt.Insets;
 import Controllers.GameController;
 import Models.Card;
 import Models.Coordinate;
+import Models.GameManager;
 import Vues.Vue;
+import enums.Events;
 
 import java.awt.event.ActionListener;
 import java.util.Map;
@@ -25,6 +27,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
+import java.awt.SystemColor;
 
 public class GameGraphicVue implements Vue, Observer, Runnable {
 
@@ -40,12 +43,17 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private JButton btnMoveCard;
 	private JButton btnShuffle;
 	private JButton btnAlternateCards;
-	private JButton btnEndTurn;
 	private boolean canPlaceCard = false;
 	private boolean canMoveCard = false;
 	private boolean canAlternateCard = false;
 	private Coordinate position1 = null;
 	private Coordinate position2 = null;
+	private boolean canShuffle;
+	private boolean canAlternate;
+	private boolean canChangeVictoryCard;
+	private JButton btnEndTurn;
+	private JButton btnChangeVCard;
+	private JLabel lblMessage;
 
 	protected ImageIcon createImageIcon(String path, String description) {
 
@@ -107,6 +115,13 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		frame.getContentPane().setLayout(gridBagLayout);
+		
+		lblMessage = new JLabel("Bienvenue !");
+		GridBagConstraints gbc_lblMessage = new GridBagConstraints();
+		gbc_lblMessage.insets = new Insets(0, 0, 5, 5);
+		gbc_lblMessage.gridx = 1;
+		gbc_lblMessage.gridy = 0;
+		frame.getContentPane().add(lblMessage, gbc_lblMessage);
 
 		btnShowVCard = new JButton("Afficher Carte Victoire");
 
@@ -146,14 +161,20 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		gbc_btnAlternateCards.gridx = 1;
 		gbc_btnAlternateCards.gridy = 10;
 		frame.getContentPane().add(btnAlternateCards, gbc_btnAlternateCards);
-
+		
+		btnChangeVCard = new JButton("Changer de Victory Card");
+		GridBagConstraints gbc_btnChangeVCard = new GridBagConstraints();
+		gbc_btnChangeVCard.insets = new Insets(0, 0, 5, 5);
+		gbc_btnChangeVCard.gridx = 1;
+		gbc_btnChangeVCard.gridy = 12;
+		frame.getContentPane().add(btnChangeVCard, gbc_btnChangeVCard);
+		
 		btnEndTurn = new JButton("Fin du tour");
-		btnEndTurn.setBackground(UIManager.getColor("Button.background"));
-
+		btnEndTurn.setBackground(SystemColor.menu);
 		GridBagConstraints gbc_btnEndTurn = new GridBagConstraints();
 		gbc_btnEndTurn.insets = new Insets(0, 0, 5, 5);
 		gbc_btnEndTurn.gridx = 1;
-		gbc_btnEndTurn.gridy = 12;
+		gbc_btnEndTurn.gridy = 14;
 		frame.getContentPane().add(btnEndTurn, gbc_btnEndTurn);
 
 		drawBoard();
@@ -186,7 +207,14 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 		btnShowVCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				String nomCarte = "Cartes/" + ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()].getVictoryCard().toStringGraphic() + ".png" ;
+				ImageIcon icon = createImageIcon(nomCarte, "carte victoire");
+				JLabel carteVictoire = new JLabel(icon);
+				GridBagConstraints gbc_carteVictoire = new GridBagConstraints();
+				gbc_carteVictoire.insets = new Insets(0, 0, 5, 5);
+				gbc_carteVictoire.gridx = 1;
+				gbc_carteVictoire.gridy = 16;
+				frame.getContentPane().add(carteVictoire, gbc_carteVictoire);
 			}
 		});
 
@@ -214,7 +242,8 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 		btnShuffle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				ctrl.getGameManager().getCurrentBoard().shuffle();
+				showBoard();
 			}
 		});
 
@@ -340,8 +369,48 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
+		if(arg instanceof Events && o instanceof GameManager)
+        {
+            switch ((Events) arg)
+            {
+                case AskForPositionNewCard:
+                    if(canPlaceCard)
+                    {
+                        canPlace2ndCard = true;
+                        System.out.println("2ndCard");
+                    }
 
+                    else
+                    canPlaceCard = true;
+
+                    break;
+                case AskForCardToMove: canMoveCard = true; break;
+                case AskForShuffle: canShuffle = true; break;
+                case AskForCardsToAlternate: canAlternate = true; break;
+                case ShowBoard: this.showBoard(); break;
+                case ShowCurrentPlayer: this.showCurrentPlayer(); break;
+                case AskToChangeVictoryCard: canChangeVictoryCard = true; break;
+                case AnnoncePlayerChangeVictoryCard: this.annoncePlayerChangeVictoryCard(); break;
+                case GameOver: this.gameOver = true; this.over(); break;
+
+                case PlayerTurn: this.playerTurn = true; break;
+            }
+        }
+	}
+
+	private void over() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void annoncePlayerChangeVictoryCard() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void showCurrentPlayer() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
