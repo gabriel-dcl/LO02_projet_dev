@@ -7,6 +7,8 @@ public class GameManagerClassic  extends GameManager {
 	public void run() {
 		System.out.println(this);
     	boolean isFirstTime = true;
+		cardOnPlay = this.currentBoard.getCard();
+
 
     	while ( currentBoard.currentCardsOnBoard.size() < 15 )
     	{
@@ -14,7 +16,6 @@ public class GameManagerClassic  extends GameManager {
 			{
 
 				this.notifyObservers(Events.ShowCurrentPlayer);
-				cardOnPlay = this.currentBoard.getCard();
 
 				this.players[index].showVictoryCard(this);
 
@@ -51,20 +52,6 @@ public class GameManagerClassic  extends GameManager {
 		this.notifyObservers(Events.GameOver);
     }
 
-
-    public synchronized void waitForPlayerToPlay()
-	{
-		while(!hasPlayed)
-		{
-			try {
-				wait();
-			} catch (InterruptedException e)  {
-				Thread.currentThread().interrupt();
-			}
-		}
-
-		hasPlayed = false;
-	}
 
     public void getInstance() {
     } 

@@ -6,14 +6,17 @@ public class GameManagerQuick extends GameManager {
     @Override
     public void run() {
 
+    	maxCards = 14;
+
 		boolean isFirstTime = true;
+		cardOnPlay = this.currentBoard.getCard();
 
 		while (currentBoard.currentCardsOnBoard.size() < maxCards )
 		{
 			for (index = 0; index < players.length; index++)
 			{
 				this.notifyObservers(Events.ShowCurrentPlayer);
-				cardOnPlay = this.currentBoard.getCard();
+
 
 				this.players[index].showVictoryCard(this);
 
@@ -21,11 +24,16 @@ public class GameManagerQuick extends GameManager {
 
 				this.players[index].placeNewCard(cardOnPlay, this.currentBoard, this);
 
-				cardOnPlay = this.currentBoard.getCard();
+
 				this.players[index].placeNewCard(cardOnPlay, this.currentBoard, this);
 
-				this.notifyObservers(Events.ShowBoard);
+				if(players[index].getStrategy() == null)
+				{
+					this.notifyObservers(Events.PlayerTurn);
+					this.waitForPlayerToPlay();
+				}
 
+				this.notifyObservers(Events.ShowBoard);
 
 				if(currentBoard.currentCardsOnBoard.size() ==  maxCards)
 				{

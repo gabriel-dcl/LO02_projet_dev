@@ -14,7 +14,9 @@ public class GameController {
 	public GameController(GameConsoleVue gmv) {
 		this.gameManagerVue = gmv;
 	}
-	
+
+
+
 	public GameController() {
 		this.gameManagerVue = new GameConsoleVue();
 	}

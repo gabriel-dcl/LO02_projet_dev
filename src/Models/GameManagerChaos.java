@@ -9,13 +9,14 @@ public class  GameManagerChaos extends GameManager {
 
 		boolean isFirstTime = true;
 		boolean isSecondTime = true;
+		cardOnPlay = this.currentBoard.getCard();
 
 		while (currentBoard.currentCardsOnBoard.size() < maxCards )
 		{
 			for (index = 0; index < players.length; index++) {
 
 				this.notifyObservers(Events.ShowCurrentPlayer);
-				cardOnPlay = this.currentBoard.getCard();
+
 
 
 				this.players[index].showVictoryCard(this);
@@ -38,7 +39,13 @@ public class  GameManagerChaos extends GameManager {
 
 				this.players[index].placeNewCard(cardOnPlay, this.currentBoard, this);
 
+				if(players[index].getStrategy() == null)
+				{
+					this.notifyObservers(Events.PlayerTurn);
+					this.waitForPlayerToPlay();
+				}
 				this.notifyObservers(Events.ShowBoard);
+
 				isFirstTime = false;
 
 				if(currentBoard.currentCardsOnBoard.size() ==  maxCards)

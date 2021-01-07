@@ -15,6 +15,87 @@ public abstract class GameManager extends Observable implements Runnable {
     protected Card cardOnPlay;
     protected int index;
     protected boolean hasPlayed = false;
+    int realPlayersAmount;
+    int virtualPlayersAmount = 0;
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setPlayers(Player[] players) {
+        this.players = players;
+    }
+
+    public Scanner getSc() {
+        return sc;
+    }
+
+    public void setSc(Scanner sc) {
+        this.sc = sc;
+    }
+
+    public void setCurrentBoard(Board currentBoard) {
+        this.currentBoard = currentBoard;
+    }
+
+    public void setVisitor(Visitor visitor) {
+        this.visitor = visitor;
+    }
+
+    public int getMaxCards() {
+        return maxCards;
+    }
+
+    public void setMaxCards(int maxCards) {
+        this.maxCards = maxCards;
+    }
+
+    public void setCardOnPlay(Card cardOnPlay) {
+        this.cardOnPlay = cardOnPlay;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public boolean isHasPlayed() {
+        return hasPlayed;
+    }
+
+    public int getRealPlayersAmount() {
+        return realPlayersAmount;
+    }
+
+    public void setRealPlayersAmount(int realPlayersAmount) {
+        this.realPlayersAmount = realPlayersAmount;
+    }
+
+    public int getVirtualPlayersAmount() {
+        return virtualPlayersAmount;
+    }
+
+    public void setVirtualPlayersAmount(int virtualPlayersAmount) {
+        this.virtualPlayersAmount = virtualPlayersAmount;
+    }
+
+    public void nextCardOnPlay()
+    {
+        cardOnPlay = this.currentBoard.getCard();
+    }
+
+    public synchronized void waitForPlayerToPlay()
+    {
+        while(!hasPlayed)
+        {
+            try {
+                wait();
+            } catch (InterruptedException e)  {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        hasPlayed = false;
+    }
 
     public boolean hasPlayed() {
         return hasPlayed;
@@ -31,8 +112,6 @@ public abstract class GameManager extends Observable implements Runnable {
         return cardOnPlay;
     }
 
-    int realPlayersAmount;
-    int virtualPlayersAmount = 0;
 
     public Board getCurrentBoard() {
         return currentBoard;
@@ -117,45 +196,7 @@ public abstract class GameManager extends Observable implements Runnable {
 
     public abstract void run();
 
-    public void gameOver()
-    {
-        if(realPlayersAmount + virtualPlayersAmount == 3)
-        {
-            int pointsPlayer1 =  this.visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
-            int pointsPlayer2 =  this.visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());
-            int pointsPlayer3 =  this.visitor.getPointsTotalRegardingVictoryCard(players[2].getVictoryCard());
 
-            System.out.println("CARTE J1: " + players[0].getVictoryCard());
-            System.out.println("CARTE J2: " + players[1].getVictoryCard());
-            System.out.println("CARTE J3: " + players[2].getVictoryCard());
-
-            if(pointsPlayer1 > pointsPlayer2 && pointsPlayer1 > pointsPlayer3)
-                System.out.println("Le joueur 1 gagne avec sa carte : " + players[0].getVictoryCard());
-            else if(pointsPlayer2 > pointsPlayer1 && pointsPlayer2 > pointsPlayer3)
-                System.out.println("Le joueur 2 gagne avec sa carte : " + players[1].getVictoryCard());
-            else if(pointsPlayer3 > pointsPlayer1 && pointsPlayer3 > pointsPlayer2)
-                System.out.println("Le joueur 3 gagne avec sa carte : " + players[2].getVictoryCard());
-            else
-                System.out.println("Match nul !");
-        }
-        else
-        {
-            System.out.println("CARTE J1: " + players[0].getVictoryCard());
-            System.out.println("CARTE J2: " + players[1].getVictoryCard());
-
-            int pointsPlayer1 =  this.visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
-            int pointsPlayer2 =  this.visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());
-
-            if(pointsPlayer1 > pointsPlayer2)
-                System.out.println("Le joueur 1 gagne avec sa carte : " + players[0].getVictoryCard());
-            else if((pointsPlayer2 > pointsPlayer1))
-                System.out.println("Le joueur 2 gagne avec sa carte : " + players[1].getVictoryCard());
-            else
-                System.out.println("Match nul !");
-        }
-
-
-    }
     public void occure() {
     }
     public void getInstance() {

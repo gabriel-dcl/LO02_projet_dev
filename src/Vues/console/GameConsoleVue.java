@@ -23,6 +23,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
     private boolean canChangeVictoryCard = false;
     private boolean canPlaceCard = false;
     private boolean playerTurn = false;
+    private  boolean canPlace2ndCard = false;
 
     public GameConsoleVue()
     {
@@ -97,6 +98,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
     {
         if(!canPlaceCard)
         {
+            if(!canPlace2ndCard)
             {
                 System.out.println("\n \n");
                 System.out.println("Vous ne pouvez pas(plus) utiliser cette commande.");
@@ -105,6 +107,8 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
                 return;
             }
         }
+
+
 
         if(canMoveCard)
         {
@@ -126,7 +130,14 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
 
 
         gmc.addCardOnBoard(newCard, position);
-        this.canPlaceCard = false;
+
+
+
+        if(!canPlaceCard && canPlace2ndCard)
+            canPlace2ndCard = false;
+
+        if(canPlaceCard)
+            this.canPlaceCard = false;
 
         System.out.println("\n \n");
     }
@@ -338,6 +349,49 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         System.out.println("Points Red " + gmc.getGameManager().getVisitor().getPointsByColor().get(Color.RED));
         System.out.println("Points Empty " + gmc.getGameManager().getVisitor().getPointsByState().get(State.EMPTY));
         System.out.println("Points Fill " + gmc.getGameManager().getVisitor().getPointsByState().get(State.FILL));
+
+        int realPlayersAmount = gmc.getGameManager().getRealPlayersAmount();
+        int virtualPlayersAmount = gmc.getGameManager().getVirtualPlayersAmount();
+        Visitor visitor = gmc.getGameManager().getVisitor();
+        Player[] players = gmc.getGameManager().getPlayers();
+
+
+            if(realPlayersAmount + virtualPlayersAmount == 3)
+            {
+                int pointsPlayer1 =  visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
+                int pointsPlayer2 =  visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());
+                int pointsPlayer3 =  visitor.getPointsTotalRegardingVictoryCard(players[2].getVictoryCard());
+
+                System.out.println("CARTE J1: " + players[0].getVictoryCard());
+                System.out.println("CARTE J2: " + players[1].getVictoryCard());
+                System.out.println("CARTE J3: " + players[2].getVictoryCard());
+
+                if(pointsPlayer1 > pointsPlayer2 && pointsPlayer1 > pointsPlayer3)
+                    System.out.println("Le joueur 1 gagne avec sa carte : " + players[0].getVictoryCard());
+                else if(pointsPlayer2 > pointsPlayer1 && pointsPlayer2 > pointsPlayer3)
+                    System.out.println("Le joueur 2 gagne avec sa carte : " + players[1].getVictoryCard());
+                else if(pointsPlayer3 > pointsPlayer1 && pointsPlayer3 > pointsPlayer2)
+                    System.out.println("Le joueur 3 gagne avec sa carte : " + players[2].getVictoryCard());
+                else
+                    System.out.println("Match nul !");
+            }
+            else
+            {
+                System.out.println("CARTE J1: " + players[0].getVictoryCard());
+                System.out.println("CARTE J2: " + players[1].getVictoryCard());
+
+                int pointsPlayer1 =  visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
+                int pointsPlayer2 =  visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());
+
+                if(pointsPlayer1 > pointsPlayer2)
+                    System.out.println("Le joueur 1 gagne avec sa carte : " + players[0].getVictoryCard());
+                else if((pointsPlayer2 > pointsPlayer1))
+                    System.out.println("Le joueur 2 gagne avec sa carte : " + players[1].getVictoryCard());
+                else
+                    System.out.println("Match nul !");
+
+        }
+
     }
 
 
@@ -351,8 +405,8 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         System.out.println("1 - voir sa VictoryCard");
         if(canMoveCard)
           System.out.println("2 - Bouger une carte");
-        if(canPlaceCard)
-            System.out.println("3 - Poser sa carte");
+        if(canPlaceCard || canPlace2ndCard)
+            System.out.println("3 - Poser une carte");
         if(canShuffle)
             System.out.println("4 - Shuffle");
         if(canAlternate)
@@ -382,7 +436,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
             switch(choix)
             {
                 case 0 :
-                    if(canPlaceCard && canMoveCard)
+                    if(canPlaceCard || canMoveCard || canPlace2ndCard || canAlternate)
                     {
                         System.out.println("Vous devez déplacer une carte et poser la votre");
                         break;
@@ -407,7 +461,17 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         {
             switch ((Events) arg)
             {
-                case AskForPositionNewCard: canPlaceCard = true; break;
+                case AskForPositionNewCard:
+                    if(canPlaceCard)
+                    {
+                        canPlace2ndCard = true;
+                        System.out.println("2ndCard");
+                    }
+
+                    else
+                    canPlaceCard = true;
+
+                    break;
                 case AskForCardToMove: canMoveCard = true; break;
                 case AskForShuffle: canShuffle = true; break;
                 case AskForCardsToAlternate: canAlternate = true; break;
@@ -415,13 +479,14 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
                 case ShowCurrentPlayer: this.showCurrentPlayer(); break;
                 case AskToChangeVictoryCard: canChangeVictoryCard = true; break;
                 case AnnoncePlayerChangeVictoryCard: this.annoncePlayerChangeVictoryCard(); break;
-                case GameOver: this.over(); break;
+                case GameOver: this.gameOver = true; this.over(); break;
 
                 case PlayerTurn: this.playerTurn = true; break;
             }
         }
     }
 
+    private boolean gameOver = false;
 
     @Override
     public void run() {
@@ -433,6 +498,11 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
                 if(playerTurn)
                 {
                     this.playerTurn();
+                }
+
+                if(gameOver)
+                {
+                    break;
                 }
 
                 this.gmc.getGameManager().setHasPlayed(true);

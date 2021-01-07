@@ -90,6 +90,8 @@ public class Player extends Observable {
         else {
             gameManager.notifyObservers( Events.AskForPositionNewCard );
         }
+
+        gameManager.nextCardOnPlay();
     }
 
     public void setHasShuffled(boolean hasShuffled) {
