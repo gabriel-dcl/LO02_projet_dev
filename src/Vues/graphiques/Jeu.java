@@ -23,19 +23,19 @@ public class Jeu {
 	private JFrame frame;
 	private GameController ctrl;
 	
-
+	protected ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = getClass().getResource(path);
+			if (imgURL != null) {
+				return new ImageIcon(imgURL, description);
+			} else {
+				System.err.println("Couldn't find file: " + path);
+				return null;
+			}
+		}
 	/**
 	 * Launch the application.
 	 */
-	protected ImageIcon createImageIcon(String path, String description) {
-		
-		if (path != null) {
-			return new ImageIcon(path, description);
-		} else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -82,7 +82,7 @@ public class Jeu {
 		JButton btnShowVCard = new JButton("Afficher Carte Victoire");
 		btnShowVCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JLabel label1 = new JLabel(createImageIcon("Cartes/EBC.jpg", "Un cercle"));
+				JButton label1 = new JButton(createImageIcon("Cartes/EBC.jpg", "Un cercle"));
 				GridBagConstraints gbc_label1 = new GridBagConstraints();
 				gbc_label1.insets = new Insets(0, 0, 5, 5);
 				gbc_label1.gridx = 1;
