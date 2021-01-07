@@ -7,7 +7,7 @@ import enums.State;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Visitor {
+public class Visitor implements VisitorInterface    {
     private HashMap<Color, Integer> PointsByColor;
     private HashMap<Form, Integer> PointsByForm;
     private HashMap<State, Integer> PointsByState;

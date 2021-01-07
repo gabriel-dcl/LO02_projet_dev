@@ -8,8 +8,6 @@ public class GameManagerClassic  extends GameManager {
 		System.out.println(this);
     	boolean isFirstTime = true;
 		cardOnPlay = this.currentBoard.getCard();
-
-
     	while ( currentBoard.currentCardsOnBoard.size() < 15 )
     	{
 			for (index = 0; index < players.length; index++)

@@ -120,9 +120,8 @@ public class GameController {
 		vue.start();
 
 
-
-		//if(this.gameManagerVue instanceof GameConsoleVue)
-		//	gameManager.setHasPlayed(fal);
+		//     if(this.gameManagerVue instanceof GameConsoleVue)
+		// 	     gameManager.setHasPlayed(fal);
 
 	}
 }

@@ -83,8 +83,10 @@ public abstract class GameManager extends Observable implements Runnable {
         cardOnPlay = this.currentBoard.getCard();
     }
 
+
     public synchronized void waitForPlayerToPlay()
     {
+
         while(!hasPlayed)
         {
             try {
@@ -94,8 +96,10 @@ public abstract class GameManager extends Observable implements Runnable {
             }
         }
 
+
         hasPlayed = false;
     }
+
 
     public boolean hasPlayed() {
         return hasPlayed;
