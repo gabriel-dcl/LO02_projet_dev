@@ -41,7 +41,6 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private JButton btnShuffle;
 	private JButton btnAlternateCards;
 	private JButton btnEndTurn;
-	private boolean askingForCoordPlaceCard;
 	private boolean canPlaceCard = false;
 	private boolean canMoveCard = false;
 	private boolean canAlternateCard = false;
@@ -192,8 +191,17 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		});
 
 		btnPlaceNewCard.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) {
 				enableBoard();
+				String nomCarte = "Cartes/" + ctrl.getGameManager().getCardOnPlay().toStringGraphic() + ".png";
+				ImageIcon icon = createImageIcon(nomCarte, "carte à jouer");
+				JLabel carteActuelle = new JLabel(icon);
+				GridBagConstraints gbc_carteActuelle = new GridBagConstraints();
+				gbc_carteActuelle.insets = new Insets(0, 0, 5, 5);
+				gbc_carteActuelle.gridx = 1;
+				gbc_carteActuelle.gridy = 16;
+				frame.getContentPane().add(carteActuelle, gbc_carteActuelle);
 				canPlaceCard = true;
 			}
 		});
@@ -244,35 +252,33 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	}
 
-	public void drawBoard()
-    {
-        for (int i = 0; i < 12; i++)
-        {
-            for (int j = 0; j < 12; j++)
-            {
-            	Board[i][j] = new JButton();
+	public void drawBoard() {
+		for (int i = 0; i < 12; i++) {
+			for (int j = 0; j < 12; j++) {
+				Board[i][j] = new JButton();
 				gbc_board[i][j] = new GridBagConstraints();
 				gbc_board[i][j].insets = new Insets(0, 0, 5, 5);
-				gbc_board[i][j].gridx = 3+i;
-				gbc_board[i][j].gridy = 2+j;
+				gbc_board[i][j].gridx = 3 + i;
+				gbc_board[i][j].gridy = 2 + j;
 				current_gbc_board = gbc_board[i][j];
 				frame.getContentPane().add(Board[i][j], gbc_board[i][j]);
-				
+
 				Board[i][j].setIcon(createImageIcon("Cartes/Blank.png", "Vide"));
 				Board[i][j].setBackground(Color.LIGHT_GRAY);
 				Board[i][j].setEnabled(false);
-				
+
 				Board[i][j].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						Coordinate coord = new Coordinate(-1, -1);
 						coord.setX(current_gbc_board.gridx);
 						coord.setY(current_gbc_board.gridy);
 						if (canPlaceCard) {
-							ctrl.addCardOnBoard(null, coord);
+							ctrl.addCardOnBoard(ctrl.getGameManager().getCardOnPlay(), coord);
 							showBoard();
+							disableBoard();
 						}
-						if(canMoveCard) {
-							if(position1 != null) {
+						if (canMoveCard) {
+							if (position1 != null) {
 								position2 = coord;
 								Card cardToMove;
 								cardToMove = ctrl.getCardFromCoordinate(position1);
@@ -282,31 +288,32 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 								showBoard();
 								position1 = null;
 								position2 = null;
-								
-							}
-							else
+								disableBoard();
+
+							} else
 								position1 = coord;
 						}
-						if(canAlternateCard) {
-							if(position1 != null) {
+						if (canAlternateCard) {
+							if (position1 != null) {
 								position2 = coord;
-								ctrl.alternateCards(position1, position2);	
+								ctrl.alternateCards(position1, position2);
 								canAlternateCard = false;
 								showBoard();
 								position1 = null;
 								position2 = null;
-							}
-							else
+								disableBoard();
+							} else
 								position1 = coord;
-	
+
 						}
-						
-						
+
 					}
 				});
-            }
-            
-        }frame.setVisible(false);frame.setVisible(true);
+			}
+
+		}
+		frame.setVisible(false);
+		frame.setVisible(true);
 
 	}
 
