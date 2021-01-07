@@ -409,8 +409,8 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	}
 
 	private void showCurrentPlayer() {
-		// TODO Auto-generated method stub
 		
+		lblMessage.setText("!!! Le joueur " + (ctrl.getGameManager().getIndex()  + 1)  + " a change de Victory Card" );
 	}
 
 }
