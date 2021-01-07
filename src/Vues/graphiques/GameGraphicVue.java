@@ -1,5 +1,6 @@
 package Vues.graphiques;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -16,12 +17,17 @@ import Controllers.GameController;
 import Vues.Vue;
 
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.event.ActionEvent;
+import javax.swing.UIManager;
 
-public class GameGraphicVue implements Vue {
+public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	private JFrame frame;
 	private GameController ctrl;
+	private boolean playerTurn = false;
+	private boolean gameOver = false;
 	
 	protected ImageIcon createImageIcon(String path, String description) {
 		
@@ -96,6 +102,7 @@ public class GameGraphicVue implements Vue {
 				frame.setVisible(false);
 				frame.setVisible(true);
 				label1.setIcon(createImageIcon("Cartes/EBC.png", "Un cercle"));
+				label1.setBackground(Color.LIGHT_GRAY);
 			}
 		});
 		
@@ -156,6 +163,7 @@ public class GameGraphicVue implements Vue {
 		frame.getContentPane().add(btnAlternateCards, gbc_btnAlternateCards);
 
 		JButton btnNewButton_5 = new JButton("Fin du tour");
+		btnNewButton_5.setBackground(UIManager.getColor("Button.background"));
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -166,6 +174,40 @@ public class GameGraphicVue implements Vue {
 		gbc_btnNewButton_5.gridx = 1;
 		gbc_btnNewButton_5.gridy = 12;
 		frame.getContentPane().add(btnNewButton_5, gbc_btnNewButton_5);
+	}
+	@Override
+	public void run() {
+		try {
+            while(true)
+            {
+                Thread.sleep(200);
+
+                if(playerTurn)
+                {
+                    this.playerTurn();
+                }
+
+                if(gameOver)
+                {
+                    break;
+                }
+
+                this.gmc.getGameManager().setHasPlayed(true);
+            }
+
+        } catch (InterruptedException ie) {
+            // handle if you like
+        }
+	}
+	private void playerTurn() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
