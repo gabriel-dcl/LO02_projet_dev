@@ -33,25 +33,34 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private boolean playerTurn = false;
 	private boolean gameOver = false;
 	private JButton Board[][] = new JButton[12][12];
+	private GridBagConstraints gbc_board[][] = new GridBagConstraints[12][12];
+	private GridBagConstraints current_gbc_board;
 	private JButton btnShowVCard;
 	private JButton btnPlaceNewCard;
 	private JButton btnMoveCard;
 	private JButton btnShuffle;
 	private JButton btnAlternateCards;
 	private JButton btnEndTurn;
+	private boolean askingForCoordPlaceCard;
+	private boolean canPlaceCard = false;
+	private boolean canMoveCard = false;
+	private boolean canAlternateCard = false;
+	private Coordinate position1 = null;
+	private Coordinate position2 = null;
+
 	protected ImageIcon createImageIcon(String path, String description) {
-		
-			if (path != null) {
-				return new ImageIcon(path, description);
-			} else {
-				System.err.println("Couldn't find file: " + path);
-				return null;
-			}
+
+		if (path != null) {
+			return new ImageIcon(path, description);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
 		}
+	}
+
 	/**
 	 * Launch the application.
 	 */
-	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -101,10 +110,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		frame.getContentPane().setLayout(gridBagLayout);
 
 		btnShowVCard = new JButton("Afficher Carte Victoire");
-		
-		
-		
-		
+
 		GridBagConstraints gbc_btnShowVCard = new GridBagConstraints();
 		gbc_btnShowVCard.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowVCard.gridx = 1;
@@ -112,7 +118,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		frame.getContentPane().add(btnShowVCard, gbc_btnShowVCard);
 
 		btnPlaceNewCard = new JButton("Placer la nouvelle carte");
-		
+
 		GridBagConstraints gbc_btnPlaceNewCard = new GridBagConstraints();
 		gbc_btnPlaceNewCard.insets = new Insets(0, 0, 5, 5);
 		gbc_btnPlaceNewCard.gridx = 1;
@@ -127,7 +133,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		frame.getContentPane().add(btnMoveCard, gbc_btnMoveCard);
 
 		btnShuffle = new JButton("Shuffle !");
-		
+
 		GridBagConstraints gbc_btnShuffle = new GridBagConstraints();
 		gbc_btnShuffle.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShuffle.gridx = 1;
@@ -135,7 +141,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		frame.getContentPane().add(btnShuffle, gbc_btnShuffle);
 
 		btnAlternateCards = new JButton("Echanger 2 cartes");
-		
+
 		GridBagConstraints gbc_btnAlternateCards = new GridBagConstraints();
 		gbc_btnAlternateCards.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAlternateCards.gridx = 1;
@@ -144,81 +150,100 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 		btnEndTurn = new JButton("Fin du tour");
 		btnEndTurn.setBackground(UIManager.getColor("Button.background"));
-		
+
 		GridBagConstraints gbc_btnEndTurn = new GridBagConstraints();
 		gbc_btnEndTurn.insets = new Insets(0, 0, 5, 5);
 		gbc_btnEndTurn.gridx = 1;
 		gbc_btnEndTurn.gridy = 12;
 		frame.getContentPane().add(btnEndTurn, gbc_btnEndTurn);
-		
+
 		drawBoard();
-		
-		
+
 	}
+
 	@Override
 	public void run() {
 		try {
-            while(true)
-            {
-                Thread.sleep(200);
+			while (true) {
+				Thread.sleep(200);
 
-                if(playerTurn)
-                {
-                    this.playerTurn();
-                }
+				if (playerTurn) {
+					this.playerTurn();
+				}
 
-                if(gameOver)
-                {
-                    break;
-                }
+				if (gameOver) {
+					break;
+				}
 
-                this.ctrl.getGameManager().setHasPlayed(true);
-            }
+				this.ctrl.getGameManager().setHasPlayed(true);
+			}
 
-        } catch (InterruptedException ie) {
-            // handle if you like
-        }
+		} catch (InterruptedException ie) {
+			// handle if you like
+		}
 	}
-	
+
 	private void playerTurn() {
+
 		btnShowVCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 			}
 		});
-		
+
 		btnPlaceNewCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ctrl.addCardOnBoard(null, null);
+				enableBoard();
+				canPlaceCard = true;
 			}
 		});
-		
+
 		btnMoveCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 			}
 		});
-		
-		
+
 		btnShuffle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 			}
 		});
-		
+
 		btnAlternateCards.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ctrl.alternateCards(null, null);
+
 			}
 		});
-		
+
 		btnEndTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 			}
 		});
+
 	}
-	
+
+	public void enableBoard() {
+		for (int i = 0; i < 12; i++) {
+			for (int j = 0; j < 12; j++) {
+				Board[i][j].setEnabled(true);
+			}
+
+		}
+
+	}
+
+	public void disableBoard() {
+		for (int i = 0; i < 12; i++) {
+			for (int j = 0; j < 12; j++) {
+				Board[i][j].setEnabled(false);
+			}
+
+		}
+
+	}
+
 	public void drawBoard()
     {
         for (int i = 0; i < 12; i++)
@@ -226,49 +251,90 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
             for (int j = 0; j < 12; j++)
             {
             	Board[i][j] = new JButton();
-				GridBagConstraints gbc_label1 = new GridBagConstraints();
-				gbc_label1.insets = new Insets(0, 0, 5, 5);
-				gbc_label1.gridx = 3+i;
-				gbc_label1.gridy = 2+j;
-				frame.getContentPane().add(Board[i][j], gbc_label1);
+				gbc_board[i][j] = new GridBagConstraints();
+				gbc_board[i][j].insets = new Insets(0, 0, 5, 5);
+				gbc_board[i][j].gridx = 3+i;
+				gbc_board[i][j].gridy = 2+j;
+				current_gbc_board = gbc_board[i][j];
+				frame.getContentPane().add(Board[i][j], gbc_board[i][j]);
 				
 				Board[i][j].setIcon(createImageIcon("Cartes/Blank.png", "Vide"));
 				Board[i][j].setBackground(Color.LIGHT_GRAY);
+				Board[i][j].setEnabled(false);
+				
+				Board[i][j].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						Coordinate coord = new Coordinate(-1, -1);
+						coord.setX(current_gbc_board.gridx);
+						coord.setY(current_gbc_board.gridy);
+						if (canPlaceCard) {
+							ctrl.addCardOnBoard(null, coord);
+							showBoard();
+						}
+						if(canMoveCard) {
+							if(position1 != null) {
+								position2 = coord;
+								Card cardToMove;
+								cardToMove = ctrl.getCardFromCoordinate(position1);
+								ctrl.removeFromCoordinate(position1);
+								ctrl.addCardOnBoard(cardToMove, position2);
+								canMoveCard = false;
+								showBoard();
+								position1 = null;
+								position2 = null;
+								
+							}
+							else
+								position1 = coord;
+						}
+						if(canAlternateCard) {
+							if(position1 != null) {
+								position2 = coord;
+								ctrl.alternateCards(position1, position2);	
+								canAlternateCard = false;
+								showBoard();
+								position1 = null;
+								position2 = null;
+							}
+							else
+								position1 = coord;
+	
+						}
+						
+						
+					}
+				});
             }
             
-        }
-        frame.setVisible(false);
-		frame.setVisible(true);
-    }
-	
-	public void showBoard()
-    {
-        for (int i = 0; i < 12; i++)
-        {
-            for (int j = 0; j < 12; j++)
-            {
-                boolean hasFound = false;
+        }frame.setVisible(false);frame.setVisible(true);
 
-                for (Map.Entry<Coordinate, Card> entry : ctrl.getGameManager().getCurrentBoard().getCurrentCardsOnBoard().entrySet())
-                {
-                    if (entry.getKey().equals( new Coordinate(i, j)) )
-                    {
-                        
-                        String nomCarte = "Cartes/"+ctrl.getGameManager().getCurrentBoard().getCardByCoordinate(entry.getKey()).toStringGraphic()+".png";
-                        Board[i][j].setIcon(createImageIcon(nomCarte, "Vide"));
-                        hasFound = true;
-                    }
-                }
-                if(!hasFound)
-                	Board[i][j].setIcon(createImageIcon("Cartes/Blank.png", "Vide"));
-            }
-        }
-    }
-	
+	}
+
+	public void showBoard() {
+		for (int i = 0; i < 12; i++) {
+			for (int j = 0; j < 12; j++) {
+				boolean hasFound = false;
+
+				for (Map.Entry<Coordinate, Card> entry : ctrl.getGameManager().getCurrentBoard()
+						.getCurrentCardsOnBoard().entrySet()) {
+					if (entry.getKey().equals(new Coordinate(i, j))) {
+
+						String nomCarte = "Cartes/" + ctrl.getGameManager().getCurrentBoard()
+								.getCardByCoordinate(entry.getKey()).toStringGraphic() + ".png";
+						Board[i][j].setIcon(createImageIcon(nomCarte, "Vide"));
+						hasFound = true;
+					}
+				}
+				if (!hasFound)
+					Board[i][j].setIcon(createImageIcon("Cartes/Blank.png", "Vide"));
+			}
+		}
+	}
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
