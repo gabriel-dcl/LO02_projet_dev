@@ -5,7 +5,7 @@ import enums.Events;
 public class  GameManagerChaos extends GameManager {
 
 
-	public void game() {
+	public void run() {
 
 		boolean isFirstTime = true;
 		boolean isSecondTime = true;

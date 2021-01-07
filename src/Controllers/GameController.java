@@ -13,7 +13,6 @@ public class GameController {
 
 	public GameController(GameConsoleVue gmv) {
 		this.gameManagerVue = gmv;
-
 	}
 	
 	public GameController() {
@@ -50,7 +49,7 @@ public class GameController {
 		gameManager.addObserver(gameManagerVue);
 		gameManager.getCurrentBoard().addObserver(gameManagerVue);
 
-		gameManager.game();
+		gameManager.run();
 	}
 
 
@@ -100,6 +99,13 @@ public class GameController {
 		gameManager.setBoard(board);
 		gameManager.playersSetUp(nbPlayers, nbBots);
 		gameManager.addObserver(this.gameManagerVue);
+
+		Thread t = new Thread(gameManager);
+		Thread vue = new Thread(this.gameManagerVue);
+		t.start();
+		vue.start();
+
+
 
 		//if(this.gameManagerVue instanceof GameConsoleVue)
 		//	gameManager.setHasPlayed(fal);

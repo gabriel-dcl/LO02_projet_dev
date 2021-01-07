@@ -4,7 +4,7 @@ import enums.Events;
 
 public class GameManagerQuick extends GameManager {
     @Override
-    public void game() {
+    public void run() {
 
 		boolean isFirstTime = true;
 

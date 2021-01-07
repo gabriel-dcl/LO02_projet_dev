@@ -110,8 +110,6 @@ public class SetUpController {
 
 		gameWindow.getCtrl().setGameManager(choixGC, choixDif, choixBoard,nbBots, nbPlayer );
 		System.out.println("Jeu lancé");
-		gameWindow.getCtrl().getGameManager().game();
-		System.out.println("Jeu lancé");
 
 
 	}

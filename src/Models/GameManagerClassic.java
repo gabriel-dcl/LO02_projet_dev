@@ -4,27 +4,35 @@ import enums.Events;
 
 public class GameManagerClassic  extends GameManager {
 
-	public void game() {
-
-
+	public void run() {
+		System.out.println(this);
     	boolean isFirstTime = true;
 
     	while ( currentBoard.currentCardsOnBoard.size() < 15 )
     	{
-			for (index = 0; index < players.length; index++) {
+			for (index = 0; index < players.length; index++)
+			{
 
 				this.notifyObservers(Events.ShowCurrentPlayer);
 				cardOnPlay = this.currentBoard.getCard();
 
 				this.players[index].showVictoryCard(this);
+
 				if (!isFirstTime)
 				{
 					 this.players[index].moveCard(this.currentBoard, this);
 				}
 					this.players[index].placeNewCard(cardOnPlay, this.currentBoard, this);
 
-				this.notifyObservers(Events.ShowBoard);
+
 				isFirstTime = false;
+
+				if(players[index].getStrategy() == null)
+				{
+					this.notifyObservers(Events.PlayerTurn);
+					this.waitForPlayerToPlay();
+				}
+				this.notifyObservers(Events.ShowBoard);
 
 				if(currentBoard.currentCardsOnBoard.size() ==  maxCards)
 				{
@@ -38,13 +46,10 @@ public class GameManagerClassic  extends GameManager {
 			}
 		}
 
-			this.waitForPlayerToPlay();
 
-    	currentBoard.accept(visitor);
-    	this.notifyObservers(Events.GameOver);
+		currentBoard.accept(visitor);
+		this.notifyObservers(Events.GameOver);
     }
-
-
 
 
     public synchronized void waitForPlayerToPlay()

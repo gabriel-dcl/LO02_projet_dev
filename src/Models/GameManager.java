@@ -20,8 +20,11 @@ public abstract class GameManager extends Observable implements Runnable {
         return hasPlayed;
     }
 
-    public void setHasPlayed (boolean hasReceived) {
+
+    public synchronized void setHasPlayed (boolean hasReceived)
+    {
         this.hasPlayed = hasReceived;
+        notifyAll();
     }
 
     public Card getCardOnPlay() {
@@ -112,7 +115,7 @@ public abstract class GameManager extends Observable implements Runnable {
         }
     }
 
-    public abstract void game();
+    public abstract void run();
 
     public void gameOver()
     {
