@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 public class Bienvenue implements Observer {
 
 	private JFrame frame;
-	private SetUpController ctrl = new SetUpController();
+	private SetUpController ctrl ;
 	private JTextField textField;
 
 	/**
@@ -57,6 +57,7 @@ public class Bienvenue implements Observer {
 	 */
 	public Bienvenue() {
 		initialize();
+		ctrl = new SetUpController();
 	}
 
 	

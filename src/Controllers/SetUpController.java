@@ -26,7 +26,6 @@ public class SetUpController {
 	private BoardType choixBoard;
 	private int nbPlayer;
 	private int nbBots ;
-	private GameController gController;
 	private Jeu gameWindow;
 
 	public void setChoixGC(GameMode choixGC) {
@@ -53,9 +52,10 @@ public class SetUpController {
 		super();
 	}
 	public void createGame() {
-		gController = new GameController();
-		gController.setGameManager(choixGC, choixDif, choixBoard,nbBots, nbPlayer );
+		
 		gameWindow = new Jeu();
+		
+		gameWindow.getCtrl().setGameManager(choixGC, choixDif, choixBoard,nbBots, nbPlayer );
 		System.out.println("Jeu lancé");
 		
 		
