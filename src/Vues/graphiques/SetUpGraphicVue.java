@@ -46,6 +46,18 @@ public class SetUpGraphicVue implements  Vue {
 			}
 		});
 	}
+	public static void main(String Args[]) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SetUpGraphicVue window = new SetUpGraphicVue();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the application.

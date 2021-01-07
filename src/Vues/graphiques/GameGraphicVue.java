@@ -3,6 +3,7 @@ package Vues.graphiques;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import java.awt.GridBagLayout;
 
@@ -23,9 +24,9 @@ public class GameGraphicVue implements Vue {
 	private GameController ctrl;
 	
 	protected ImageIcon createImageIcon(String path, String description) {
-		java.net.URL imgURL = getClass().getResource(path);
-			if (imgURL != null) {
-				return new ImageIcon(imgURL, description);
+		
+			if (path != null) {
+				return new ImageIcon(path, description);
 			} else {
 				System.err.println("Couldn't find file: " + path);
 				return null;
@@ -92,8 +93,14 @@ public class GameGraphicVue implements Vue {
 				gbc_label1.gridx = 1;
 				gbc_label1.gridy = 14;
 				frame.getContentPane().add(label1, gbc_label1);
+				frame.setVisible(false);
+				frame.setVisible(true);
+				label1.setIcon(createImageIcon("Cartes/EBC.png", "Un cercle"));
 			}
 		});
+		
+		
+		
 		GridBagConstraints gbc_btnShowVCard = new GridBagConstraints();
 		gbc_btnShowVCard.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowVCard.gridx = 1;
