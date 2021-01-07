@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import enums.BoardType;
 
-public abstract class GameManager extends Observable {
+public abstract class GameManager extends Observable implements Runnable {
     private int difficulty;
     protected Player players[];
     protected Scanner sc;
@@ -14,6 +14,15 @@ public abstract class GameManager extends Observable {
     protected int maxCards;
     protected Card cardOnPlay;
     protected int index;
+    protected boolean hasPlayed = false;
+
+    public boolean hasPlayed() {
+        return hasPlayed;
+    }
+
+    public void setHasPlayed (boolean hasReceived) {
+        this.hasPlayed = hasReceived;
+    }
 
     public Card getCardOnPlay() {
         return cardOnPlay;
@@ -50,6 +59,7 @@ public abstract class GameManager extends Observable {
         index = 0;
         sc = new Scanner(System.in);
         visitor = new Visitor();
+        hasPlayed = false;
     }
 
    public void playersSetUp(int realPlayersAmount, int virtualPlayersAmount)
@@ -93,9 +103,9 @@ public abstract class GameManager extends Observable {
             case TRIANGULAR:
                 currentBoard = new BoardTriangular();
                 break;
-/*            case 3:
+            case SQUARE:
                 currentBoard = new BoardSquare();
-                break;*/
+                break;
             default: currentBoard = new BoardRectangular();
             	break;
 

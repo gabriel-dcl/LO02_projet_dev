@@ -2,6 +2,7 @@ package Vues.console;
 
 import Controllers.GameController;
 import Models.*;
+import Vues.Vue;
 import enums.Color;
 import enums.Events;
 import enums.Form;
@@ -12,10 +13,16 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-public class ConsoleVue implements Observer {
+public class GameConsoleVue implements Observer, Vue {
 
     Scanner sc;
     private GameController gmc;
+
+    public GameConsoleVue()
+    {
+        this.sc = new Scanner(System.in);
+        gmc = new GameController(this);
+    }
 
     public void showCurrentPlayer()
     {
@@ -70,15 +77,21 @@ public class ConsoleVue implements Observer {
     }
 
 
+
     public void placeNewCard(Card newCard, Board currentBoard)
     {
-        Scanner sc = new Scanner(System.in);
         //Affichage de la nouvelle carte
         System.out.println("Voici la carte a poser : /n" + newCard.toString());
 
+
         Coordinate position = askPlayerCoordinates(currentBoard, true);
+
+
         gmc.addCardOnBoard(newCard, position);
     }
+
+
+
 
     public void moveCard(Board currentBoard)
     {
@@ -148,148 +161,23 @@ public class ConsoleVue implements Observer {
         return position;
     }
 
-    public int difficultyChoice()
-    {
-        int difficulty = 0;
-        System.out.print("Dans quelle difficulty voulez-vous jouer (0 ou 1): \t");
 
-        try {
-            difficulty  = sc.nextInt();
-        }
-        catch(Exception e) {
-            sc.next();
-            difficulty  = 12;
-        }
-
-        while(difficulty != 1 && difficulty != 2)
-        {
-            difficulty = badInputOneOrTwoChoice();
-        }
-
-        return difficulty;
-    }
-
-    public int virtualPlayersAmountChoice() {
-        int virtualPlayersAmount;
-
-        System.out.println("Combien de bots voulez-vous avec vous ?");
-
-        try {
-            virtualPlayersAmount = sc.nextInt();
-        }
-        catch(Exception e) {
-            sc.next();
-            virtualPlayersAmount = 12;
-        }
-
-        return virtualPlayersAmount;
-    }
-
-
-    public int badInputVirtualPlayersAmount()
-    {
-        int virtualPlayersAmount;
-        System.out.println("Saisie invalide ! (Attention, le nombre maximal de joueurs est de 3 et le nombre minimal est de 2) Recommencez : \t");
-        try {
-            virtualPlayersAmount = sc.nextInt();
-        }
-        catch(Exception e) {
-            sc.next();
-            virtualPlayersAmount = 12;
-        }
-
-        return virtualPlayersAmount;
-    }
-
-    public int realPlayersAmountChoice()
-    {
-        int realPlayersAmount;
-
-        System.out.println("Combien de joueurs reels avez-vous ? (3 maximum)");
-
-        try {
-            realPlayersAmount = sc.nextInt();
-        }
-        catch(Exception e) {
-            sc.next();
-            realPlayersAmount = 12;
-        }
-
-        while(realPlayersAmount < 0 || realPlayersAmount > 3)
-        {
-            System.out.println("Saisie invalide. Recommencez.");
-
-            try {
-                realPlayersAmount = sc.nextInt();
-            }
-            catch(Exception e) {
-                sc.next();
-                realPlayersAmount = 12;
-            }
-        }
-
-        return realPlayersAmount;
-    }
 
     public void setGmc(GameController gmc) {
         this.gmc = gmc;
     }
 
-    public ConsoleVue()
-    {
-        this.sc = new Scanner(System.in);
+    public GameController getCtrl() {
+        return gmc;
     }
 
-    public int gameManagerChoice()
-    {
-        System.out.println("=============================================================== ");
-        System.out.println("======================= SHAPE UP ! ============================ ");
-        System.out.println("=============================================================== ");
+    @Override
+    public void occure() {
 
-        System.out.println("\n \n \n Bonjour ! Quel mode de jeu voulez-vous jouer : ");
-        System.out.println("1 - Classic \n2 - Quick \n3 - Chaos");
-        System.out.print("Votre selection : \t");
-        int choix = 12;
-
-        try {
-            choix = sc.nextInt();
-        }
-        catch(Exception e) {
-            System.out.println("Saisie invalide. Recommencez.");
-        }
-
-        while (choix != 1 && choix != 2 && choix !=3)
-        {
-            System.out.print("Saisie invalide, merci de recommencez : ");
-
-            try {
-                choix = sc.nextInt();
-            }
-            catch(Exception e) {
-                sc.next();
-            }
-        }
-
-        return choix;
     }
 
-   public int gameBoardChoice()
-   {
-       int choix = 0;
 
-           System.out.println("Quelle forme de plateau désirez-vous ? 1 - Rectangulaire | 2 - Triangulaire | 3 - Square");
-           try {
-               choix = sc.nextInt();
-           }
-           catch(Exception e) {
-               return -1;
-           }
-
-        return choix;
-
-   }
-
-   public void shuffle(Board currentBoard, Player currentPlayer)
+    public void shuffle(Board currentBoard, Player currentPlayer)
    {
        System.out.println("Voulez-vous Shuffle ? 1 | 0");
        int choix;
@@ -420,5 +308,6 @@ public class ConsoleVue implements Observer {
                 case GameOver: this.over(); break;
             }
         }
+
     }
 }

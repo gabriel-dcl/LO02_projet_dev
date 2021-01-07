@@ -5,21 +5,16 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JToggleButton;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerListModel;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 import javax.swing.JMenuBar;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
-import java.awt.Color;
 import javax.swing.UIManager;
 
+import Controllers.GameController;
 import Controllers.SetUpController;
+import Vues.Vue;
 import enums.BoardType;
 import enums.Difficulty;
 import enums.GameMode;
@@ -30,7 +25,7 @@ import java.util.Observer;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
-public class Bienvenue implements Observer {
+public class SetUpGraphicVue implements Observer, Vue {
 
 	private JFrame frame;
 	private SetUpController ctrl ;
@@ -39,11 +34,11 @@ public class Bienvenue implements Observer {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void occure() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Bienvenue window = new Bienvenue();
+					SetUpGraphicVue window = new SetUpGraphicVue();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,9 +50,9 @@ public class Bienvenue implements Observer {
 	/**
 	 * Create the application.
 	 */
-	public Bienvenue() {
+	public SetUpGraphicVue() {
 		initialize();
-		ctrl = new SetUpController();
+		ctrl = new SetUpController(this);
 	}
 
 	
@@ -265,5 +260,10 @@ public class Bienvenue implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public GameController getCtrl() {
+		return null;
 	}
 }

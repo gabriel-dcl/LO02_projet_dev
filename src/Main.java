@@ -1,18 +1,18 @@
-import Controllers.GameController;
-import Vues.console.ConsoleVue;
+import Vues.console.SetUpConsoleVue;
 
 public class Main {
 
     public static void main(String Args[])
     {
 
-        ConsoleVue gmv = new ConsoleVue();
+        SetUpConsoleVue setup = new SetUpConsoleVue();
+        setup.welcome();
+
+       /* ConsoleVue gmv = new ConsoleVue();
         GameController gmc = new GameController(gmv);
 
+
         gmc.occure();
-
+*/
     }
-
-
-
 }

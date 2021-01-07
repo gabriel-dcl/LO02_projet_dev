@@ -1,26 +1,23 @@
 package Controllers;
 
 import Models.*;
-import Vues.console.ConsoleVue;
+import Vues.console.GameConsoleVue;
 import enums.BoardType;
 import enums.Difficulty;
 import enums.GameMode;
 
-import java.util.Scanner;
-
 public class GameController {
 
 	private GameManager gameManager;
-	private ConsoleVue gameManagerVue;
+	private GameConsoleVue gameManagerVue;
 
-	public GameController(ConsoleVue gmv) {
+	public GameController(GameConsoleVue gmv) {
 		this.gameManagerVue = gmv;
 
 	}
 	
 	public GameController() {
-		this.gameManagerVue = new ConsoleVue();
-
+		this.gameManagerVue = new GameConsoleVue();
 	}
 
 	public GameManager getGameManager() {
@@ -45,9 +42,9 @@ public class GameController {
 
 	public void occure() {
 		//this.setGameManager();
-		this.gameBoardChoice();
-		this.difficultyChoice();
-		this.playersSetup();
+	//	this.gameBoardChoice();
+	//	this.difficultyChoice();
+	//	this.playersSetup();
 
 		gameManagerVue.setGmc(this);
 		gameManager.addObserver(gameManagerVue);
@@ -56,49 +53,11 @@ public class GameController {
 		gameManager.game();
 	}
 
-	public void difficultyChoice() {
-		int difficultyChoice = -1;
-
-		difficultyChoice = gameManagerVue.difficultyChoice();
-
-		while (difficultyChoice != 1 && difficultyChoice != 0) {
-			// difficultyChoice = gameManagerVue.badInputDifficulty();
-		}
-	}
-
-	public void playersSetup() {
-		int realPlayersAmount = gameManagerVue.realPlayersAmountChoice();
-		int virtualPlayersAmount = 0;
-
-		if (realPlayersAmount != 3) {
-			virtualPlayersAmount = gameManagerVue.virtualPlayersAmountChoice();
-
-			while (realPlayersAmount + virtualPlayersAmount > 3 || realPlayersAmount + virtualPlayersAmount < 2) {
-				virtualPlayersAmount = gameManagerVue.badInputVirtualPlayersAmount();
-			}
-		}
-
-		gameManager.playersSetUp(realPlayersAmount, virtualPlayersAmount);
-	}
 
 	public void gameBoardChoice() {
 		boolean valueOkay = false;
 		int choix = -1;
 
-		while (choix != 1 && choix != 2 && choix != 3) {
-			choix = gameManagerVue.gameBoardChoice();
-		}
-		switch (choix) {
-		case 1 : gameManager.setBoard(BoardType.RECTANGULAR);
-			break;
-		case 2 : gameManager.setBoard(BoardType.TRIANGULAR);
-			break; 
-		case 3 : gameManager.setBoard(BoardType.SQUARE);
-			break;
-		default: gameManager.setBoard(BoardType.RECTANGULAR);
-			break;
-		}
-		
 	}
 
 	public boolean isPlaceAvailable(Coordinate point) {
@@ -119,9 +78,6 @@ public class GameController {
 	public void setGameManager(GameMode gamemode, Difficulty difficulty, BoardType board, int nbBots, int nbPlayers) {
 
 		switch (gamemode) {
-		case CLASSIC:
-			gameManager = new GameManagerClassic();
-			break;
 		case CHAOS:
 			gameManager = new GameManagerChaos();
 			break;
@@ -140,8 +96,13 @@ public class GameController {
 		default: gameManager.setDifficulty(0);
 			break;
 		}
+
 		gameManager.setBoard(board);
 		gameManager.playersSetUp(nbPlayers, nbBots);
+		gameManager.addObserver(this.gameManagerVue);
+
+		//if(this.gameManagerVue instanceof GameConsoleVue)
+		//	gameManager.setHasPlayed(fal);
 
 	}
 }

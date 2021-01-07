@@ -3,7 +3,6 @@ package Vues.graphiques;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import java.awt.GridBagLayout;
 
@@ -11,14 +10,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JTextField;
 
 import Controllers.GameController;
+import Vues.Vue;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Jeu {
+public class GameGraphicVue implements Vue {
 
 	private JFrame frame;
 	private GameController ctrl;
@@ -41,7 +40,7 @@ public class Jeu {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Jeu window = new Jeu();
+					GameGraphicVue window = new GameGraphicVue();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,10 +53,15 @@ public class Jeu {
 		return ctrl;
 	}
 
+	@Override
+	public void occure() {
+
+	}
+
 	/**
 	 * Create the application.
 	 */
-	public Jeu() {
+	public GameGraphicVue() {
 		initialize();
 		this.frame.setVisible(true);
 		ctrl = new GameController();

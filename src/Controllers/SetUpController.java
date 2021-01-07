@@ -1,21 +1,16 @@
 package Controllers;
 
 import Models.GameManager;
-import Models.GameManagerChaos;
-import Models.GameManagerClassic;
-import Models.GameManagerQuick;
-import Vues.console.ConsoleVue;
-import Vues.graphiques.Bienvenue;
-import Vues.graphiques.Jeu;
+import Vues.Vue;
+import Vues.console.GameConsoleVue;
+import Vues.console.SetUpConsoleVue;
+import Vues.graphiques.GameGraphicVue;
+import Vues.graphiques.SetUpGraphicVue;
 import enums.BoardType;
 import enums.Difficulty;
 import enums.GameMode;
 //import jdk.jfr.internal.PrivateAccess;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JButton;
 public class SetUpController {
 	
 	private GameManager gm;
@@ -26,7 +21,29 @@ public class SetUpController {
 	private BoardType choixBoard;
 	private int nbPlayer;
 	private int nbBots ;
-	private Jeu gameWindow;
+	private Vue currentVue;
+	private Vue gameWindow;
+
+	public SetUpController(Vue currentVue)
+	{
+		choixGC = GameMode.CLASSIC;
+		choixDif = Difficulty.EASY;
+		choixBoard = BoardType.RECTANGULAR;
+		nbPlayer = 0;
+		nbBots = 3;
+
+		this.currentVue = currentVue;
+	}
+
+	public void changeVue()
+	{
+		if(currentVue instanceof SetUpConsoleVue)
+			currentVue = new SetUpGraphicVue();
+		else
+			currentVue = new SetUpConsoleVue();
+
+		currentVue.occure();
+	}
 
 	public void setChoixGC(GameMode choixGC) {
 		this.choixGC = choixGC;
@@ -48,19 +65,54 @@ public class SetUpController {
 		this.nbBots = nbBots;
 	}
 
-	public SetUpController() {
-		super();
+	public GameManager getGm() {
+		return gm;
 	}
-	public void createGame() {
-		
-		gameWindow = new Jeu();
-		
+
+	public void setGm(GameManager gm) {
+		this.gm = gm;
+	}
+
+	public GameMode getChoixGC() {
+		return choixGC;
+	}
+
+	public Difficulty getChoixDif() {
+		return choixDif;
+	}
+
+	public BoardType getChoixBoard() {
+		return choixBoard;
+	}
+
+	public int getNbPlayer() {
+		return nbPlayer;
+	}
+
+	public int getNbBots() {
+		return nbBots;
+	}
+
+
+	public void setGameWindow(GameGraphicVue gameWindow) {
+		this.gameWindow = gameWindow;
+	}
+
+	public void createGame()
+	{
+
+		//
+
+		if(currentVue instanceof SetUpConsoleVue)
+			gameWindow = new GameConsoleVue();
+	else
+			gameWindow = new GameGraphicVue();
+
 		gameWindow.getCtrl().setGameManager(choixGC, choixDif, choixBoard,nbBots, nbPlayer );
 		System.out.println("Jeu lancé");
-		
-		
-	}
-	
-	
+		gameWindow.getCtrl().getGameManager().game();
+		System.out.println("Jeu lancé");
 
+
+	}
 }

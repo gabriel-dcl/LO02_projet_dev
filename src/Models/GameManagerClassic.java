@@ -4,10 +4,10 @@ import enums.Events;
 
 public class GameManagerClassic  extends GameManager {
 
-    public void game() {
+	public void game() {
+
 
     	boolean isFirstTime = true;
-
 
     	while ( currentBoard.currentCardsOnBoard.size() < 15 )
     	{
@@ -38,11 +38,29 @@ public class GameManagerClassic  extends GameManager {
 			}
 		}
 
+			this.waitForPlayerToPlay();
+
     	currentBoard.accept(visitor);
     	this.notifyObservers(Events.GameOver);
-
-
     }
+
+
+
+
+    public synchronized void waitForPlayerToPlay()
+	{
+		while(!hasPlayed)
+		{
+			try {
+				wait();
+			} catch (InterruptedException e)  {
+				Thread.currentThread().interrupt();
+			}
+		}
+
+		hasPlayed = false;
+	}
+
     public void getInstance() {
     } 
     private void singleton() {

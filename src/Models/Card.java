@@ -44,7 +44,7 @@ public class Card {
         }
 
 
-        return " " + stateLetter + "" + colorLetter + "" + formLetter + " ";
+        return "  " + stateLetter + "" + colorLetter + "" + formLetter + "  ";
 
     }
 
