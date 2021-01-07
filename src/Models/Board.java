@@ -9,9 +9,18 @@ import java.util.*;
 public abstract class Board extends Observable {
     protected GameManager currentGameManager;
     protected Visitor visitor;
-    protected HashMap<Coordinate, Card> currentCardsOnBoard;
+    protected Map<Coordinate, Card> currentCardsOnBoard;
     protected Stack<Card> remainingCards;
     protected Card[] allPossibleCard;
+
+    public Board()
+    {
+        visitor = new Visitor();
+        remainingCards = new Stack<Card>();
+        generateRandomStack();
+        currentCardsOnBoard = new HashMap<Coordinate, Card>();
+
+    }
 
     public Map<Coordinate, Card> getCurrentCardsOnBoard() {
         return currentCardsOnBoard;
@@ -51,14 +60,7 @@ public abstract class Board extends Observable {
     }
 
 
-    public Board()
-    {
-        visitor = new Visitor();
-        remainingCards = new Stack<Card>();
-        generateRandomStack();
-        currentCardsOnBoard = new HashMap<Coordinate, Card>();
-        
-    }
+
 
     public boolean isCoordinateCloseEnough(Coordinate coordinate) {
       return false;
