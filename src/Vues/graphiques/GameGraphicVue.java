@@ -192,7 +192,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
                     break;
                 }
 
-                this.gmc.getGameManager().setHasPlayed(true);
+                this.ctrl.getGameManager().setHasPlayed(true);
             }
 
         } catch (InterruptedException ie) {
