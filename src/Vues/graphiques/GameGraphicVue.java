@@ -389,12 +389,10 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 			for (int j = 0; j < 12; j++) {
 				boolean hasFound = false;
 
-				for (Map.Entry<Coordinate, Card> entry : ctrl.getGameManager().getCurrentBoard()
-						.getCurrentCardsOnBoard().entrySet()) {
+				for (Map.Entry<Coordinate, Card> entry : ctrl.getGameManager().getCurrentBoard().getCurrentCardsOnBoard().entrySet()) {
 					if (entry.getKey().equals(new Coordinate(i, j))) {
 
-						String nomCarte = "Cartes/" + ctrl.getGameManager().getCurrentBoard()
-								.getCardByCoordinate(entry.getKey()).toStringGraphic() + ".png";
+						String nomCarte = "Cartes/" + ctrl.getGameManager().getCurrentBoard().getCardByCoordinate(entry.getKey()).toStringGraphic() + ".png";
 						Board[i][j].setIcon(createImageIcon(nomCarte, "Vide"));
 						hasFound = true;
 					}
@@ -480,7 +478,26 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	}
 
 	private void playerTurn() {
-		
+		if(canAlternate)
+			btnAlternateCards.setEnabled(true);
+		else
+			btnAlternateCards.setEnabled(false);
+		if(canChangeVictoryCard)
+			btnChangeVCard.setEnabled(true);
+		else
+			btnChangeVCard.setEnabled(false);
+		if(canMoveCard)
+			btnMoveCard.setEnabled(true);
+		else
+			btnMoveCard.setEnabled(false);
+		if(canPlaceCard)
+			btnPlaceNewCard.setEnabled(true);
+		else
+			btnPlaceNewCard.setEnabled(false);
+		if(canShuffle)
+			btnShuffle.setEnabled(true);
+		else
+			btnShuffle.setEnabled(false);
 	}
 
 	
