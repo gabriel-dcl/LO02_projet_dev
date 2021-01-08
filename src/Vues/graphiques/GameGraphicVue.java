@@ -95,7 +95,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	public GameGraphicVue() {
 		initialize();
 		this.frame.setVisible(true);
-		ctrl = new GameController();
+		ctrl = new GameController(this);
 	}
 
 	/**
@@ -177,6 +177,60 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		gbc_btnEndTurn.gridy = 14;
 		frame.getContentPane().add(btnEndTurn, gbc_btnEndTurn);
 
+		btnEndTurn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+
+		btnShowVCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showVictoryCard(ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()].getVictoryCard());
+				}
+		});
+
+		btnMoveCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				moveCard();
+			}
+		});
+
+		btnPlaceNewCard.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				enableBoard();
+				String nomCarte = "Cartes/" + ctrl.getGameManager().getCardOnPlay().toStringGraphic() + ".png";
+				ImageIcon icon = createImageIcon(nomCarte, "carte à jouer");
+				JLabel carteActuelle = new JLabel(icon);
+				GridBagConstraints gbc_carteActuelle = new GridBagConstraints();
+				gbc_carteActuelle.insets = new Insets(0, 0, 5, 5);
+				gbc_carteActuelle.gridx = 1;
+				gbc_carteActuelle.gridy = 16;
+				frame.getContentPane().add(carteActuelle, gbc_carteActuelle);
+				placeNewCard();
+			}
+		});
+
+		btnShuffle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				shuffle(ctrl.getGameManager().getCurrentBoard(),ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()] );
+				
+			}
+		});
+
+		btnAlternateCards.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				alternateCards();
+
+			}
+		});
+
+		btnChangeVCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				changeVictoryCard();
+			}
+		});
+	
 		drawBoard();
 
 	}
@@ -420,60 +474,6 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	}
 
 	private void playerTurn() {
-
-		btnEndTurn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-
-		btnShowVCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showVictoryCard(ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()].getVictoryCard());
-				}
-		});
-
-		btnMoveCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				moveCard();
-			}
-		});
-
-		btnPlaceNewCard.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				enableBoard();
-				String nomCarte = "Cartes/" + ctrl.getGameManager().getCardOnPlay().toStringGraphic() + ".png";
-				ImageIcon icon = createImageIcon(nomCarte, "carte à jouer");
-				JLabel carteActuelle = new JLabel(icon);
-				GridBagConstraints gbc_carteActuelle = new GridBagConstraints();
-				gbc_carteActuelle.insets = new Insets(0, 0, 5, 5);
-				gbc_carteActuelle.gridx = 1;
-				gbc_carteActuelle.gridy = 16;
-				frame.getContentPane().add(carteActuelle, gbc_carteActuelle);
-				placeNewCard();
-			}
-		});
-
-		btnShuffle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				shuffle(ctrl.getGameManager().getCurrentBoard(),ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()] );
-				
-			}
-		});
-
-		btnAlternateCards.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				alternateCards();
-
-			}
-		});
-
-		btnChangeVCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				changeVictoryCard();
-			}
-		});
 		
 	}
 
