@@ -562,6 +562,10 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		carteAJouer = ctrl.getGameManager().getCardOnPlay();
 		String nomCarte = "Cartes/" + carteAJouer.toStringGraphic() + ".png";
 		ImageIcon icon = createImageIcon(nomCarte, "carte a jouer");
+		ImageIcon white = createImageIcon("Cartes/White.png", "Du blanc");
+		lblCarteAffichee.setIcon(white);
+		frame.setVisible(false);
+		frame.setVisible(true);
 		lblCarteAffichee.setIcon(icon);
 		frame.show();
 		askToPlayCard = true;
@@ -599,6 +603,10 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 			String nomCarte = "Cartes/" + ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()]
 					.getVictoryCard().toStringGraphic() + ".png";
 			ImageIcon icon = createImageIcon(nomCarte, "carte victoire");
+			ImageIcon white = createImageIcon("Cartes/White.png", "Du blanc");
+			lblCarteAffichee.setIcon(white);
+			frame.setVisible(false);
+			frame.setVisible(true);
 			lblCarteAffichee.setIcon(icon);
 			frame.setVisible(false);
 			frame.setVisible(true);
