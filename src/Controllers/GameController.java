@@ -105,8 +105,14 @@ public class GameController {
 		
 		gameManager.setBoard(board);
 		gameManager.playersSetUp(nbPlayers, nbBots);
-		gameManager.addObserver(this.gameManagerVue);
-		gameManager.addObserver(this.graphicVue);
+		if(this.gameManagerVue!=null) {
+			gameManager.addObserver(this.gameManagerVue);
+		}
+		if(this.graphicVue!=null) {
+			gameManager.addObserver(this.graphicVue);
+		}
+		
+		
 
 		Thread t = new Thread(gameManager);
 		Thread vue = new Thread(this.gameManagerVue);

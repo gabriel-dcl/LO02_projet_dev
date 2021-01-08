@@ -52,6 +52,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private JButton btnEndTurn;
 	private JButton btnChangeVCard;
 	private JLabel lblMessage;
+	private boolean askToPlayCard;
+	private boolean askToAlternateCard;
+	private boolean askToMoveCard;
 
 	protected ImageIcon createImageIcon(String path, String description) {
 
@@ -297,12 +300,12 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 						Coordinate coord = new Coordinate(-1, -1);
 						coord.setX(current_gbc_board.gridx);
 						coord.setY(current_gbc_board.gridy);
-						if (canPlaceCard) {
+						if (askToPlayCard) {
 							if (ctrl.isPlaceAvailable(coord)) {
 								if (ctrl.isCoordinateCloseEnough(coord)) {
 									ctrl.addCardOnBoard(ctrl.getGameManager().getCardOnPlay(), coord);
 									showBoard();
-									canPlaceCard = false;
+									askToPlayCard = false;
 									disableBoard();
 								}
 								else
@@ -313,7 +316,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 								lblMessage.setText("Place occupée! Réessayez.");
 
 						}
-						if (canMoveCard) {
+						if (askToMoveCard) {
 							if (position1 != null) {
 								if (ctrl.isPlaceAvailable(coord)) {
 									position2 = coord;
@@ -321,7 +324,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 									cardToMove = ctrl.getCardFromCoordinate(position1);
 									ctrl.removeFromCoordinate(position1);
 									ctrl.addCardOnBoard(cardToMove, position2);
-									canMoveCard = false;
+									askToMoveCard = false;
 									showBoard();
 									position1 = null;
 									position2 = null;
@@ -337,11 +340,11 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 							}
 
 						}
-						if (canAlternateCard) {
+						if (askToAlternateCard) {
 							if (position1 != null) {
 								position2 = coord;
 								ctrl.alternateCards(position1, position2);
-								canAlternateCard = false;
+								askToAlternateCard = false;
 								showBoard();
 								position1 = null;
 								position2 = null;
@@ -365,18 +368,17 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	private void showCurrentPlayer() {
 
-		lblMessage.setText("!!! Le joueur " + (ctrl.getGameManager().getIndex() + 1) + " a change de Victory Card");
+		lblMessage.setText("=====> Joueur " + ( ctrl.getGameManager().getIndex() + 1));
 	}
 
 	public void changeVictoryCard() {
 		if (!canChangeVictoryCard) {
 			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
-			btnChangeVCard.setEnabled(false);
+			
 			return;
 		}
 
-		ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()]
-				.changeVictoryCard(ctrl.getGameManager().getCurrentBoard());
+		ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()].changeVictoryCard(ctrl.getGameManager().getCurrentBoard());
 		this.annoncePlayerChangeVictoryCard();
 		this.canChangeVictoryCard = false;
 
@@ -401,6 +403,8 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 					Board[i][j].setIcon(createImageIcon("Cartes/Blank.png", "Vide"));
 			}
 		}
+		frame.setVisible(false);
+		frame.setVisible(true);
 	}
 
 	public void placeNewCard() {
@@ -413,7 +417,8 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 			lblMessage.setText("Vous devez déplacer une carte avant d'en ajouter une !");
 			return;
 		}
-
+		
+		askToPlayCard = true;
 		enableBoard();
 
 	}
@@ -424,7 +429,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
 			return;
 		}
-
+		askToMoveCard = true;
 		enableBoard();
 	}
 
@@ -451,7 +456,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		gbc_carteVictoire.gridx = 1;
 		gbc_carteVictoire.gridy = 16;
 		frame.getContentPane().add(carteVictoire, gbc_carteVictoire);
-	
+		frame.show();
 	}
 
 	public void alternateCards() {
@@ -459,6 +464,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
 			return;
 		}
+		askToAlternateCard = true;
 		enableBoard();
 
 	}
