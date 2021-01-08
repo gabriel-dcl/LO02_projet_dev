@@ -234,7 +234,6 @@ public class SetUpGraphicVue implements  Vue {
 		rdbtnmnitm3bots.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ctrl.setNbBots(3);
-				JOptionPane.showMessageDialog(null, "This is the simple message dialog box.", "Roseindia.net", 1);
 				rdbtnmnitm3players_1.setEnabled(false);
 				rdbtnmnitm2players_1.setEnabled(false);
 				rdbtnmnitm1players_1.setEnabled(false);

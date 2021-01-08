@@ -16,6 +16,7 @@ public class SetUpConsoleVue implements Vue {
 
     Scanner sc;
     private SetUpController ctrl;
+    private boolean exit = false;
 
     public SetUpConsoleVue() // SetUpController ctrl
     {
@@ -91,14 +92,17 @@ public class SetUpConsoleVue implements Vue {
         this.setUpLobby();
     }
 
-    public void welcome()
-    {
-       this.ctrl =  new SetUpController(this);
+    public void welcome() {
 
-        System.out.println("=============================================================== ");
-        System.out.println("======================= SHAPE UP ! ============================ ");
-        System.out.println("=============================================================== ");
-        this.setUpLobby();
+            this.ctrl = new SetUpController(this);
+
+
+                System.out.println("=============================================================== ");
+                System.out.println("======================= SHAPE UP ! ============================ ");
+                System.out.println("=============================================================== ");
+                this.setUpLobby();
+
+
     }
 
     public int virtualPlayersAmountChoice() {
@@ -219,13 +223,13 @@ public class SetUpConsoleVue implements Vue {
 
     public void setUpLobby()
     {
-        System.out.println("\n \n \n Bonjour ! Que voulez-vous faire : ");
         System.out.println("1 - Changer le mode de jeu (actuel : " + ctrl.getChoixGC() + " )");
         System.out.println("2 - changer le plateau : (actuel :" + ctrl.getChoixBoard() + " )");
         System.out.println("3 - Changer la configuration des joueurs : (Joueurs réels :" + ctrl.getNbPlayer() + ", Bots : " + ctrl.getNbBots() + " )");
         System.out.println("4 - Changer la difficulté (actuel : " + ctrl.getChoixDif() + " )");
         System.out.println("5 - Passer en vue graphique");
         System.out.println("6 - Lancer la partie");
+        System.out.println("7 - Quitter");
 
         System.out.print("Votre selection : \t");
         int choix = 12;
@@ -237,7 +241,7 @@ public class SetUpConsoleVue implements Vue {
             System.out.println("Saisie invalide. Recommencez.");
         }
 
-        while (choix != 1 && choix != 2 && choix !=3 && choix !=4 && choix !=5 && choix !=6)
+        while (choix != 1 && choix != 2 && choix !=3 && choix !=4 && choix !=5 && choix !=6 && choix !=7)
         {
             System.out.print("Saisie invalide, merci de recommencez : ");
 
@@ -257,6 +261,7 @@ public class SetUpConsoleVue implements Vue {
             case 4 : this.difficultyChoice(); break;
             case 5 : ctrl.changeVue(); break;
             case 6 : ctrl.createGame(); break;
+            case 7 : exit = true; break;
         }
 
     }

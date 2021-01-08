@@ -38,11 +38,13 @@ public class GameController {
 		gameManager.getCurrentBoard().getCurrentCardsOnBoard().remove(point);
 	}
 
-	public void addCardOnBoard(Card newCard, Coordinate position) {
+	public void addCardOnBoard(Card newCard, Coordinate position, boolean isMoving) {
 		gameManager.getCurrentBoard().addCardOnBoard(newCard, position);
-		gameManager.nextCardOnPlay();
+		if(!isMoving)
+			gameManager.nextCardOnPlay();
 		gameManagerVue.showBoard();
 	}
+
 
 	public Coordinate findEqualsCoordinate(Coordinate point) {
 		return gameManager.getCurrentBoard().findEqualsCoordinate(point);

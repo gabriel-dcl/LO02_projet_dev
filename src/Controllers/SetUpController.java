@@ -109,8 +109,6 @@ public class SetUpController {
 			gameWindow = new GameGraphicVue();
 
 		gameWindow.getCtrl().setGameManager(choixGC, choixDif, choixBoard,nbBots, nbPlayer );
-		System.out.println("Jeu lancé");
-
 
 	}
 }

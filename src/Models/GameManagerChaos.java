@@ -7,6 +7,9 @@ public class  GameManagerChaos extends GameManager {
 
 	public void run() {
 
+		maxCards = 14;
+
+
 		boolean isFirstTime = true;
 		boolean isSecondTime = true;
 		cardOnPlay = this.currentBoard.getCard();

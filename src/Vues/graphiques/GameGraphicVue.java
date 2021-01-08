@@ -3,14 +3,11 @@ package Vues.graphiques;
 import java.awt.Color;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
 import javax.swing.SpringLayout.Constraints;
 
 import java.awt.GridBagLayout;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
@@ -18,13 +15,15 @@ import Controllers.GameController;
 import Models.*;
 import Vues.Vue;
 import enums.Events;
+import enums.Form;
+import enums.State;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
-import javax.swing.UIManager;
 import java.awt.SystemColor;
 
 public class GameGraphicVue implements Vue, Observer, Runnable {
@@ -191,12 +190,16 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		btnEndTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
+
 				if(canMoveCard || canPlaceCard)
 				{
 					lblMessage.setText("Vous devez jouer votre tour.");
 				}
 				else
+				{
 					exit = true;
+				}
+
 			}
 		});
 
@@ -305,6 +308,71 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	}
 
+	public void gameOver()
+	{
+		int realPlayersAmount = ctrl.getGameManager().getRealPlayersAmount();
+		int virtualPlayersAmount = ctrl.getGameManager().getVirtualPlayersAmount();
+		Visitor visitor = ctrl.getGameManager().getVisitor();
+		Player[] players = ctrl.getGameManager().getPlayers();
+
+		String message = "============================ GAME OVER ======================== \n" +
+				"Points Triangular " +  ctrl.getGameManager().getVisitor().getPointsByForm().get(Form.TRIANGULAR) +
+				"\nPoints Rectangular " + ctrl.getGameManager().getVisitor().getPointsByForm().get(Form.RECTANGULAR) +
+				"\nPoints Circle " +  ctrl.getGameManager().getVisitor().getPointsByForm().get(Form.CIRCLE) +
+				"\nPoints Blue " + ctrl.getGameManager().getVisitor().getPointsByColor().get(enums.Color.BLUE) +
+				"\nPoints Green " + ctrl.getGameManager().getVisitor().getPointsByColor().get(enums.Color.GREEN) +
+				"\nPoints Red " + ctrl.getGameManager().getVisitor().getPointsByColor().get(enums.Color.RED) +
+				"\nPoints Empty " + ctrl.getGameManager().getVisitor().getPointsByState().get(State.EMPTY) +
+				"\nPoints Fill " + ctrl.getGameManager().getVisitor().getPointsByState().get(State.FILL);
+
+
+		if(realPlayersAmount + virtualPlayersAmount == 3)
+		{
+			int pointsPlayer1 =  visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
+			int pointsPlayer2 =  visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());
+			int pointsPlayer3 =  visitor.getPointsTotalRegardingVictoryCard(players[2].getVictoryCard());
+
+			message += "\n\n ======================\nCARTE J1:" + players[0].getVictoryCard() +
+					"\nCARTE J2: " + players[1].getVictoryCard() +
+					"\nCARTE J3: " + players[2].getVictoryCard();
+
+			if(pointsPlayer1 > pointsPlayer2 && pointsPlayer1 > pointsPlayer3)
+				message += "\nLe joueur 1 gagne avec sa carte : " + players[0].getVictoryCard();
+			else if(pointsPlayer2 > pointsPlayer1 && pointsPlayer2 > pointsPlayer3)
+				message += "\nLe joueur 2 gagne avec sa carte : " + players[1].getVictoryCard();
+			else if(pointsPlayer3 > pointsPlayer1 && pointsPlayer3 > pointsPlayer2)
+				message +="\nLe joueur 3 gagne avec sa carte : " + players[2].getVictoryCard();
+			else
+				message += "\nMatch nul !";
+		}else
+		{
+			message += "\n\n ======================\nCARTE J1:" + players[0].getVictoryCard() +
+					"\nCARTE J2: " + players[1].getVictoryCard();
+
+			int pointsPlayer1 =  visitor.getPointsTotalRegardingVictoryCard(players[0].getVictoryCard());
+			int pointsPlayer2 =  visitor.getPointsTotalRegardingVictoryCard(players[1].getVictoryCard());
+
+			if(pointsPlayer1 > pointsPlayer2)
+				message += "Le joueur 1 gagne avec sa carte : " + players[0].getVictoryCard();
+			else if((pointsPlayer2 > pointsPlayer1))
+				message += "Le joueur 2 gagne avec sa carte : " + players[1].getVictoryCard();
+			else
+				message += "Match nul !";
+
+		}
+		JOptionPane.showMessageDialog(null,
+				message,
+				"Game Over", 1);
+		this.frame.setVisible(false); //you can't see me!
+		this.frame.dispose(); //Destroy the JFrame object
+	/*
+
+
+
+
+*/
+	}
+
 	public void drawBoard() {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -344,7 +412,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 									else
 									canPlaceCard = false;
 
-									ctrl.addCardOnBoard(ctrl.getGameManager().getCardOnPlay(), coord);
+									ctrl.addCardOnBoard(ctrl.getGameManager().getCardOnPlay(), coord, false);
 									showBoard();
 
 									disableBoard();
@@ -362,13 +430,11 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 							if (position1 != null) {
 								if (ctrl.isPlaceAvailable(coord) && ctrl.isCoordinateCloseEnough(coord))
 								{
-
-
 									position2 = coord;
 									Card cardToMove;
 									cardToMove = ctrl.getCardFromCoordinate(ctrl.findEqualsCoordinate(position1));
 									ctrl.removeFromCoordinate(ctrl.findEqualsCoordinate(position1));
-									ctrl.addCardOnBoard(cardToMove, position2);
+									ctrl.addCardOnBoard(cardToMove, position2, true);
 									askToMoveCard = false;
 									canMoveCard = false;
 									showBoard();
@@ -556,8 +622,6 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private void playerTurn() {
 			exit = false;
 
-			System.out.println("Loading");
-
 			if(canAlternate)
 				btnAlternateCards.setEnabled(true);
 			else
@@ -616,6 +680,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 				this.annoncePlayerChangeVictoryCard();
 				break;
 			case GameOver:
+				this.gameOver();
 				this.gameOver = true;
 				this.over();
 				break;

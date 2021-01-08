@@ -49,7 +49,8 @@ public class GameManagerClassic  extends GameManager {
 
 		currentBoard.accept(visitor);
 		this.notifyObservers(Events.GameOver);
-    }
+
+	}
 
 
     public void getInstance() {
