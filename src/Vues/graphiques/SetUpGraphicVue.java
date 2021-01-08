@@ -174,6 +174,11 @@ public class SetUpGraphicVue implements  Vue {
 		txtrBienvenueDansShape.setBounds(25, 10, 572, 22);
 		frame.getContentPane().add(txtrBienvenueDansShape);
 		
+		JButton btnChangeVue = new JButton("Changer la vue");
+		
+		btnChangeVue.setBounds(25, 196, 146, 21);
+		frame.getContentPane().add(btnChangeVue);
+		
 		
 
 		rdbtnmnitmRectangular.addActionListener(new ActionListener() {
@@ -260,6 +265,11 @@ public class SetUpGraphicVue implements  Vue {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Lancement de la partie");
 				ctrl.createGame();
+				
+			}
+		});
+		btnChangeVue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				
 			}
 		});
