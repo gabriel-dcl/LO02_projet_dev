@@ -55,6 +55,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private boolean askToPlayCard;
 	private boolean askToAlternateCard;
 	private boolean askToMoveCard;
+	private boolean exit;
 
 	protected ImageIcon createImageIcon(String path, String description) {
 
@@ -182,7 +183,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 		btnEndTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				exit = true;
 			}
 		});
 
@@ -252,7 +253,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 					break;
 				}
 
-				this.ctrl.getGameManager().setHasPlayed(true);
+				ctrl.getGameManager().setHasPlayed(true);
 			}
 
 		} catch (InterruptedException ie) {
@@ -478,6 +479,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	}
 
 	private void playerTurn() {
+		exit = false;
 		if(canAlternate)
 			btnAlternateCards.setEnabled(true);
 		else
