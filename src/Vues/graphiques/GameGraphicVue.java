@@ -40,6 +40,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private JButton btnMoveCard;
 	private JButton btnShuffle;
 	private JButton btnAlternateCards;
+	private JLabel lblCarteAffichee;
 	private boolean canPlaceCard = false;
 	private boolean canMoveCard = false;
 	private Coordinate position1 = null;
@@ -56,9 +57,10 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private boolean exit;
 	private boolean canPlace2ndTime = false;
 	private boolean firstClickShowVictoryCard = true;
-	private JLabel carteVictoire;
-
+	
+	private Card carteAJouer;
 	private boolean cardToMoveIdentified = false;
+	
 
 
 	private boolean hasSetUp = false;
@@ -186,6 +188,15 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		gbc_btnEndTurn.gridx = 1;
 		gbc_btnEndTurn.gridy = 14;
 		frame.getContentPane().add(btnEndTurn, gbc_btnEndTurn);
+		
+		
+		ImageIcon icon = createImageIcon("Cartes/Blank.png", "carte victoire");
+		lblCarteAffichee = new JLabel(icon);
+		GridBagConstraints gbc_carteAffichee = new GridBagConstraints();
+		gbc_carteAffichee.insets = new Insets(0, 0, 5, 5);
+		gbc_carteAffichee.gridx = 1;
+		gbc_carteAffichee.gridy = 16;
+		frame.getContentPane().add(lblCarteAffichee, gbc_carteAffichee);
 
 		btnEndTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -412,7 +423,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 									else
 									canPlaceCard = false;
 
-									ctrl.addCardOnBoard(ctrl.getGameManager().getCardOnPlay(), coord, false);
+									ctrl.addCardOnBoard(carteAJouer, coord, false);
 									showBoard();
 
 									disableBoard();
@@ -547,10 +558,15 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 			lblMessage.setText("Vous devez déplacer une carte avant d'en ajouter une !");
 			return;
 		}
-		
+		lblMessage.setText("Voici la carte à placer, où la placer ?");
+		carteAJouer = ctrl.getGameManager().getCardOnPlay();
+		String nomCarte = "Cartes/" + carteAJouer.toStringGraphic() + ".png";
+		ImageIcon icon = createImageIcon(nomCarte, "carte a jouer");
+		lblCarteAffichee.setIcon(icon);
+		frame.show();
 		askToPlayCard = true;
 		enableBoard();
-
+		
 	}
 
 	public void moveCard() {
@@ -579,22 +595,15 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	}
 
 	public void showVictoryCard(Card victoryCard) {
-		if(firstClickShowVictoryCard)
-		{
+		
 			String nomCarte = "Cartes/" + ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()]
 					.getVictoryCard().toStringGraphic() + ".png";
 			ImageIcon icon = createImageIcon(nomCarte, "carte victoire");
-			carteVictoire = new JLabel(icon);
-			GridBagConstraints gbc_carteVictoire = new GridBagConstraints();
-			gbc_carteVictoire.insets = new Insets(0, 0, 5, 5);
-			gbc_carteVictoire.gridx = 1;
-			gbc_carteVictoire.gridy = 16;
-			frame.getContentPane().add(carteVictoire, gbc_carteVictoire);
-			frame.show();
-			firstClickShowVictoryCard = false;
-		}
-		else
-			frame.getContentPane().remove(carteVictoire);
+			lblCarteAffichee.setIcon(icon);
+			frame.setVisible(false);
+			frame.setVisible(true);
+			
+		
 	}
 
 	public void alternateCards() {
