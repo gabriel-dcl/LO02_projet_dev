@@ -128,10 +128,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
 
         Coordinate position = askPlayerCoordinates(currentBoard, true);
 
-
         gmc.addCardOnBoard(newCard, position);
-
-
 
         if(!canPlaceCard && canPlace2ndCard)
             canPlace2ndCard = false;
@@ -141,9 +138,6 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
 
         System.out.println("\n \n");
     }
-
-
-
 
     public void moveCard(Board currentBoard)
     {

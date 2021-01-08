@@ -43,7 +43,6 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private JButton btnAlternateCards;
 	private boolean canPlaceCard = false;
 	private boolean canMoveCard = false;
-	private boolean canAlternateCard = false;
 	private Coordinate position1 = null;
 	private Coordinate position2 = null;
 	private boolean canShuffle;
@@ -56,6 +55,14 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	private boolean askToAlternateCard;
 	private boolean askToMoveCard;
 	private boolean exit;
+	private boolean canPlace2ndTime = false;
+	private boolean firstClickShowVictoryCard = true;
+	private JLabel carteVictoire;
+
+	private boolean cardToMoveIdentified = false;
+
+
+	private boolean hasSetUp = false;
 
 	protected ImageIcon createImageIcon(String path, String description) {
 
@@ -183,7 +190,13 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 		btnEndTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				exit = true;
+
+				if(canMoveCard || canPlaceCard)
+				{
+					lblMessage.setText("Vous devez jouer votre tour.");
+				}
+				else
+					exit = true;
 			}
 		});
 
@@ -218,6 +231,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		btnShuffle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				shuffle(ctrl.getGameManager().getCurrentBoard(),ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()] );
+				showBoard();
 				
 			}
 		});
@@ -225,7 +239,6 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		btnAlternateCards.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				alternateCards();
-
 			}
 		});
 
@@ -245,15 +258,26 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 			while (true) {
 				Thread.sleep(200);
 
-				if (playerTurn) {
-					this.playerTurn();
+				if (exit) {
+					this.hasSetUp = false;
+					exit = false;
+					ctrl.getGameManager().setHasPlayed(true);
 				}
 
+				if (playerTurn)
+				{
+					this.playerTurn();
+					Thread.sleep(200);
+				}
+
+
 				if (gameOver) {
+					ctrl.getGameManager().setHasPlayed(true);
+					this.hasSetUp = false;
 					break;
 				}
 
-				ctrl.getGameManager().setHasPlayed(true);
+
 			}
 
 		} catch (InterruptedException ie) {
@@ -284,6 +308,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	public void drawBoard() {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
+
 				Board[i][j] = new JButton();
 				gbc_board[i][j] = new GridBagConstraints();
 				gbc_board[i][j].insets = new Insets(0, 0, 5, 5);
@@ -297,16 +322,31 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 				Board[i][j].setEnabled(false);
 
 				Board[i][j].addActionListener(new ActionListener() {
+					int x  = current_gbc_board.gridy - 2;
+					int y  = current_gbc_board.gridx - 3;
+
 					public void actionPerformed(ActionEvent arg0) {
 						Coordinate coord = new Coordinate(-1, -1);
-						coord.setX(current_gbc_board.gridx);
-						coord.setY(current_gbc_board.gridy);
-						if (askToPlayCard) {
-							if (ctrl.isPlaceAvailable(coord)) {
-								if (ctrl.isCoordinateCloseEnough(coord)) {
+
+						coord.setX(x);
+						coord.setY(y);
+
+						if (askToPlayCard && canPlaceCard)
+						{
+							if (ctrl.isPlaceAvailable(coord))
+							{
+								if (ctrl.isCoordinateCloseEnough(coord))
+								{
+									askToPlayCard = false;
+
+									if(canPlace2ndTime)
+										canPlace2ndTime = false;
+									else
+									canPlaceCard = false;
+
 									ctrl.addCardOnBoard(ctrl.getGameManager().getCardOnPlay(), coord);
 									showBoard();
-									askToPlayCard = false;
+
 									disableBoard();
 								}
 								else
@@ -318,43 +358,68 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 						}
 						if (askToMoveCard) {
+							System.out.println("MOVECARD");
 							if (position1 != null) {
-								if (ctrl.isPlaceAvailable(coord)) {
+								if (ctrl.isPlaceAvailable(coord) && ctrl.isCoordinateCloseEnough(coord))
+								{
+
+
 									position2 = coord;
 									Card cardToMove;
-									cardToMove = ctrl.getCardFromCoordinate(position1);
-									ctrl.removeFromCoordinate(position1);
+									cardToMove = ctrl.getCardFromCoordinate(ctrl.findEqualsCoordinate(position1));
+									ctrl.removeFromCoordinate(ctrl.findEqualsCoordinate(position1));
 									ctrl.addCardOnBoard(cardToMove, position2);
 									askToMoveCard = false;
+									canMoveCard = false;
 									showBoard();
 									position1 = null;
 									position2 = null;
 									disableBoard();
+
 								} else
-									lblMessage.setText("Place déjà occupée! Réessayez");
+									lblMessage.setText("Place déjà occupée ou trop loin! Réessayez");
 
 							} else {
 								if (ctrl.isPlaceAvailable(coord)) {
 									lblMessage.setText("Aucune carte ici");
 								} else
 									position1 = coord;
+									System.out.println("Position1 selected " + position1.getX() + "     " + position1.getY());
+
 							}
 
 						}
 						if (askToAlternateCard) {
 							if (position1 != null) {
-								position2 = coord;
-								ctrl.alternateCards(position1, position2);
-								askToAlternateCard = false;
-								showBoard();
-								position1 = null;
-								position2 = null;
-								disableBoard();
-							} else
-								position1 = coord;
+								if (!ctrl.isPlaceAvailable(coord) && position1 != coord)
+								{
+									System.out.print("SupposedTOaLTER");
+
+									position2 = coord;
+									ctrl.alternateCards(position1, position2);
+									askToAlternateCard = false;
+									canAlternate = false;
+									showBoard();
+									position1 = null;
+									position2 = null;
+									disableBoard();
+								} else
+								{
+									lblMessage.setText("Position invalide");
+								}
+
+							} else {
+
+								if (!ctrl.isPlaceAvailable(coord))
+								{
+									position1 = coord;
+								} else
+								{
+									lblMessage.setText("Position invalide");
+								}
+							}
 
 						}
-
 					}
 				});
 			}
@@ -391,7 +456,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 				boolean hasFound = false;
 
 				for (Map.Entry<Coordinate, Card> entry : ctrl.getGameManager().getCurrentBoard().getCurrentCardsOnBoard().entrySet()) {
-					if (entry.getKey().equals(new Coordinate(i, j))) {
+					if (entry.getKey().equals(new Coordinate(j, i))) {
 
 						String nomCarte = "Cartes/" + ctrl.getGameManager().getCurrentBoard().getCardByCoordinate(entry.getKey()).toStringGraphic() + ".png";
 						Board[i][j].setIcon(createImageIcon(nomCarte, "Vide"));
@@ -428,8 +493,10 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
 			return;
 		}
+
 		askToMoveCard = true;
 		enableBoard();
+
 	}
 
 	public void shuffle(Board currentBoard, Player currentPlayer) {
@@ -446,20 +513,28 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	}
 
 	public void showVictoryCard(Card victoryCard) {
-		String nomCarte = "Cartes/" + ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()]
-				.getVictoryCard().toStringGraphic() + ".png";
-		ImageIcon icon = createImageIcon(nomCarte, "carte victoire");
-		JLabel carteVictoire = new JLabel(icon);
-		GridBagConstraints gbc_carteVictoire = new GridBagConstraints();
-		gbc_carteVictoire.insets = new Insets(0, 0, 5, 5);
-		gbc_carteVictoire.gridx = 1;
-		gbc_carteVictoire.gridy = 16;
-		frame.getContentPane().add(carteVictoire, gbc_carteVictoire);
-		frame.show();
+		if(firstClickShowVictoryCard)
+		{
+			String nomCarte = "Cartes/" + ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()]
+					.getVictoryCard().toStringGraphic() + ".png";
+			ImageIcon icon = createImageIcon(nomCarte, "carte victoire");
+			carteVictoire = new JLabel(icon);
+			GridBagConstraints gbc_carteVictoire = new GridBagConstraints();
+			gbc_carteVictoire.insets = new Insets(0, 0, 5, 5);
+			gbc_carteVictoire.gridx = 1;
+			gbc_carteVictoire.gridy = 16;
+			frame.getContentPane().add(carteVictoire, gbc_carteVictoire);
+			frame.show();
+			firstClickShowVictoryCard = false;
+		}
+		else
+			frame.getContentPane().remove(carteVictoire);
 	}
 
 	public void alternateCards() {
-		if (!canAlternateCard) {
+
+		System.out.print("eesfef" + canAlternate);
+		if (!canAlternate) {
 			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
 			return;
 		}
@@ -479,27 +554,34 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	}
 
 	private void playerTurn() {
-		exit = false;
-		if(canAlternate)
-			btnAlternateCards.setEnabled(true);
-		else
-			btnAlternateCards.setEnabled(false);
-		if(canChangeVictoryCard)
-			btnChangeVCard.setEnabled(true);
-		else
-			btnChangeVCard.setEnabled(false);
-		if(canMoveCard)
-			btnMoveCard.setEnabled(true);
-		else
-			btnMoveCard.setEnabled(false);
-		if(canPlaceCard)
-			btnPlaceNewCard.setEnabled(true);
-		else
-			btnPlaceNewCard.setEnabled(false);
-		if(canShuffle)
-			btnShuffle.setEnabled(true);
-		else
-			btnShuffle.setEnabled(false);
+			exit = false;
+
+			System.out.println("Loading");
+
+			if(canAlternate)
+				btnAlternateCards.setEnabled(true);
+			else
+				btnAlternateCards.setEnabled(false);
+			if(canChangeVictoryCard)
+				btnChangeVCard.setEnabled(true);
+			else
+				btnChangeVCard.setEnabled(false);
+			if(canMoveCard)
+				btnMoveCard.setEnabled(true);
+			else
+				btnMoveCard.setEnabled(false);
+			if(canPlaceCard)
+				btnPlaceNewCard.setEnabled(true);
+			else
+				btnPlaceNewCard.setEnabled(false);
+			if(canShuffle)
+				btnShuffle.setEnabled(true);
+			else
+				btnShuffle.setEnabled(false);
+
+			hasSetUp = true;
+
+
 	}
 
 	
@@ -507,6 +589,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		if (arg instanceof Events && o instanceof GameManager) {
 			switch ((Events) arg) {
 			case AskForPositionNewCard:
+				if(canPlaceCard)
+					canPlace2ndTime = true;
+
 				canPlaceCard = true;
 				break;
 			case AskForCardToMove:

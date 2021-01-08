@@ -3,7 +3,9 @@ package Models;
 import enums.Events;
 
 public class GameManagerQuick extends GameManager {
-    @Override
+
+
+	@Override
     public void run() {
 
     	maxCards = 14;

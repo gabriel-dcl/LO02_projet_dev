@@ -26,6 +26,7 @@ public class GameManagerClassic  extends GameManager {
 
 				isFirstTime = false;
 
+
 				if(players[index].getStrategy() == null)
 				{
 					this.notifyObservers(Events.PlayerTurn);
