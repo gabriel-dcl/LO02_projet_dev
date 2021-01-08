@@ -129,7 +129,6 @@ public class SetUpGraphicVue implements  Vue {
 		ButtonGroup choixNbBots = new ButtonGroup();
 				/**/
 		JRadioButtonMenuItem rdbtnmnitm0bots = new JRadioButtonMenuItem("0");
-		rdbtnmnitm0bots.setEnabled(false);
 		choixNbBots.add(rdbtnmnitm0bots);
 		mnNbBots.add(rdbtnmnitm0bots);
 				/**/
