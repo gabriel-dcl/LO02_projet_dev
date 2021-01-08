@@ -46,8 +46,13 @@ public class  GameManagerChaos extends GameManager {
 				{
 					this.notifyObservers(Events.PlayerTurn);
 					this.waitForPlayerToPlay();
+				} else
+				{
+					this.waitFew();
 				}
-				this.notifyObservers(Events.ShowBoard);
+					this.notifyObservers(Events.ShowBoard);
+
+
 
 				isFirstTime = false;
 
@@ -66,5 +71,6 @@ public class  GameManagerChaos extends GameManager {
 		currentBoard.accept(visitor);
 		this.notifyObservers(Events.GameOver);
 	}
-	
+
+
 }

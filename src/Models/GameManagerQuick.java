@@ -33,7 +33,10 @@ public class GameManagerQuick extends GameManager {
 				{
 					this.notifyObservers(Events.PlayerTurn);
 					this.waitForPlayerToPlay();
-				}
+						} else
+			{
+				this.waitFew();
+			}
 
 				this.notifyObservers(Events.ShowBoard);
 

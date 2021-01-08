@@ -42,6 +42,7 @@ public abstract class GameManager extends Observable implements Runnable {
         this.visitor = visitor;
     }
 
+
     public int getMaxCards() {
         return maxCards;
     }
@@ -83,6 +84,14 @@ public abstract class GameManager extends Observable implements Runnable {
         cardOnPlay = this.currentBoard.getCard();
     }
 
+
+    public synchronized void waitFew()  {
+        try {
+           Thread.sleep(500);
+        } catch (InterruptedException e)  {
+            Thread.currentThread().interrupt();
+        }
+    }
 
     public synchronized void waitForPlayerToPlay()
     {
