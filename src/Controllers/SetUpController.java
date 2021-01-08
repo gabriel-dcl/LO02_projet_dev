@@ -40,8 +40,10 @@ public class SetUpController {
 		if(currentVue instanceof SetUpConsoleVue)
 			currentVue = new SetUpGraphicVue();
 		else
+		{
 			currentVue = new SetUpConsoleVue();
 
+		}
 		currentVue.occure();
 	}
 

@@ -125,7 +125,6 @@ public abstract class GameManager extends Observable implements Runnable {
     }
 
     public Player[] getPlayers() {
-
         return players;
     }
 

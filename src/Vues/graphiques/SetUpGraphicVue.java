@@ -270,12 +270,18 @@ public class SetUpGraphicVue implements  Vue {
 		});
 		btnChangeVue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
+				ctrl.changeVue();
+				frame.setVisible(false); //you can't see me!
+				frame.dispose(); //Destroy the JFrame object
 			}
 		});
-
 	}
 
+	public void changeVue()
+	{
+
+	}
 
 
 	@Override
