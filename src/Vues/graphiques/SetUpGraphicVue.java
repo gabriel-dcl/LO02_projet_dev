@@ -92,6 +92,9 @@ public class SetUpGraphicVue implements  Vue {
 		JRadioButtonMenuItem rdbtnmnitmTriangular = new JRadioButtonMenuItem("Triangulaire");
 		choixPlateau.add(rdbtnmnitmTriangular);
 		mnBoardForm.add(rdbtnmnitmTriangular);
+		
+		JRadioButtonMenuItem rdbtnmnitmSquare = new JRadioButtonMenuItem("Carr\u00E9");
+		
 			/*Menu de choix de mode de jeu*/
 		JMenu mnGameMode = new JMenu("Choix Mode de Jeu");
 		menuBar.add(mnGameMode);
@@ -276,6 +279,12 @@ public class SetUpGraphicVue implements  Vue {
 				frame.dispose(); //Destroy the JFrame object
 			}
 		});
+		rdbtnmnitmSquare.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ctrl.setChoixBoard(BoardType.SQUARE);
+			}
+		});
+		mnBoardForm.add(rdbtnmnitmSquare);
 	}
 
 	public void changeVue()
