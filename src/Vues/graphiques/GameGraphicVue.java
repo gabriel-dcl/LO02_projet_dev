@@ -15,9 +15,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import Controllers.GameController;
-import Models.Card;
-import Models.Coordinate;
-import Models.GameManager;
+import Models.*;
 import Vues.Vue;
 import enums.Events;
 
@@ -103,6 +101,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1653, 811);
@@ -115,7 +114,7 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		frame.getContentPane().setLayout(gridBagLayout);
-		
+
 		lblMessage = new JLabel("Bienvenue !");
 		GridBagConstraints gbc_lblMessage = new GridBagConstraints();
 		gbc_lblMessage.insets = new Insets(0, 0, 5, 5);
@@ -161,14 +160,15 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		gbc_btnAlternateCards.gridx = 1;
 		gbc_btnAlternateCards.gridy = 10;
 		frame.getContentPane().add(btnAlternateCards, gbc_btnAlternateCards);
-		
+
 		btnChangeVCard = new JButton("Changer de Victory Card");
+		
 		GridBagConstraints gbc_btnChangeVCard = new GridBagConstraints();
 		gbc_btnChangeVCard.insets = new Insets(0, 0, 5, 5);
 		gbc_btnChangeVCard.gridx = 1;
 		gbc_btnChangeVCard.gridy = 12;
 		frame.getContentPane().add(btnChangeVCard, gbc_btnChangeVCard);
-		
+
 		btnEndTurn = new JButton("Fin du tour");
 		btnEndTurn.setBackground(SystemColor.menu);
 		GridBagConstraints gbc_btnEndTurn = new GridBagConstraints();
@@ -201,64 +201,6 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		} catch (InterruptedException ie) {
 			// handle if you like
 		}
-	}
-
-	private void playerTurn() {
-
-		btnShowVCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String nomCarte = "Cartes/" + ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()].getVictoryCard().toStringGraphic() + ".png" ;
-				ImageIcon icon = createImageIcon(nomCarte, "carte victoire");
-				JLabel carteVictoire = new JLabel(icon);
-				GridBagConstraints gbc_carteVictoire = new GridBagConstraints();
-				gbc_carteVictoire.insets = new Insets(0, 0, 5, 5);
-				gbc_carteVictoire.gridx = 1;
-				gbc_carteVictoire.gridy = 16;
-				frame.getContentPane().add(carteVictoire, gbc_carteVictoire);
-			}
-		});
-
-		btnPlaceNewCard.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				enableBoard();
-				String nomCarte = "Cartes/" + ctrl.getGameManager().getCardOnPlay().toStringGraphic() + ".png";
-				ImageIcon icon = createImageIcon(nomCarte, "carte à jouer");
-				JLabel carteActuelle = new JLabel(icon);
-				GridBagConstraints gbc_carteActuelle = new GridBagConstraints();
-				gbc_carteActuelle.insets = new Insets(0, 0, 5, 5);
-				gbc_carteActuelle.gridx = 1;
-				gbc_carteActuelle.gridy = 16;
-				frame.getContentPane().add(carteActuelle, gbc_carteActuelle);
-				canPlaceCard = true;
-			}
-		});
-
-		btnMoveCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-
-		btnShuffle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ctrl.getGameManager().getCurrentBoard().shuffle();
-				showBoard();
-			}
-		});
-
-		btnAlternateCards.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-
-		btnEndTurn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-
 	}
 
 	public void enableBoard() {
@@ -302,25 +244,44 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 						coord.setX(current_gbc_board.gridx);
 						coord.setY(current_gbc_board.gridy);
 						if (canPlaceCard) {
-							ctrl.addCardOnBoard(ctrl.getGameManager().getCardOnPlay(), coord);
-							showBoard();
-							disableBoard();
+							if (ctrl.isPlaceAvailable(coord)) {
+								if (ctrl.isCoordinateCloseEnough(coord)) {
+									ctrl.addCardOnBoard(ctrl.getGameManager().getCardOnPlay(), coord);
+									showBoard();
+									canPlaceCard = false;
+									disableBoard();
+								}
+								else
+									lblMessage.setText("Trop loin ! Réessayez.");
+								
+							}
+							else
+								lblMessage.setText("Place occupée! Réessayez.");
+
 						}
 						if (canMoveCard) {
 							if (position1 != null) {
-								position2 = coord;
-								Card cardToMove;
-								cardToMove = ctrl.getCardFromCoordinate(position1);
-								ctrl.removeFromCoordinate(position1);
-								ctrl.addCardOnBoard(cardToMove, position2);
-								canMoveCard = false;
-								showBoard();
-								position1 = null;
-								position2 = null;
-								disableBoard();
+								if (ctrl.isPlaceAvailable(coord)) {
+									position2 = coord;
+									Card cardToMove;
+									cardToMove = ctrl.getCardFromCoordinate(position1);
+									ctrl.removeFromCoordinate(position1);
+									ctrl.addCardOnBoard(cardToMove, position2);
+									canMoveCard = false;
+									showBoard();
+									position1 = null;
+									position2 = null;
+									disableBoard();
+								} else
+									lblMessage.setText("Place déjà occupée! Réessayez");
 
-							} else
-								position1 = coord;
+							} else {
+								if (ctrl.isPlaceAvailable(coord)) {
+									lblMessage.setText("Aucune carte ici");
+								} else
+									position1 = coord;
+							}
+
 						}
 						if (canAlternateCard) {
 							if (position1 != null) {
@@ -346,6 +307,27 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	}
 
+	///////////////////////////////////////////////////////////
+
+	private void showCurrentPlayer() {
+
+		lblMessage.setText("!!! Le joueur " + (ctrl.getGameManager().getIndex() + 1) + " a change de Victory Card");
+	}
+
+	public void changeVictoryCard() {
+		if (!canChangeVictoryCard) {
+			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
+			btnChangeVCard.setEnabled(false);
+			return;
+		}
+
+		ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()]
+				.changeVictoryCard(ctrl.getGameManager().getCurrentBoard());
+		this.annoncePlayerChangeVictoryCard();
+		this.canChangeVictoryCard = false;
+
+	}
+
 	public void showBoard() {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -367,50 +349,174 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		}
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		if(arg instanceof Events && o instanceof GameManager)
-        {
-            switch ((Events) arg)
-            {
-                case AskForPositionNewCard:
-                    if(canPlaceCard)
-                    {
-                        canPlace2ndCard = true;
-                        System.out.println("2ndCard");
-                    }
+	public void placeNewCard() {
+		if (!canPlaceCard) {
+			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
+			return;
+		}
 
-                    else
-                    canPlaceCard = true;
+		if (canMoveCard) {
+			lblMessage.setText("Vous devez déplacer une carte avant d'en ajouter une !");
+			return;
+		}
 
-                    break;
-                case AskForCardToMove: canMoveCard = true; break;
-                case AskForShuffle: canShuffle = true; break;
-                case AskForCardsToAlternate: canAlternate = true; break;
-                case ShowBoard: this.showBoard(); break;
-                case ShowCurrentPlayer: this.showCurrentPlayer(); break;
-                case AskToChangeVictoryCard: canChangeVictoryCard = true; break;
-                case AnnoncePlayerChangeVictoryCard: this.annoncePlayerChangeVictoryCard(); break;
-                case GameOver: this.gameOver = true; this.over(); break;
+		enableBoard();
 
-                case PlayerTurn: this.playerTurn = true; break;
-            }
-        }
+	}
+
+	public void moveCard() {
+		if (!canMoveCard) {
+
+			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
+			return;
+		}
+
+		enableBoard();
+	}
+
+	public void shuffle(Board currentBoard, Player currentPlayer) {
+		if(!canShuffle)
+	       {
+
+	           lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
+	           
+	           return;
+	       }
+		this.ctrl.getGameManager().getCurrentBoard().shuffle();
+		currentPlayer.setHasShuffled(true);
+		canShuffle = false;
+	}
+
+	public void showVictoryCard(Card victoryCard) {
+		String nomCarte = "Cartes/" + ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()]
+				.getVictoryCard().toStringGraphic() + ".png";
+		ImageIcon icon = createImageIcon(nomCarte, "carte victoire");
+		JLabel carteVictoire = new JLabel(icon);
+		GridBagConstraints gbc_carteVictoire = new GridBagConstraints();
+		gbc_carteVictoire.insets = new Insets(0, 0, 5, 5);
+		gbc_carteVictoire.gridx = 1;
+		gbc_carteVictoire.gridy = 16;
+		frame.getContentPane().add(carteVictoire, gbc_carteVictoire);
+	
+	}
+
+	public void alternateCards() {
+		if (!canAlternateCard) {
+			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
+			return;
+		}
+		enableBoard();
+
+	}
+	
+	public void annoncePlayerChangeVictoryCard() {
+		lblMessage.setText("!!! Le joueur " + (ctrl.getGameManager().getIndex()  + 1)  + " a change de Victory Card" );
+
 	}
 
 	private void over() {
 		// TODO Auto-generated method stub
+
+	}
+
+	private void playerTurn() {
+
+		btnEndTurn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+
+		btnShowVCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showVictoryCard(ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()].getVictoryCard());
+				}
+		});
+
+		btnMoveCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				moveCard();
+			}
+		});
+
+		btnPlaceNewCard.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				enableBoard();
+				String nomCarte = "Cartes/" + ctrl.getGameManager().getCardOnPlay().toStringGraphic() + ".png";
+				ImageIcon icon = createImageIcon(nomCarte, "carte à jouer");
+				JLabel carteActuelle = new JLabel(icon);
+				GridBagConstraints gbc_carteActuelle = new GridBagConstraints();
+				gbc_carteActuelle.insets = new Insets(0, 0, 5, 5);
+				gbc_carteActuelle.gridx = 1;
+				gbc_carteActuelle.gridy = 16;
+				frame.getContentPane().add(carteActuelle, gbc_carteActuelle);
+				placeNewCard();
+			}
+		});
+
+		btnShuffle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				shuffle(ctrl.getGameManager().getCurrentBoard(),ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()] );
+				
+			}
+		});
+
+		btnAlternateCards.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				alternateCards();
+
+			}
+		});
+
+		btnChangeVCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				changeVictoryCard();
+			}
+		});
 		
 	}
 
-	private void annoncePlayerChangeVictoryCard() {
-		// TODO Auto-generated method stub
-		
+	
+	public void update(Observable o, Object arg) {
+		if (arg instanceof Events && o instanceof GameManager) {
+			switch ((Events) arg) {
+			case AskForPositionNewCard:
+				canPlaceCard = true;
+				break;
+			case AskForCardToMove:
+				canMoveCard = true;
+				break;
+			case AskForShuffle:
+				canShuffle = true;
+				break;
+			case AskForCardsToAlternate:
+				canAlternate = true;
+				break;
+			case ShowBoard:
+				this.showBoard();
+				break;
+			case ShowCurrentPlayer:
+				this.showCurrentPlayer();
+				break;
+			case AskToChangeVictoryCard:
+				canChangeVictoryCard = true;
+				break;
+			case AnnoncePlayerChangeVictoryCard:
+				this.annoncePlayerChangeVictoryCard();
+				break;
+			case GameOver:
+				this.gameOver = true;
+				this.over();
+				break;
+
+			case PlayerTurn:
+				this.playerTurn = true;
+				break;
+			}
+		}
 	}
 
-	private void showCurrentPlayer() {
-		
-		lblMessage.setText("!!! Le joueur " + (ctrl.getGameManager().getIndex()  + 1)  + " a change de Victory Card" );
-	}
+
 
 }
