@@ -47,6 +47,37 @@ public class Card {
         return "  " + stateLetter + "" + colorLetter + "" + formLetter + "  ";
 
     }
+    
+    public String toStringGraphic() {
+
+        char stateLetter = '.';
+        char colorLetter = '.';
+        char formLetter = '.';
+
+        switch(card_state)
+        {
+            case EMPTY: stateLetter = 'E'; break;
+            case FILL: stateLetter = 'F'; break;
+        }
+
+        switch(card_color)
+        {
+            case RED: colorLetter = 'R'; break;
+            case GREEN: colorLetter = 'G'; break;
+            case BLUE: colorLetter = 'B'; break;
+        }
+
+        switch(card_form)
+        {
+            case RECTANGULAR: formLetter = 'R'; break;
+            case TRIANGULAR: formLetter= 'T'; break;
+            case CIRCLE: formLetter = 'C'; break;
+        }
+
+
+        return  stateLetter + "" + colorLetter + "" + formLetter ;
+
+    }
 
     public int getX_pos() {
         return x_pos;

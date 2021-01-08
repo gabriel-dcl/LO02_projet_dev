@@ -25,7 +25,7 @@ import java.util.Observer;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
-public class SetUpGraphicVue implements Observer, Vue {
+public class SetUpGraphicVue implements  Vue {
 
 	private JFrame frame;
 	private SetUpController ctrl ;
@@ -35,6 +35,18 @@ public class SetUpGraphicVue implements Observer, Vue {
 	 * Launch the application.
 	 */
 	public void occure() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SetUpGraphicVue window = new SetUpGraphicVue();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public static void main(String Args[]) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -256,11 +268,7 @@ public class SetUpGraphicVue implements Observer, Vue {
 
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public GameController getCtrl() {

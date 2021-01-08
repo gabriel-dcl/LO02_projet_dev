@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.*;
 import Vues.console.GameConsoleVue;
+import Vues.graphiques.GameGraphicVue;
 import enums.BoardType;
 import enums.Difficulty;
 import enums.GameMode;
@@ -10,15 +11,19 @@ public class GameController {
 
 	private GameManager gameManager;
 	private GameConsoleVue gameManagerVue;
+	private GameGraphicVue graphicVue;
 
 	public GameController(GameConsoleVue gmv) {
 		this.gameManagerVue = gmv;
 	}
-
+	public GameController(GameGraphicVue gv) {
+		this.graphicVue = gv;
+	}
 
 
 	public GameController() {
 		this.gameManagerVue = new GameConsoleVue();
+		this.graphicVue = new GameGraphicVue();
 	}
 
 	public GameManager getGameManager() {
@@ -97,10 +102,17 @@ public class GameController {
 		default: gameManager.setDifficulty(0);
 			break;
 		}
-
+		
 		gameManager.setBoard(board);
 		gameManager.playersSetUp(nbPlayers, nbBots);
-		gameManager.addObserver(this.gameManagerVue);
+		if(this.gameManagerVue!=null) {
+			gameManager.addObserver(this.gameManagerVue);
+		}
+		if(this.graphicVue!=null) {
+			gameManager.addObserver(this.graphicVue);
+		}
+		
+		
 
 		Thread t = new Thread(gameManager);
 		Thread vue = new Thread(this.gameManagerVue);
