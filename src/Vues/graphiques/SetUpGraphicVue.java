@@ -129,7 +129,6 @@ public class SetUpGraphicVue implements  Vue {
 		ButtonGroup choixNbBots = new ButtonGroup();
 				/**/
 		JRadioButtonMenuItem rdbtnmnitm0bots = new JRadioButtonMenuItem("0");
-		rdbtnmnitm0bots.setEnabled(false);
 		choixNbBots.add(rdbtnmnitm0bots);
 		mnNbBots.add(rdbtnmnitm0bots);
 				/**/
@@ -230,6 +229,9 @@ public class SetUpGraphicVue implements  Vue {
 			public void actionPerformed(ActionEvent arg0) {
 				ctrl.setNbBots(1);
 				rdbtnmnitm3players_1.setEnabled(false);
+				rdbtnmnitm2players_1.setEnabled(true);
+				rdbtnmnitm1players_1.setEnabled(true);
+				rdbtnmnitm0players_1.setEnabled(true);
 			}
 		});
 		rdbtnmnitm2bots.addActionListener(new ActionListener() {
@@ -237,6 +239,8 @@ public class SetUpGraphicVue implements  Vue {
 				ctrl.setNbBots(2);
 				rdbtnmnitm3players_1.setEnabled(false);
 				rdbtnmnitm2players_1.setEnabled(false);
+				rdbtnmnitm1players_1.setEnabled(true);
+				rdbtnmnitm0players_1.setEnabled(true);
 			}
 		});
 		rdbtnmnitm3bots.addActionListener(new ActionListener() {
@@ -245,6 +249,7 @@ public class SetUpGraphicVue implements  Vue {
 				rdbtnmnitm3players_1.setEnabled(false);
 				rdbtnmnitm2players_1.setEnabled(false);
 				rdbtnmnitm1players_1.setEnabled(false);
+				rdbtnmnitm0players_1.setEnabled(true);
 			}
 		});
 
