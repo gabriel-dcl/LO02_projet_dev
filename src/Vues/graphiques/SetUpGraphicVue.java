@@ -67,7 +67,6 @@ public class SetUpGraphicVue implements  Vue {
 		ctrl = new SetUpController(this);
 	}
 
-	
 
 	/**
 	 * Initialize the contents of the frame.

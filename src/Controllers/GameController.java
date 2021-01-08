@@ -40,6 +40,8 @@ public class GameController {
 
 	public void addCardOnBoard(Card newCard, Coordinate position) {
 		gameManager.getCurrentBoard().addCardOnBoard(newCard, position);
+		gameManager.nextCardOnPlay();
+		gameManagerVue.showBoard();
 	}
 
 	public Coordinate findEqualsCoordinate(Coordinate point) {
@@ -71,10 +73,13 @@ public class GameController {
 	}
 
 	public void alternateCards(Coordinate position1, Coordinate position2) {
-		Card temp = this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().get(position1);
-		this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().put(position1,
-				this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().get(position2));
-		this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().put(position2, temp);
+		Card temp = this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().get(this.findEqualsCoordinate(position1) );
+
+		this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().put(this.findEqualsCoordinate(position1),
+				this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().get(this.findEqualsCoordinate(position2)));
+
+
+		this.gameManager.getCurrentBoard().getCurrentCardsOnBoard().put(this.findEqualsCoordinate(position2), temp);
 	}
 
 	public boolean isCoordinateCloseEnough(Coordinate point) {
@@ -105,19 +110,24 @@ public class GameController {
 		
 		gameManager.setBoard(board);
 		gameManager.playersSetUp(nbPlayers, nbBots);
-		if(this.gameManagerVue!=null) {
-			gameManager.addObserver(this.gameManagerVue);
-		}
-		if(this.graphicVue!=null) {
+
+		gameManagerVue = new GameConsoleVue();
+		gameManagerVue.setGmc(this);
+		gameManager.addObserver(this.gameManagerVue);
+
+		if(this.graphicVue != null) {
 			gameManager.addObserver(this.graphicVue);
 		}
-		
+
 		
 
 		Thread t = new Thread(gameManager);
 		Thread vue = new Thread(this.gameManagerVue);
+		Thread vue2 = new Thread(this.graphicVue);
 		t.start();
 		vue.start();
+		vue2.start();
+
 
 
 		//     if(this.gameManagerVue instanceof GameConsoleVue)

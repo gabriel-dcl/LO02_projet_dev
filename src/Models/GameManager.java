@@ -96,7 +96,6 @@ public abstract class GameManager extends Observable implements Runnable {
             }
         }
 
-
         hasPlayed = false;
     }
 

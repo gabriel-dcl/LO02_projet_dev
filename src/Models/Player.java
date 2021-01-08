@@ -86,12 +86,13 @@ public class Player extends Observable {
     public void placeNewCard(Card newCard, Board currentBoard, GameManager gameManager)
     {
         if(this.strategy != null)
+        {
             strategy.placeNewCard(newCard, currentBoard);
+            gameManager.nextCardOnPlay();
+        }
         else {
             gameManager.notifyObservers( Events.AskForPositionNewCard );
         }
-
-        gameManager.nextCardOnPlay();
     }
 
     public void setHasShuffled(boolean hasShuffled) {
