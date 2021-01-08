@@ -128,7 +128,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
 
         Coordinate position = askPlayerCoordinates(currentBoard, true);
 
-        gmc.addCardOnBoard(newCard, position);
+        gmc.addCardOnBoard(newCard, position, false);
 
         if(!canPlaceCard && canPlace2ndCard)
             canPlace2ndCard = false;
@@ -165,7 +165,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
             position = askPlayerCoordinates(currentBoard, true);
 
             //Placement de la carte
-            gmc.addCardOnBoard(cardToMove, position);
+            gmc.addCardOnBoard(cardToMove, position, true);
 
         this.canMoveCard = false;
 
@@ -385,7 +385,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
                     System.out.println("Match nul !");
 
         }
-
+            System.out.println("Appuyez sur une touche pour continuer");
     }
 
 
@@ -485,8 +485,9 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
     @Override
     public void run() {
         try {
-            while(true)
+            while(!gameOver)
             {
+
                 Thread.sleep(200);
 
                 if(playerTurn)
