@@ -2,14 +2,24 @@ package Models;
 
 import java.util.Map;
 
+/**
+ * Class qui correspond à un plateau carré, héritant de la class Plateau
+ * @version 1.0
+ * @author Nicolas Felixine
+ * @see Card
+ */
 public class BoardSquare extends Board {
 
     public BoardSquare() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-
+    /**
+     * Regarde si les coordonnées entrées en paramètre sont suffisament proche pour qu'on puisse y insérer une carte.
+     *
+     * @param coordinate Les coordonnées à tester
+     * @return True si les coordonnées sont bien placées, False sinon
+     */
     public boolean isCoordinateCloseEnough(Coordinate coordinate) {
         int verticalBoardSize = 0;
         int horizontalBoardSize = 0;
@@ -80,7 +90,13 @@ public class BoardSquare extends Board {
         return false;
     }
 
-
+    /**
+     * Permet d'insérer une carte au plateau en accord avec les restrictions posées par le type de plateau actuel.
+     *
+     * @param card       La carte à ajouter
+     * @param coordinate Les coordonnées où l'ajouter
+     * @return True si l'ajout s'est fait sans encombre, False sinon
+     */
     public boolean addCardOnBoard(Card card, Coordinate coordinate)
     {
 

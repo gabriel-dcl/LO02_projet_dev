@@ -26,6 +26,14 @@ import java.util.Observer;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 
+/**
+ * Vue graphique pour une partie. La vue est un thread pour lui permettre de tourner en parallèle d'une autre vue
+ * @author Gabriel Duciel, Nicolas Felixine
+ * @version 1.0
+ * @see GameController
+ * @see GameManager
+ * @see Vue
+ */
 public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	private JFrame frame;
@@ -65,6 +73,13 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	private boolean hasSetUp = false;
 
+	/**
+	 * Create image icon image icon.
+	 *
+	 * @param path        the path
+	 * @param description the description
+	 * @return the image icon
+	 */
 	protected ImageIcon createImageIcon(String path, String description) {
 
 		if (path != null) {
@@ -77,8 +92,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	/**
 	 * Launch the application.
+	 *
+	 * @param args the input arguments
 	 */
-
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -299,6 +315,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		}
 	}
 
+	/**
+	 * Enable board.
+	 */
 	public void enableBoard() {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -309,6 +328,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	}
 
+	/**
+	 * Disable board.
+	 */
 	public void disableBoard() {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -319,6 +341,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	}
 
+	/**
+	 * Game over.
+	 */
 	public void gameOver()
 	{
 		int realPlayersAmount = ctrl.getGameManager().getRealPlayersAmount();
@@ -384,6 +409,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 */
 	}
 
+	/**
+	 * Draw board.
+	 */
 	public void drawBoard() {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -514,6 +542,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		lblMessage.setText("=====> Joueur " + ( ctrl.getGameManager().getIndex() + 1));
 	}
 
+	/**
+	 * Change victory card.
+	 */
 	public void changeVictoryCard() {
 		if (!canChangeVictoryCard) {
 			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
@@ -527,6 +558,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	}
 
+	/**
+	 * Show board.
+	 */
 	public void showBoard() {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -548,6 +582,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Place new card.
+	 */
 	public void placeNewCard() {
 		if (!canPlaceCard) {
 			lblMessage.setText("Vous ne pouvez pas(plus) utiliser cette commande.");
@@ -573,6 +610,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		
 	}
 
+	/**
+	 * Move card.
+	 */
 	public void moveCard() {
 		if (!canMoveCard) {
 
@@ -585,6 +625,12 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 
 	}
 
+	/**
+	 * Shuffle.
+	 *
+	 * @param currentBoard  the current board
+	 * @param currentPlayer the current player
+	 */
 	public void shuffle(Board currentBoard, Player currentPlayer) {
 		if(!canShuffle)
 	       {
@@ -598,6 +644,11 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		canShuffle = false;
 	}
 
+	/**
+	 * Show victory card.
+	 *
+	 * @param victoryCard the victory card
+	 */
 	public void showVictoryCard(Card victoryCard) {
 		
 			String nomCarte = "Cartes/" + ctrl.getGameManager().getPlayers()[ctrl.getGameManager().getIndex()]
@@ -614,6 +665,9 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		
 	}
 
+	/**
+	 * Alternate cards.
+	 */
 	public void alternateCards() {
 
 		System.out.print("eesfef" + canAlternate);
@@ -625,7 +679,10 @@ public class GameGraphicVue implements Vue, Observer, Runnable {
 		enableBoard();
 
 	}
-	
+
+	/**
+	 * Annonce player change victory card.
+	 */
 	public void annoncePlayerChangeVictoryCard() {
 		lblMessage.setText("!!! Le joueur " + (ctrl.getGameManager().getIndex()  + 1)  + " a change de Victory Card" );
 

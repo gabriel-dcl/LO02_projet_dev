@@ -6,30 +6,59 @@ import enums.State;
 
 import java.util.*;
 
+/**
+ * Class abstraite Board, qui définie le moule pour l'ensemble des Board
+ * @version 2.0
+ * @author Nicolas Felixine, Gabriel Duciel
+ * @see BoardTriangular
+ * @see BoardSquare
+ * @see BoardRectangular
+ * @see Card
+ */
 public abstract class Board extends Observable {
-    protected GameManager currentGameManager;
-    protected Visitor visitor;
-    protected Map<Coordinate, Card> currentCardsOnBoard;
-    protected Stack<Card> remainingCards;
-    protected Card[] allPossibleCard;
 
+    /**
+     * Map faisant le lien entre des coordonnées et des cartes, représentant le plateau
+     */
+    protected Map<Coordinate, Card> currentCardsOnBoard;
+
+    /**
+     * Cartes restantes sur le plateau, rangées dans une pile (Stack)
+     */
+    protected Stack<Card> remainingCards;
+
+    /**
+     * Crée une instance dans la class Board, la HashMap associée pour le plateau
+     * et remplit la pile remainingCards de façon aléatoire
+     */
     public Board()
     {
-        visitor = new Visitor();
         remainingCards = new Stack<Card>();
         generateRandomStack();
         currentCardsOnBoard = new HashMap<Coordinate, Card>();
-
     }
 
+    /**
+     * Gets current cards on board.
+     *
+     * @return the current cards on board
+     */
     public Map<Coordinate, Card> getCurrentCardsOnBoard() {
         return currentCardsOnBoard;
     }
 
+    /**
+     * Sets current cards on board.
+     *
+     * @param currentCardsOnBoard the current cards on board
+     */
     public void setCurrentCardsOnBoard(HashMap<Coordinate, Card> currentCardsOnBoard) {
         this.currentCardsOnBoard = currentCardsOnBoard;
     }
 
+    /**
+     * Shuffle, permet de modifier le plateau de façon totalement aléatoire
+     */
     public void shuffle()
     {
         Stack<Card> cards = new Stack<Card>();
@@ -60,12 +89,23 @@ public abstract class Board extends Observable {
     }
 
 
+    /**
+     * Vérifie que les coordonnées insérées en paramètre sont suffisament proches pour y ajouter une carte sur le plateau
+     *
+     * @see Coordinate
+     * @param coordinate Les coordonnées pour lesquelles on souhaite savoir si la position est suffisamment proche
+     * @return True si la position est assez proche, False sinon
+     */
+    public abstract boolean isCoordinateCloseEnough(Coordinate coordinate);
 
-
-    public boolean isCoordinateCloseEnough(Coordinate coordinate) {
-      return false;
-    }
-
+    /**
+     * Vérifie si la place est libre ou non
+     *
+     * @see Coordinate
+     * @param coordinate    Les coordonnéees pour lesquelles nous souhaitons savoir la disponibilité
+     * @return True si la place est libre, False sinon
+     *
+     */
     public boolean isPlaceAvailable(Coordinate coordinate) {
         for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet()) {
             if (entry.getKey().equals(coordinate))
@@ -74,6 +114,13 @@ public abstract class Board extends Observable {
         return true;
     }
 
+    /**
+     * Cherche une instance de la class Coordonnées avec les mêmes attributs que l'instance mise en paramètre
+     *
+     * @param coordinate    les coordonnées pour lesquelles nous voulons avoir l'instance de coordonnées actuellement sur le plateau
+     * @return      L'instance de Coordinate présente actuellement dans la HashMap du plateau
+     * @see Coordinate
+     */
     public Coordinate findEqualsCoordinate(Coordinate coordinate) {
         for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet()) {
             if (entry.getKey().equals(coordinate))
@@ -82,74 +129,75 @@ public abstract class Board extends Observable {
         return null;
     }
 
-    public boolean isPlaceTaken(Coordinate coordinate) {
-        return !this.isPlaceAvailable(coordinate);
-    }
-
-
+    /**
+     * Permet d'ajoutre une carte sur le plateau
+     *
+     * @see Card
+     * @param card       La carte à ajouter
+     * @param coordinate Les coordonnées où l'ajouter
+     * @return True si la carte a bien été ajoutée, false sinon
+     */
     public abstract boolean addCardOnBoard(Card card, Coordinate coordinate);
 
 
-    public Card getNewRandomCard()      //Usefull for VictoryCard Generation
+    /**
+     * Permet de récupérer une carte en tête de la pile
+     *
+     * @return la carte en tête de la pile
+     * @see Card
+     */
+    public Card getNewRandomCard()
     {
-     //   int random_index =  (int) (Math.random() * 17);
-       // return allPossibleCard[random_index];
-
-    return remainingCards.pop();
+        return remainingCards.pop();
     }
 
+    /**
+     * Gets card by coordinate.
+     *
+     * @param coordinate the coordinate
+     * @return the card by coordinate
+     */
     public Card getCardByCoordinate(Coordinate coordinate)
     {
        return currentCardsOnBoard.get(this.findEqualsCoordinate(coordinate));
     }
 
+    /**
+     * Gets card.
+     *
+     * @return the card
+     */
     public Card getCard()
     {
         return remainingCards.pop();
     }
 
-    public void calculateNbCardsOnBoard()
-    {
-
-    }
-
+    /**
+     * Permet d'ajouter une carte par la force, sans se soucier de la position insérée et de sa proximité avec le plateau
+     *
+     * @param card          La carte à ajouter de force
+     * @param coordinate    Les coordonnées où ajouter cette carte de force
+     */
     public void forceAddCardOnBard(Card card, Coordinate coordinate)
     {
         currentCardsOnBoard.put(coordinate, card);
     }
 
+    /**
+     * Accept.
+     *
+     * @param visitor the visitor
+     */
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 
 
 
-
-    public void findClosestCard(Coordinate wantedPosition)
-    {
-
-
-        for (int i = 0; i < 12; i++)
-        {
-            for (int j = 0; j < 12; j++)
-            {
-                for (Map.Entry<Coordinate, Card> entry : currentCardsOnBoard.entrySet())
-                {
-                    if (entry.getKey().equals( new Coordinate(i, j)) )
-                        System.out.print("A");
-                    else
-                        System.out.print("*");
-                }
-            }
-            System.out.println();
-        }
-
-
-    }
-
-
     /**
-     *  Use tu generate a randomStack
+     *  Permet de remplir la pile de cartes restantes de façon aléatoire.
+     *
+     * @see Card
      */
     private void generateRandomStack()
     {
@@ -171,19 +219,5 @@ public abstract class Board extends Observable {
         Collections.shuffle(remainingCards);
     }
 
-    /**
-     * @param array
-     * @param value
-     * @return
-     */
-    private boolean isPresentValueInArray(int[] array, int value)
-    {
-        for (int a: array)
-        {
-            if(a == value)
-                return true;
-        }
-        return false;
-    }
 }
 

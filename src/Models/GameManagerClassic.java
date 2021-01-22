@@ -2,8 +2,24 @@ package Models;
 
 import enums.Events;
 
+
+/**
+ * Class définissant une partie de Type classique, héritant de la class GameManager
+ *
+ * @author Gabriel Duciel
+ * @see GameManager
+ * @see Board
+ * @version 3.0
+ */
 public class GameManagerClassic  extends GameManager {
 
+	/**
+	 * méthode run d'un Thread correspondant au déroulement d'une partie
+	 *
+	 * @see Board
+	 * @see Player
+	 * @since 3.0
+	 */
 	public void run() {
 		System.out.println(this);
     	boolean isFirstTime = true;
@@ -56,9 +72,5 @@ public class GameManagerClassic  extends GameManager {
 	}
 
 
-    public void getInstance() {
-    } 
-    private void singleton() {
-    }
 
 }

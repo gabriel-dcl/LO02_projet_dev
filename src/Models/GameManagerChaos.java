@@ -2,13 +2,26 @@ package Models;
 
 import enums.Events;
 
+/**
+ * Class définissant une partie de Type chaos, héritant de la class GameManager
+ *
+ * @author Gabriel Duciel
+ * @see GameManager
+ * @see Board
+ * @version 3.0
+ */
 public class  GameManagerChaos extends GameManager {
 
-
+	/**
+	 * méthode run d'un Thread correspondant au déroulement d'une partie
+	 *
+	 * @see Board
+	 * @see Player
+	 * @since 3.0
+	 */
 	public void run() {
 
 		maxCards = 14;
-
 
 		boolean isFirstTime = true;
 		boolean isSecondTime = true;

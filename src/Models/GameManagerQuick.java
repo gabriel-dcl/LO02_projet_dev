@@ -2,10 +2,23 @@ package Models;
 
 import enums.Events;
 
+/**
+ * Class définissant une partie de Type Rapide (Quick), héritant de la class GameManager
+ *
+ * @author Gabriel Duciel
+ * @see GameManager
+ * @see Board
+ * @version 3.0
+ */
 public class GameManagerQuick extends GameManager {
 
-
-	@Override
+	/**
+	 * méthode run d'un Thread correspondant au déroulement d'une partie
+	 *
+	 * @see Board
+	 * @see Player
+	 * @since 3.0
+	 */
     public void run() {
 
     	maxCards = 14;

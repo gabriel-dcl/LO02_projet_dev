@@ -12,18 +12,36 @@ import java.awt.*;
 import java.util.Scanner;
 import java.util.zip.DeflaterInputStream;
 
+/**
+ * La Vue Set-up en console, qui permet de configurer une partie avec la vue console
+ * @author Gabriel Duciel
+ * @version 1.0
+ * @see SetUpController
+ */
 public class SetUpConsoleVue implements Vue {
 
     Scanner sc;
+    /**
+     * Le controlleur associé à la vue
+     */
     private SetUpController ctrl;
+
+    /**
+     * Le boolean associé à la fin de la partie (true pour terminer la partie)
+     */
     private boolean exit = false;
 
-    public SetUpConsoleVue() // SetUpController ctrl
+    /**
+     * Crée une instance de la class SetUpConsoleVue avec une instance de la class Scanner
+     */
+    public SetUpConsoleVue()
     {
-        //this.ctrl = ctrl;
         sc = new Scanner(System.in);
     }
 
+    /**
+     * Methode pour la sélection du mode de jeu (GameManager)
+     */
     public void gameManagerChoice()
     {
         System.out.println("\n Quel mode de jeu voulez-vous jouer : ");
@@ -59,6 +77,9 @@ public class SetUpConsoleVue implements Vue {
         this.setUpLobby();
     }
 
+    /**
+     * Méthode pour le choix du plateau de jeu.
+     */
     public void gameBoardChoice()
     {
         int choix = 0;
@@ -92,6 +113,12 @@ public class SetUpConsoleVue implements Vue {
         this.setUpLobby();
     }
 
+    /**
+     * Message de lancement du jeu, qui s'affiche une unique fois au lancement du programme.
+     * La méthode est isolée de la class pour afficher le message de lancement une unique fois.
+     * Création de l'instance du SetUpController
+     * @see SetUpController
+     */
     public void welcome() {
 
             this.ctrl = new SetUpController(this);
@@ -101,10 +128,14 @@ public class SetUpConsoleVue implements Vue {
                 System.out.println("======================= SHAPE UP ! ============================ ");
                 System.out.println("=============================================================== ");
                 this.setUpLobby();
-
-
     }
 
+    /**
+     * Methode pour identifier le nombre de joueurs virtuels dans la partie
+     *
+     * @return le nombre de joueurs virtuels
+     * @see Models.Player
+     */
     public int virtualPlayersAmountChoice() {
         int virtualPlayersAmount;
 
@@ -122,7 +153,11 @@ public class SetUpConsoleVue implements Vue {
     }
 
 
-
+    /**
+     * Méthode pour gérer le cas ou le nombre de joueur total entré n'est pas valide.
+     *
+     * @return virtualPlayersAmount, le nouveau nombre de joueurs virtuels
+     */
     public int badInputVirtualPlayersAmount()
     {
         int virtualPlayersAmount;
@@ -138,6 +173,9 @@ public class SetUpConsoleVue implements Vue {
         return virtualPlayersAmount;
     }
 
+    /**
+     * Méthode pour sélectionner le nombre de joueurs dans la partie. (Virtual et real).
+     */
     public void playersSetup() {
 		int realPlayersAmount = this.realPlayersAmountChoice();
 		int virtualPlayersAmount = 0;
@@ -157,6 +195,9 @@ public class SetUpConsoleVue implements Vue {
 		this.setUpLobby();
 	}
 
+    /**
+     * Methode pour choisir la difficulte de la partie
+     */
     public void difficultyChoice()
     {
         int difficulty = 0;
@@ -191,6 +232,11 @@ public class SetUpConsoleVue implements Vue {
         this.setUpLobby();
     }
 
+    /**
+     * Methode pour choisir le nombre de joueurs réels.
+     *
+     * @return realPlayersAmount, le nombre de joueurs réels
+     */
     public int realPlayersAmountChoice()
     {
         int realPlayersAmount;
@@ -221,6 +267,10 @@ public class SetUpConsoleVue implements Vue {
         return realPlayersAmount;
     }
 
+    /**
+     * Methode de menu principal pour la vue. Elle est lancee après le message de bienvenue et permet de selectionner quelles options modifiees.
+     * Elle permet egalement de lancer une partie, de quitter le jeu ou de passer en vue graphique.
+     */
     public void setUpLobby()
     {
         System.out.println("1 - Changer le mode de jeu (actuel : " + ctrl.getChoixGC() + " )");
@@ -271,6 +321,9 @@ public class SetUpConsoleVue implements Vue {
         return null;
     }
 
+    /**
+     * Methode de l'interface Vue, pas utile dans ce contexte mais necessaire pour realiser du polymorphisme.
+     */
     @Override
     public void occure() {
 

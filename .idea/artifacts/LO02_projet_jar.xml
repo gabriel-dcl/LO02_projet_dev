@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LO02_projet:jar">
+    <output-path>$USER_HOME$/Desktop/artifacts/LO02_projet_jar</output-path>
+    <root id="archive" name="LO02_projet.jar">
+      <element id="module-output" name="LO02_projet" />
+    </root>
+  </artifact>
+</component>

@@ -5,6 +5,12 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Class définissant le comportement d'un joueur virtuel "difficile", utilisant le Design Pattern Strategy
+ *
+ * @author Gabriel Duciel
+ * @version 1.0
+ */
 public class VirtualHard implements Strategy {
 	Visitor visitor;
 	Card victoryCard;
@@ -17,6 +23,14 @@ public class VirtualHard implements Strategy {
 		hasChangedVictoryCard = false;
 	}
 
+	/**
+	 * Faire placer une carte au joueur virtuel. Il testera toutes les positions possibles pour trouver la position lui apparant le plus de
+	 * points, en accord avec le Visitor
+	 *
+	 * @param newCard la nouvelle carte à ajouter
+	 * @param currentBoard Le plateau actuel
+	 * @see Visitor
+	 */
 	public void placeNewCard(Card newCard, Board currentBoard) {
 		Coordinate bestPosition = new Coordinate(-1, 1);
 		int bestValue = 0;
@@ -62,6 +76,13 @@ public class VirtualHard implements Strategy {
 
 	}
 
+	/**
+	 * Faire shuffle au joueur virtuel. Il ne peut le faire qu'après le tour 7 car avant ça ne serait trop aléatoire, et Shuffle par la suite
+	 * si le nombre de points possible actuel est inférieur à 8
+	 *
+	 * @param currentBoard Le plateau actuel
+	 * @see Visitor
+	 */
 	public boolean shuffle(Board currentBoard) {
 
 		if(currentBoard.currentCardsOnBoard.size() < 7)
@@ -81,10 +102,13 @@ public class VirtualHard implements Strategy {
 		return false;
 	}
 
-
-    public void accept(Visitor visitor) {
-    }
-
+	/**
+	 * Faire changer de Victory Card au joueur virtuel. Il ne peut le faire qu'après le tour 7 car avant ça ne serait trop aléatoire, et Shuffle par la suite
+	 * si le nombre de points possible avec une nouvelle carte victoire est plus intéressant
+	 *
+	 * @param currentBoard Le plateau actuel
+	 * @see Visitor
+	 */
 	public boolean changeVictoryCard(Board currentBoard)
 	{
 
@@ -107,8 +131,13 @@ public class VirtualHard implements Strategy {
 		return false;
 	}
 
-
-	@Override
+	/**
+	 * Faire déplacer une carte au joueur virtuel. Il essaye toutes les positions possibles pour chacune des cartes pour identifier le changement
+	 * le plus intéressant
+	 *
+	 * @param currentBoard Le plateau actuel
+	 * @see Visitor
+	 */
 	public void moveCard(Board currentBoard)
 	{
 		Coordinate currentCardsPosition = new Coordinate(-1, -1);
@@ -181,9 +210,13 @@ public class VirtualHard implements Strategy {
 		}
 	}
 
-
-
-	@Override
+	/**
+	 * Faire alterner deux cartes au joueur virtuel. Il essaye toutes les positions possibles pour chacune des paires de
+	 * cartes pour identifier le changement le plus intéressant
+	 *
+	 * @param currentBoard Le plateau actuel
+	 * @see Visitor
+	 */
 	public void alternateCards(Board currentBoard) {
 
 		Card cardToMove;
@@ -223,8 +256,4 @@ public class VirtualHard implements Strategy {
 		currentBoard.forceAddCardOnBard(cardToMove2, coordinateCardToMove1);
 	}
 
-	@Override
-	public void showVictoryCard(Card victoryCard) {
-
-	}
 }

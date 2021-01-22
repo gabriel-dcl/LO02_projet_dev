@@ -7,36 +7,30 @@ import enums.State;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class de type visitor, permettant de visiter la partie et de calculer les points
+ * @author  Gabriel Duciel
+ * @version  1.0
+ */
 public class Visitor implements VisitorInterface    {
     private HashMap<Color, Integer> PointsByColor;
     private HashMap<Form, Integer> PointsByForm;
     private HashMap<State, Integer> PointsByState;
 
+    /**
+     * Map qui associe à chaque type de couleurs, de forme et d'état un nombre de point
+     * @return
+     */
 
-    public HashMap<Color, Integer> getPointsByColor() {
+    public Map<Color, Integer> getPointsByColor() {
         return PointsByColor;
     }
-
-    public void setPointsByColor(HashMap<Color, Integer> pointsByColor) {
-        PointsByColor = pointsByColor;
-    }
-
-    public HashMap<Form, Integer> getPointsByForm() {
+    public Map<Form, Integer> getPointsByForm() {
         return PointsByForm;
     }
-
-    public void setPointsByForm(HashMap<Form, Integer> pointsByForm) {
-        PointsByForm = pointsByForm;
-    }
-
-    public HashMap<State, Integer> getPointsByState() {
+    public Map<State, Integer> getPointsByState() {
         return PointsByState;
     }
-
-    public void setPointsByState(HashMap<State, Integer> pointsByState) {
-        PointsByState = pointsByState;
-    }
-
     public Visitor()
     {
         PointsByColor = new HashMap<Color, Integer>();
@@ -46,6 +40,9 @@ public class Visitor implements VisitorInterface    {
         this.setValueTo0();
     }
 
+    /**
+     * Met à 0 l'ensemble des Maps de points
+     */
     private void setValueTo0()
     {
         for(State tempState : State.values())
@@ -62,6 +59,11 @@ public class Visitor implements VisitorInterface    {
         }
     }
 
+    /**
+     * Visite l'ensemble du Board et calcule le nombre de points possibles pour chacune des possibilités de forme, couleur ou état
+     *
+     * @param currentBoard le plateau de jeu actuel
+     */
     public void visit(Board currentBoard)
     {
         this.setValueTo0();
@@ -266,6 +268,12 @@ public class Visitor implements VisitorInterface    {
     }
 
 
+    /**
+     * Identifie la carte dans le coin en haut à gauche, base pour calculer les poins
+     *
+     * @param board le plateau de jeu actuel
+     * @return les coordonnées de la carte en haut à gauche du plateau
+     */
     public Coordinate getTopLeftCorner(Board board)
     {
         Coordinate topLeftCoordinate = new Coordinate(50, 50);
@@ -281,16 +289,23 @@ public class Visitor implements VisitorInterface    {
         return topLeftCoordinate;
     }
 
-    public void exploreBoard(Board board) {
-    }
 
-
-
+    /**
+     * Permet d'obtenir le nombre de points total associé à une carte victoire
+     *
+     * @param card     La carte victoire du joueur
+     * @return the points total regarding victory card
+     */
     public int getPointsTotalRegardingVictoryCard(Card card)
     {
         return PointsByState.get(card.getCard_state()) + PointsByColor.get(card.getCard_color()) + PointsByForm.get(card.getCard_form());
     }
 
+    /**
+     * Identifie les valeurs maximales pour chacune des cartes.
+     *
+     * @return le nombre de point total.
+     */
     public int getPointsTotal()
     {
         int points_max = 0;
@@ -309,12 +324,6 @@ public class Visitor implements VisitorInterface    {
         }
 
         return points_max;
-    }
-
-    private void singleton() {
-    }
-
-    public void getInstance() {
     }
 
 }

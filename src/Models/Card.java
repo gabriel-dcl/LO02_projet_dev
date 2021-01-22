@@ -7,11 +7,13 @@ import enums.Form;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class permettant de définir une carte
+ * @version  1.0
+ * @author Gabriel Duciel, Nicolas Felixine
+ */
 public class Card {
 
-
-    private int x_pos;      //Useless
-    private int y_pos;      //Useless
     State card_state;
     Color card_color;
     Form card_form;
@@ -47,7 +49,12 @@ public class Card {
         return "  " + stateLetter + "" + colorLetter + "" + formLetter + "  ";
 
     }
-    
+
+    /**
+     * Methode To String dédiée au graphique, sans les espaces autour du nom de la carte utilisés dans la vue console
+     *
+     * @return le String correspondant
+     */
     public String toStringGraphic() {
 
         char stateLetter = '.';
@@ -79,61 +86,55 @@ public class Card {
 
     }
 
-    public int getX_pos() {
-        return x_pos;
-    }
 
-    public void setX_pos(int x_pos) {
-        this.x_pos = x_pos;
-    }
-
-    public int getY_pos() {
-        return y_pos;
-    }
-
-    public void setY_pos(int y_pos) {
-        this.y_pos = y_pos;
-    }
-
+    /**
+     * Gets card state.
+     *
+     * @return the card state
+     */
     public State getCard_state() {
         return card_state;
     }
 
+    /**
+     * Sets card state.
+     *
+     * @param card_state the card state
+     */
     public void setCard_state(State card_state) {
         this.card_state = card_state;
     }
 
+    /**
+     * Gets card color.
+     *
+     * @return the card color
+     */
     public Color getCard_color() {
         return card_color;
     }
 
-    public void setCard_color(Color card_color) {
-        this.card_color = card_color;
-    }
-
+    /**
+     * Gets card form.
+     *
+     * @return the card form
+     */
     public Form getCard_form() {
         return card_form;
     }
 
-    public void setCard_form(Form card_form) {
-        this.card_form = card_form;
-    }
-
-    public List<Player> getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(List<Player> player) {
-        this.player = player;
-    }
-
+    /**
+     * Instantiates a new Card.
+     *
+     * @param state the state
+     * @param color the color
+     * @param form  the form
+     */
     public Card(State state, Color color, Form form)
     {
         this.card_color = color;
         this.card_state = state;
         this.card_form = form;
     }
-
-    public List<Player> player = new ArrayList<Player> ();
 
 }

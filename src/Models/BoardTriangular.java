@@ -1,12 +1,23 @@
 package Models;
 
 import java.util.Map;
-
+/**
+ * Class qui correspond à un plateau triangulaire, héritant de la class Plateau
+ * @version 2.0
+ * @author Nicolas Felixine
+ *
+ * @see Card
+ */
 public class BoardTriangular extends Board {
-    private Card cardsOnBoard;
 
+    public BoardTriangular() {  super(); }
 
-
+    /**
+     * Regarde si les coordonnées entrées en paramètre sont suffisament proche pour qu'on puisse y insérer une carte.
+     *
+     * @param coordinate Les coordonnées à tester
+     * @return True si les coordonnées sont bien placées, False sinon
+     */
     public boolean isCoordinateCloseEnough(Coordinate coordinate) {
         int nbrCadrsOnThisColumn = 1;
         int nbrCardsOnThisStage = 1;
@@ -25,8 +36,6 @@ public class BoardTriangular extends Board {
 
         if(!this.isPlaceAvailable(coordinate))
             return false;
-
-
 
 
         if(currentCardsOnBoard.entrySet().isEmpty())
@@ -94,6 +103,13 @@ public class BoardTriangular extends Board {
         return false;
     }
 
+    /**
+     * Permet d'insérer une carte au plateau en accord avec les restrictions posées par le type de plateau actuel.
+     *
+     * @param card       La carte à ajouter
+     * @param coordinate Les coordonnées où l'ajouter
+     * @return True si l'ajout s'est fait sans encombre, False sinon
+     */
     public boolean addCardOnBoard(Card card, Coordinate coordinate)
     {
 

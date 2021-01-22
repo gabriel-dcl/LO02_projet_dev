@@ -25,14 +25,19 @@ import java.util.Observer;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
+/**
+ * Vue graphique pour la configuration d'une partie utilisant la bibliothèque Swing
+ * @author Nicolas Felixine
+ * @version 1.0
+ * @see SetUpController
+ */
 public class SetUpGraphicVue implements  Vue {
 
 	private JFrame frame;
 	private SetUpController ctrl ;
-	private JTextField textField;
 
 	/**
-	 * Launch the application.
+	 * Lance l'application
 	 */
 	public void occure() {
 		EventQueue.invokeLater(new Runnable() {
@@ -46,6 +51,7 @@ public class SetUpGraphicVue implements  Vue {
 			}
 		});
 	}
+
 	public static void main(String Args[]) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -60,7 +66,7 @@ public class SetUpGraphicVue implements  Vue {
 	}
 
 	/**
-	 * Create the application.
+	 * Create une instance de la Vue et le controller associé
 	 */
 	public SetUpGraphicVue() {
 		initialize();
@@ -69,7 +75,7 @@ public class SetUpGraphicVue implements  Vue {
 
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialise le contenu de l'ensemble de la Frame.
 	 */
 	private void initialize() {
 		frame = new JFrame();
@@ -291,12 +297,6 @@ public class SetUpGraphicVue implements  Vue {
 		});
 		mnBoardForm.add(rdbtnmnitmSquare);
 	}
-
-	public void changeVue()
-	{
-
-	}
-
 
 	@Override
 	public GameController getCtrl() {

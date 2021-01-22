@@ -13,29 +13,59 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
+/**
+ * Vue console pour le déroulement d'une partie
+ * Pour faciliter son implémentation et permettre à deux vues de fonctionner en même temps, cette vue est un thread
+ *
+ * @author  Gabriel Duciel, Nicolas Felixine
+ * @version 1.0
+ * @see Vue
+ * @see Runnable
+ * @see Observer
+ */
 public class GameConsoleVue implements Observer, Vue, Runnable {
 
+
     Scanner sc;
+    /**
+     * Le Game controller associe
+     */
+
     private GameController gmc;
+    private boolean playerTurn = false;
+
+    /**
+     * Divers booleans pour identifier les actions realisables pour le joueur.
+     */
+
     private boolean canShuffle = false;
     private boolean canAlternate = false;
     private boolean canMoveCard = false;
     private boolean canChangeVictoryCard = false;
     private boolean canPlaceCard = false;
-    private boolean playerTurn = false;
     private  boolean canPlace2ndCard = false;
 
+
+    /**
+     * Crée une instance de la vue, avec une instance de Scanner pour lire les entrees et une instance du GameController
+     */
     public GameConsoleVue()
     {
         this.sc = new Scanner(System.in);
         gmc = new GameController(this);
     }
 
+    /**
+     * Affiche le joueur dont le tour est en cours
+     */
     public void showCurrentPlayer()
     {
         System.out.println("=====> Joueur " + ( this.gmc.getGameManager().getIndex() + 1));
     }
 
+    /**
+     * Methode pour changer de VictoryCard. Verifie si cette action est utilisable.
+     */
     public void changeVictoryCard()
     {
         if(!canChangeVictoryCard)
@@ -43,7 +73,6 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
             System.out.println("Vous ne pouvez pas(plus) utiliser cette commande.");
             return;
         }
-
 
         int choix = -1;
         System.out.println("Voulez vous changer de Victory Card ? 1 | 0");
@@ -68,6 +97,10 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         this.canChangeVictoryCard = false;
     }
 
+    /**
+     * Methode pour afficher le plateau
+     * @see Board
+     */
     public void showBoard()
     {
         for (int i = 0; i < 12; i++)
@@ -93,7 +126,14 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
     }
 
 
-
+    /**
+     * Methode pour placer une nouvelle carte sur le plateau
+     *
+     * @param newCard      la carte à ajouter sur le plateau
+     * @param currentBoard le plateau de jeu actuel
+     * @see Board
+     * @see Card
+     */
     public void placeNewCard(Card newCard, Board currentBoard)
     {
         if(!canPlaceCard)
@@ -126,7 +166,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         System.out.println("Voici la carte a poser : \n" + newCard.toString());
 
 
-        Coordinate position = askPlayerCoordinates(currentBoard, true);
+        Coordinate position = askPlayerCoordinates(true);
 
         gmc.addCardOnBoard(newCard, position, false);
 
@@ -139,6 +179,13 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         System.out.println("\n \n");
     }
 
+    /**
+     * Methode pour deplacer une carte du plateau
+     *
+     * @param currentBoard le plateau de jeu actuel
+     * @see Board
+     * @see Card
+     */
     public void moveCard(Board currentBoard)
     {
         if(!canMoveCard)
@@ -153,7 +200,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
             System.out.println("\n \n");
             Card cardToMove;
 
-            Coordinate position = askPlayerCoordinates(currentBoard, false);
+            Coordinate position = askPlayerCoordinates(false);
 
             Coordinate currentCard =  gmc.findEqualsCoordinate(position);
             //récupération de la carte à bouger
@@ -162,7 +209,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
 
             gmc.removeFromCoordinate(currentCard);
 
-            position = askPlayerCoordinates(currentBoard, true);
+            position = askPlayerCoordinates(true);
 
             //Placement de la carte
             gmc.addCardOnBoard(cardToMove, position, true);
@@ -173,7 +220,14 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         System.out.println("\n \n");
     }
 
-    public Coordinate askPlayerCoordinates(Board currentBoard, boolean searchForFreePlace)
+    /**
+     * Demande au joueur une coordonnée pour déplacer ou placer une carte, et verifie si la position est valide.
+     *
+     * @param searchForFreePlace    boolean pour savoir si on cherche une place libre ou occupee, permet d'optimiser la fonction
+     * @return Coordinate       La coordonnee valide choisie
+     * @see    Coordinate
+     */
+    public Coordinate askPlayerCoordinates(boolean searchForFreePlace)
     {
         Scanner sc = new Scanner(System.in);
 
@@ -222,10 +276,14 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
 
     @Override
     public void occure() {
-
     }
 
-    public void shuffle(Board currentBoard, Player currentPlayer)
+    /**
+     * Permet de mélanger le plateau de jeu si le joueur en a la possibilite
+     *
+     * @param currentPlayer Le joueur actuel
+     */
+    public void shuffle(Player currentPlayer)
    {
        if(!canShuffle)
        {
@@ -253,12 +311,24 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
        System.out.println("\n \n");
    }
 
+    /**
+     * Affiche la carte de victoire du joueur
+     *
+     * @param victoryCard la carte de victoire en question
+     * @see Card
+     */
     public void showVictoryCard(Card victoryCard) {
             System.out.println("\n \n");
             System.out.println("Voici votre carte victoire :");
             System.out.println(victoryCard.toString() + "\n \n");
     }
 
+
+    /**
+     * Permet de factoriser les cas recurrents ou une entree n'est pas bonne et que le resultat attendu est 1 ou 0
+     *
+     * @return le choix, 1 ou 2
+     */
     private int badInputOneOrTwoChoice()
     {
         int choix = -1;
@@ -273,6 +343,11 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         return choix;
     }
 
+    /**
+     * Permet d'alternet deux cartes sur le plateau
+     *
+     * @param currentBoard le plateau de jeu
+     */
     public void alternateCards(Board currentBoard)
     {
         this.showBoard();
@@ -327,11 +402,17 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
         System.out.println("\n \n");
     }
 
+    /**
+     * Annonce qu'un joueur a changé de carte victoire
+     */
     public void annoncePlayerChangeVictoryCard()
     {
         System.out.println("!!! Le joueur " + (gmc.getGameManager().getIndex()  + 1)  + " a change de Victory Card" );
     }
 
+    /**
+     * Message de fin de parties et affichage des scores
+     */
     public void over()
     {
         System.out.println("============================ GAME OVER ========================");
@@ -389,6 +470,10 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
     }
 
 
+    /**
+     * Menu principal qui s'affiche lors du tour du joueur pour lui demander quelles actions réalisées
+     * Il empeche au joueur de finir son tour s'il n'a pas realise les actions obligatoires
+     */
     public void playerTurn()
     {
         boolean exit = false;
@@ -441,7 +526,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
                 case 1 : this.showVictoryCard( this.gmc.getGameManager().getPlayers()[this.gmc.getGameManager().getIndex()].getVictoryCard() ); break;
                 case 2 : this.moveCard(this.gmc.getGameManager().getCurrentBoard()); break;
                 case 3 : this.placeNewCard(this.gmc.getGameManager().getCardOnPlay(), this.gmc.getGameManager().getCurrentBoard() ); break;
-                case 4 : this.shuffle(this.gmc.getGameManager().getCurrentBoard(),this.gmc.getGameManager().getPlayers()[this.gmc.getGameManager().getIndex()] ); break;
+                case 4 : this.shuffle(this.gmc.getGameManager().getPlayers()[this.gmc.getGameManager().getIndex()] ); break;
                 case 5 : this.alternateCards(this.gmc.getGameManager().getCurrentBoard()); break;
                 case 6 : this.changeVictoryCard(); break;
             }
@@ -482,7 +567,9 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
 
     private boolean gameOver = false;
 
-    @Override
+    /**
+     * Processus qui permet d'avoir nos vues qui fonctionnent en parallèle. Dès lors qu'il s'agit du tour du joueur, il affiche les actions à effectuer
+     */
     public void run() {
         try {
             while(!gameOver)
@@ -504,7 +591,7 @@ public class GameConsoleVue implements Observer, Vue, Runnable {
             }
 
         } catch (InterruptedException ie) {
-            // handle if you like
+            ie.getMessage();
         }
     }
 }
